@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>El Presidente – Sátira de Corrupción Futbolística</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#080808;min-height:100vh;display:flex;justify-content:center;font-family:'Georgia',serif;color:#f0e6d0;overscroll-behavior:none;}
+#app{width:100%;max-width:430px;min-height:100vh;background:linear-gradient(160deg,#1a1208 0%,#0d0d0d 50%,#0a0a15 100%);position:relative;}
+#app::before{content:'';position:fixed;top:0;left:50%;transform:translateX(-50%);width:430px;height:100%;background:repeating-linear-gradient(45deg,transparent,transparent 2px,rgba(212,160,23,.018) 2px,rgba(212,160,23,.018) 4px);pointer-events:none;z-index:0;}
+#ui{position:relative;z-index:1;padding-bottom:60px;}
+
+/* === HEADER === */
+.hdr{background:linear-gradient(180deg,rgba(18,12,4,.97) 0%,rgba(12,8,2,.93) 100%);border-bottom:1px solid rgba(212,160,23,.28);padding:10px 16px 8px;}
+.hdr-row{display:flex;justify-content:space-between;align-items:center;}
+.hdr-title{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#d4a017;font-family:system-ui,sans-serif;}
+.hdr-weeks{font-size:11px;color:rgba(240,230,208,.55);font-family:system-ui,sans-serif;}
+.hdr-club{font-size:18px;font-weight:bold;color:#f0e6d0;margin-top:1px;}
+.hdr-mote{font-size:11px;color:#d4a017;font-style:italic;margin-top:1px;}
+
+/* === STATS === */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 16px;background:rgba(0,0,0,.28);}
+.stat-item{background:rgba(255,255,255,.04);border:1px solid rgba(212,160,23,.15);border-radius:8px;padding:7px 10px;transition:border-color .3s,box-shadow .3s;}
+.stat-item.danger{border-color:rgba(220,50,50,.55);background:rgba(220,50,50,.07);animation:dpulse 1.4s ease-in-out infinite;}
+.stat-item.hidden{opacity:.35;filter:blur(2px);}
+@keyframes dpulse{0%,100%{box-shadow:0 0 0 0 rgba(220,50,50,0);}50%{box-shadow:0 0 8px 2px rgba(220,50,50,.3);}}
+.stat-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.stat-lbl{font-size:10px;color:rgba(240,230,208,.55);text-transform:uppercase;letter-spacing:.05em;font-family:system-ui,sans-serif;}
+.stat-val{font-size:11px;font-weight:bold;font-family:system-ui,sans-serif;}
+.stat-bar{height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;}
+.stat-fill{height:100%;border-radius:2px;transition:width .4s ease;}
+.fill-money{background:linear-gradient(90deg,#1d9e75,#4ecdc4);}
+.fill-press{background:linear-gradient(90deg,#378add,#6fb0f5);}
+.fill-vest{background:linear-gradient(90deg,#c44fa8,#e879c0);}
+.fill-power{background:linear-gradient(90deg,#e5a117,#f7c948);}
+.val-money{color:#4ecdc4;} .val-press{color:#6fb0f5;} .val-vest{color:#e879c0;} .val-power{color:#f7c948;}
+
+/* === ALERTS === */
+.alerts{padding:0 16px 4px;}
+.alert{border-radius:6px;padding:7px 10px;font-size:12px;margin-bottom:5px;font-family:system-ui,sans-serif;line-height:1.4;border-left:3px solid;}
+.a-danger{background:rgba(180,30,30,.15);border-color:#cc3333;color:#ff9999;}
+.a-warn{background:rgba(180,120,0,.15);border-color:#d4a017;color:#f0c040;}
+.a-info{background:rgba(30,80,180,.15);border-color:#378add;color:#88bbf0;}
+
+/* === CARD AREA === */
+.card-area{padding:6px 16px;}
+.ctx-text{font-size:12px;color:rgba(240,230,208,.45);font-style:italic;text-align:center;margin-bottom:8px;font-family:system-ui,sans-serif;min-height:18px;}
+.turn-badge{text-align:center;padding:2px 16px 4px;font-size:10px;color:rgba(240,230,208,.28);letter-spacing:.04em;font-family:system-ui,sans-serif;}
+
+.card-outer{position:relative;touch-action:none;user-select:none;}
+.swipe-hint{position:absolute;top:22px;font-size:12px;font-weight:700;padding:5px 11px;border-radius:6px;opacity:0;pointer-events:none;z-index:20;font-family:system-ui,sans-serif;max-width:44%;text-align:center;line-height:1.2;}
+.hint-l{left:10px;color:#ff8080;background:rgba(180,30,30,.15);border:1.5px solid rgba(255,107,107,.45);}
+.hint-r{right:10px;color:#80ff80;background:rgba(20,120,60,.15);border:1.5px solid rgba(81,207,102,.45);}
+
+/* The Card */
+.ev-card{background:linear-gradient(160deg,#1e1a10 0%,#16120a 100%);border:1px solid rgba(212,160,23,.32);border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.6),inset 0 1px 0 rgba(212,160,23,.18);transform-origin:center bottom;will-change:transform;cursor:grab;min-height:340px;display:flex;flex-direction:column;}
+.ev-card.is-dragging{cursor:grabbing;}
+.ev-card.fifa-boss{border:2px solid #d4a017;box-shadow:0 0 28px rgba(212,160,23,.45),0 8px 32px rgba(0,0,0,.6),inset 0 1px 0 rgba(212,160,23,.4);background:linear-gradient(160deg,#1e1500 0%,#120e00 100%);}
+.card-banner{background:rgba(212,160,23,.1);border-bottom:1px solid rgba(212,160,23,.18);padding:9px 14px 8px;display:flex;justify-content:space-between;align-items:center;}
+.card-cat{font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-family:system-ui,sans-serif;}
+.fifa-boss .card-banner{background:linear-gradient(90deg,#a07000,#c9900a,#a07000);}
+.fifa-boss .card-cat{color:#1a1100;font-weight:bold;}
+.card-img-area{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 14px 12px;flex:1;}
+.card-emoji{font-size:58px;line-height:1;margin-bottom:10px;text-align:center;}
+.card-title{font-size:16px;font-weight:bold;color:#f0e6d0;text-align:center;margin-bottom:8px;line-height:1.3;}
+.card-desc{font-size:12px;color:rgba(240,230,208,.62);text-align:center;line-height:1.6;font-family:system-ui,sans-serif;}
+.card-foot{border-top:1px solid rgba(212,160,23,.13);padding:8px 14px;display:flex;justify-content:space-between;align-items:center;}
+.card-week{font-size:10px;color:rgba(240,230,208,.3);font-family:system-ui,sans-serif;}
+
+/* Swipe buttons */
+.swipe-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.sw-btn{background:rgba(255,255,255,.04);border:1px solid rgba(212,160,23,.2);border-radius:10px;padding:10px 8px;cursor:pointer;font-family:'Georgia',serif;color:#f0e6d0;transition:all .15s;text-align:left;}
+.sw-btn:hover{background:rgba(212,160,23,.1);border-color:rgba(212,160,23,.4);}
+.sw-btn:active{transform:scale(.97);}
+.sw-btn.right{text-align:right;}
+.sw-dir{font-size:10px;color:rgba(240,230,208,.38);margin-bottom:3px;font-family:system-ui,sans-serif;}
+.sw-lbl{font-size:12px;font-weight:bold;line-height:1.3;}
+.sw-btn:not(.right) .sw-lbl{color:#ff9999;}
+.sw-btn.right .sw-lbl{color:#99ffaa;}
+
+/* === NEWSPAPER POPUP === */
+.np-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.82);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes slideUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+.np-paper{background:#f5f0e8;border-radius:4px;max-width:380px;width:100%;color:#1a1a1a;box-shadow:0 20px 60px rgba(0,0,0,.85);animation:slideUp .3s ease;overflow:hidden;}
+.np-redbar{background:#c8102e;color:#fff;text-align:center;padding:6px 16px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-family:'Georgia',serif;}
+.np-name{font-size:22px;font-weight:bold;font-family:'Georgia',serif;text-align:center;border-bottom:3px double #1a1a1a;padding:10px 16px;background:#f5f0e8;}
+.np-body{padding:14px 18px 16px;}
+.np-headline{font-size:19px;font-weight:bold;font-family:'Georgia',serif;color:#1a1a1a;line-height:1.2;margin-bottom:8px;}
+.np-sub{font-size:13px;color:#444;font-family:system-ui,sans-serif;line-height:1.5;border-left:3px solid #c8102e;padding-left:10px;margin-bottom:14px;}
+.np-close{display:block;width:100%;background:#1a1a1a;color:#f5f0e8;border:none;padding:11px;font-size:13px;font-weight:bold;cursor:pointer;font-family:system-ui,sans-serif;letter-spacing:.04em;}
+.np-close:hover{background:#333;}
+
+/* === DEATH SCREEN === */
+.death-screen{min-height:100vh;background:linear-gradient(160deg,#0f0000 0%,#080808 100%);}
+.death-hdr{background:#c8102e;padding:16px;text-align:center;border-bottom:4px solid #8b0000;}
+.death-hdr-lbl{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:3px;font-family:system-ui,sans-serif;}
+.death-paper{font-size:24px;font-weight:bold;color:#fff;font-family:'Georgia',serif;}
+.death-body{padding:20px 16px;}
+.death-hl{font-size:24px;font-weight:bold;color:#f0e6d0;font-family:'Georgia',serif;line-height:1.2;margin-bottom:10px;}
+.death-sub{font-size:13px;color:rgba(240,230,208,.6);line-height:1.6;margin-bottom:20px;font-family:system-ui,sans-serif;border-left:3px solid #c8102e;padding-left:12px;}
+.death-badges{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.death-badge{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:4px 12px;font-size:11px;color:rgba(240,230,208,.55);font-family:system-ui,sans-serif;}
+
+/* === TIMELINE === */
+.tl-section{padding:0 16px 16px;border-top:1px solid rgba(212,160,23,.18);}
+.tl-title{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#d4a017;margin:14px 0 12px;font-family:system-ui,sans-serif;}
+.tl-scroll{overflow-x:auto;padding-bottom:8px;}
+.tl-track{display:flex;align-items:flex-start;min-width:max-content;padding:16px 0 6px;position:relative;}
+.tl-track::before{content:'';position:absolute;top:37px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,160,23,.45),transparent);}
+.tl-item{display:flex;flex-direction:column;align-items:center;min-width:80px;position:relative;z-index:1;}
+.tl-portrait{width:46px;height:46px;border-radius:50%;background:rgba(212,160,23,.1);border:2px solid rgba(212,160,23,.28);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:7px;position:relative;z-index:2;}
+.tl-portrait.current{border-color:#d4a017;background:rgba(212,160,23,.22);box-shadow:0 0 12px rgba(212,160,23,.4);}
+.tl-dot{width:10px;height:10px;border-radius:50%;background:#d4a017;border:2px solid #080808;position:absolute;top:35px;left:50%;transform:translateX(-50%);z-index:3;}
+.tl-name{font-size:10px;color:rgba(240,230,208,.7);text-align:center;margin-bottom:2px;font-family:system-ui,sans-serif;max-width:74px;line-height:1.25;}
+.tl-weeks{font-size:9px;color:rgba(212,160,23,.7);text-align:center;font-family:system-ui,sans-serif;}
+.tl-connector{width:30px;height:2px;background:rgba(212,160,23,.25);margin-top:22px;flex-shrink:0;}
+
+/* === DEATH ACTIONS === */
+.death-actions{padding:16px;display:flex;flex-direction:column;gap:10px;}
+.btn-successor{background:linear-gradient(135deg,#d4a017,#a87c0c);color:#1a1100;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:bold;cursor:pointer;font-family:'Georgia',serif;letter-spacing:.02em;box-shadow:0 4px 16px rgba(212,160,23,.3);}
+.btn-successor:hover{background:linear-gradient(135deg,#e5b420,#c09010);}
+.btn-restart{background:rgba(255,255,255,.05);color:rgba(240,230,208,.55);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px;font-size:13px;cursor:pointer;font-family:system-ui,sans-serif;}
+.btn-restart:hover{background:rgba(255,255,255,.08);}
+
+/* === SETUP SCREEN === */
+.setup-scr{padding:32px 20px 40px;min-height:100vh;display:flex;flex-direction:column;}
+.setup-logo{font-size:36px;margin-bottom:8px;}
+.setup-title{font-size:28px;font-weight:bold;color:#d4a017;font-family:'Georgia',serif;margin-bottom:2px;}
+.setup-sub{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(212,160,23,.55);margin-bottom:28px;font-family:system-ui,sans-serif;}
+.setup-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,230,208,.45);margin-bottom:8px;font-family:system-ui,sans-serif;}
+.setup-input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(212,160,23,.3);border-radius:8px;padding:12px 14px;font-size:16px;color:#f0e6d0;font-family:'Georgia',serif;outline:none;margin-bottom:24px;}
+.setup-input:focus{border-color:#d4a017;}
+.setup-input::placeholder{color:rgba(240,230,208,.28);}
+.setup-btn{width:100%;background:linear-gradient(135deg,#d4a017,#a87c0c);color:#1a1100;border:none;border-radius:10px;padding:15px;font-size:16px;font-weight:bold;cursor:pointer;font-family:'Georgia',serif;margin-top:auto;box-shadow:0 4px 20px rgba(212,160,23,.28);}
+.setup-btn:hover{background:linear-gradient(135deg,#e5b420,#c09010);}
+.setup-note{font-size:11px;color:rgba(240,230,208,.3);text-align:center;margin-top:14px;font-family:system-ui,sans-serif;line-height:1.5;}
+
+/* === PRES SELECT === */
+.pres-scr{padding:16px;}
+.pres-title{font-size:13px;color:rgba(240,230,208,.55);margin-bottom:14px;font-family:system-ui,sans-serif;}
+.pres-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.pres-card{background:rgba(255,255,255,.04);border:1px solid rgba(212,160,23,.2);border-radius:10px;padding:14px 12px;cursor:pointer;transition:all .15s;}
+.pres-card:hover{background:rgba(212,160,23,.1);border-color:rgba(212,160,23,.42);}
+.pres-em{font-size:28px;margin-bottom:6px;}
+.pres-name{font-size:13px;font-weight:bold;color:#f0e6d0;margin-bottom:3px;}
+.pres-desc{font-size:10px;color:rgba(240,230,208,.48);font-family:system-ui,sans-serif;line-height:1.3;}
+.legacy-warn{background:rgba(180,80,0,.15);border:1px solid rgba(212,160,23,.28);border-radius:8px;padding:10px 14px;font-size:12px;color:rgba(240,230,208,.68);margin-bottom:14px;font-family:system-ui,sans-serif;font-style:italic;}
+
+/* === TOAST === */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(15,12,5,.96);border:1px solid rgba(212,160,23,.4);color:#f0e6d0;border-radius:24px;padding:9px 20px;font-size:13px;z-index:300;opacity:0;transition:opacity .3s,transform .3s;white-space:nowrap;font-family:system-ui,sans-serif;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(212,160,23,.28);border-radius:2px;}
+</style>
+</head>
+<body>
+<div id="app"><div id="ui"></div></div>
+<div class="toast" id="toast"></div>
+<script>
+// ─────────────────────────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────────────────────────
+const CATS=[
+  {id:'directiva',label:'Despachos y Maletines',emoji:'💼',color:'#d4a017'},
+  {id:'vestuario',label:'El Vestuario Salvaje',  emoji:'🍺',color:'#c44fa8'},
+  {id:'banquillo',label:'El Banquillo Hirviendo',emoji:'📋',color:'#378add'},
+  {id:'prensa',   label:'Gradas y Prensa',       emoji:'📸',color:'#c8102e'},
+  {id:'partido',  label:'El Circo del Partido',  emoji:'⚽',color:'#1d9e75'}
+];
+
+const CARDS=[
+  // ── DIRECTIVA ──
+  {id:'c1',cat:'directiva',emoji:'💼',ctx:'Un hombre con gabardina espera en el parking…',
+   title:'El Maletín Misterioso',desc:'Un emisario te ofrece una maleta llena de dinero si "aflojas" el próximo partido.',
+   a:{label:'Aceptar el trato',hint:'¡Venga el oro!',fx:{money:+30,press:-5,vest:-10,power:-5},bomb:true},
+   b:{label:'Rechazar y denunciar',hint:'Ni hablar',fx:{money:-5,press:+20,vest:+5,power:+10}},
+   paper:{name:'El Chiringuito News',headline:'¡ESCÁNDALO! El presidente acepta soborno en el parking del estadio',sub:'Fuentes confirman que el dinero llegó en una maleta Samsonite negra con ruedas.'}},
+
+  {id:'c2',cat:'directiva',emoji:'👦',ctx:'El presidente hace una llamada muy incómoda…',
+   title:'El Fichaje Fantasma',desc:'El presidente exige fichar al hijo de su socio. Es malísimo.',
+   a:{label:'Ficharlo sin más',hint:'Por la pasta…',fx:{money:-15,press:-10,vest:-20,power:+20}},
+   b:{label:'Negarte educadamente',hint:'No, gracias',fx:{money:0,press:+5,vest:+10,power:-20}}},
+
+  {id:'c3',cat:'directiva',emoji:'🏦',ctx:'Hacienda toca a la puerta de la ciudad deportiva…',
+   title:'Cuentas en Suiza',desc:'Viene Hacienda. ¿Escondes los contratos reales o dices la verdad?',
+   a:{label:'Esconder los contratos',hint:'A Suiza todo',fx:{money:+15,press:-5,vest:0,power:+10},bomb:true},
+   b:{label:'Decir la verdad',hint:'Que sea lo que Dios quiera',fx:{money:-20,press:+15,vest:+5,power:-5}},
+   paper:{name:'Diario Marca-A',headline:'EL PRESIDENTE OCULTA CONTRATOS A HACIENDA',sub:'Los documentos fueron enviados por fax a las Islas Caimán. La Fiscalía abre diligencias.'}},
+
+  {id:'c4',cat:'directiva',emoji:'⚖️',ctx:'Un señor de aspecto turbio pide una reunión urgente…',
+   title:'El VP de los Árbitros',desc:'Un exárbitro se ofrece de "consultor" por una generosa cifra para darte "paz arbitral".',
+   a:{label:'Contratarlo',hint:'Buena inversión…',fx:{money:-20,press:-5,vest:+10,power:+15},bomb:true},
+   b:{label:'Rechazarlo',hint:'Aquí no',fx:{money:0,press:+10,vest:0,power:0}}},
+
+  {id:'c5',cat:'directiva',emoji:'🎲',ctx:'El contable te da un informe muy preocupante…',
+   title:'Apuestas Clandestinas',desc:'Descubres que el vicepresidente está apostando contra tu propio equipo.',
+   a:{label:'Echarlo y denunciar',hint:'¡Fuera!',fx:{money:0,press:+20,vest:+5,power:-15}},
+   b:{label:'Chantajearlo',hint:'Tú me debes una',fx:{money:+20,press:0,vest:0,power:+10},bomb:true}},
+
+  {id:'c6',cat:'directiva',emoji:'💹',ctx:'Una reunión de negocios en un hotel de lujo…',
+   title:'Fondos Buitre',desc:'Un fondo turbio quiere comprar el 50 % de los derechos de tu canterano estrella.',
+   a:{label:'Aceptar el trato',hint:'El dinero es el dinero',fx:{money:+30,press:-15,vest:-10,power:+5}},
+   b:{label:'Rechazar',hint:'El chico no está en venta',fx:{money:0,press:+10,vest:+5,power:0}}},
+
+  {id:'c7',cat:'directiva',emoji:'👨‍👦',ctx:'El agente del crack llega con un maletín enorme…',
+   title:'La Comisión del Padre',desc:'El padre de tu mejor jugador exige 10 millones bajo la mesa para renovar.',
+   a:{label:'Pagar',hint:'Familia primero',fx:{money:-25,press:0,vest:+15,power:+5}},
+   b:{label:'Negarte y venderlo',hint:'Al siguiente',fx:{money:+20,press:-10,vest:-20,power:0}}},
+
+  {id:'c8',cat:'directiva',emoji:'🏟️',ctx:'Una oferta llega de un lugar muy oscuro…',
+   title:'Venta del Nombre del Estadio',desc:'Una empresa de criptomonedas sospechosa ofrece una millonada por renombrar el estadio.',
+   a:{label:'Aceptar',hint:'¡Wen moon!',fx:{money:+35,press:-20,vest:-5,power:+5},bomb:true},
+   b:{label:'Rechazar',hint:'El estadio tiene historia',fx:{money:0,press:+15,vest:0,power:0}}},
+
+  {id:'c9',cat:'directiva',emoji:'📋',ctx:'El contable tiene una propuesta muy creativa…',
+   title:'Facturas Infladas',desc:'El contable propone inflar el valor de los canteranos para saltarse el Fair Play Financiero.',
+   a:{label:'Aprobar el método',hint:'Ingeniería financiera',fx:{money:+20,press:0,vest:0,power:+10},bomb:true},
+   b:{label:'Rechazar',hint:'Jugamos limpio',fx:{money:-10,press:+10,vest:0,power:0}}},
+
+  {id:'c10',cat:'directiva',emoji:'💎',ctx:'Una llamada a las 2 AM de un número desconocido…',
+   title:'La Superliga',desc:'Te invitan a una liga privada de ricos. Ganarás millones, pero te odiarán.',
+   a:{label:'Unirse a la Superliga',hint:'El fútbol moderno',fx:{money:+50,press:-40,vest:+10,power:+20}},
+   b:{label:'Rechazar públicamente',hint:'¡Viva el fútbol de verdad!',fx:{money:-5,press:+25,vest:0,power:-10}}},
+
+  {id:'c11',cat:'directiva',emoji:'🏛️',ctx:'El político llega al palco con una sonrisa muy amplia…',
+   title:'El Palco VIP',desc:'Un político corrupto pide pases gratis de por vida a cambio de agilizar las licencias del estadio.',
+   a:{label:'Aceptar',hint:'La política da para todo',fx:{money:+15,press:-10,vest:0,power:+15},bomb:true},
+   b:{label:'Rechazar',hint:'Que pague como todos',fx:{money:-10,press:+10,vest:0,power:-5}}},
+
+  {id:'c12',cat:'directiva',emoji:'🕵️',ctx:'El director deportivo tiene una idea muy cuestionable…',
+   title:'El Espía',desc:'El director deportivo propone contratar un detective para seguir a tu jugador más fiestero.',
+   a:{label:'Contratar al detective',hint:'Hay que saberlo todo',fx:{money:-10,press:-10,vest:-15,power:+10}},
+   b:{label:'Hablar con el jugador',hint:'A las claras',fx:{money:0,press:0,vest:+10,power:0}}},
+
+  {id:'c13',cat:'directiva',emoji:'✈️',ctx:'El presidente entra al despacho con maletas…',
+   title:'El Jet Privado',desc:'El presidente quiere usar el avión del equipo para irse de vacaciones con su familia.',
+   a:{label:'Dejarle',hint:'Lo que él diga…',fx:{money:-15,press:-5,vest:-5,power:+20}},
+   b:{label:'Negarte',hint:'El avión es del club',fx:{money:0,press:+5,vest:+5,power:-25}}},
+
+  {id:'c14',cat:'directiva',emoji:'💸',ctx:'Un ejecutivo con traje brillante hace una oferta…',
+   title:'Patrocinador Polémico',desc:'Una marca de apuestas dudosa ofrece el triple que tu patrocinador actual.',
+   a:{label:'Firmar',hint:'Los números mandan',fx:{money:+40,press:-20,vest:-5,power:+10}},
+   b:{label:'Rechazar',hint:'Hay límites',fx:{money:-5,press:+10,vest:0,power:0}}},
+
+  {id:'c15',cat:'directiva',emoji:'🎯',ctx:'Una llamada de un número extranjero muy insistente…',
+   title:'La Prima por Ganar',desc:'Un tercer club te ofrece dinero legalmente dudoso para que le ganes al líder.',
+   a:{label:'Aceptar',hint:'Un mal menor',fx:{money:+25,press:-5,vest:+10,power:+5},bomb:true},
+   b:{label:'Rechazar',hint:'Sin compromisos',fx:{money:0,press:+10,vest:0,power:0}}},
+
+  {id:'c16',cat:'directiva',emoji:'🔍',ctx:'Los sueldos de todos están en el periódico de hoy…',
+   title:'El Topo en el Vestuario',desc:'Alguien filtra los sueldos de la plantilla a la prensa. ¿Interrogatorio agresivo?',
+   a:{label:'Interrogar a todos',hint:'El culpable aparecerá',fx:{money:-5,press:0,vest:-20,power:+10}},
+   b:{label:'Investigar en silencio',hint:'Con discreción',fx:{money:-10,press:0,vest:0,power:+5}}},
+
+  {id:'c17',cat:'directiva',emoji:'💡',ctx:'Van perdiendo 0-3 en el minuto 80…',
+   title:'Corte de Luz Oportunista',desc:'Alguien sugiere apagar los focos del estadio "accidentalmente".',
+   a:{label:'Hacerlo',hint:'Un accidente técnico',fx:{money:0,press:-25,vest:+5,power:-10}},
+   b:{label:'No tocar nada',hint:'Perder con dignidad',fx:{money:0,press:+5,vest:0,power:0}}},
+
+  {id:'c18',cat:'directiva',emoji:'🏗️',ctx:'El constructor llega con facturas muy hinchadas…',
+   title:'Sobreprecio en Obras',desc:'El constructor del estadio, amigo del presidente, pide un 30 % más de presupuesto.',
+   a:{label:'Aprobarlo',hint:'Son amigos',fx:{money:-30,press:0,vest:0,power:+20}},
+   b:{label:'Buscar otro constructor',hint:'Concurso público',fx:{money:0,press:+5,vest:0,power:-20}}},
+
+  {id:'c19',cat:'directiva',emoji:'🤖',ctx:'El community manager tiene una propuesta muy turbia…',
+   title:'Campaña de Bots',desc:'Un asesor propone pagar cuentas falsas en redes para defender tu gestión.',
+   a:{label:'Pagar la campaña',hint:'La narrativa importa',fx:{money:-15,press:+20,vest:0,power:+10},bomb:true},
+   b:{label:'Rechazarlo',hint:'Sin trampas',fx:{money:0,press:0,vest:0,power:0}}},
+
+  {id:'c20',cat:'directiva',emoji:'💰',ctx:'El delegado cierra la puerta con mucho cuidado…',
+   title:'La Prima Tramposa',desc:'Tu delegado "sugiere" meter dinero extra en los bonos sin declararlo.',
+   a:{label:'Aprobar',hint:'Los jugadores felices',fx:{money:+20,press:0,vest:+15,power:+5},bomb:true},
+   b:{label:'No tocar nada',hint:'Sin irregularidades',fx:{money:0,press:0,vest:+5,power:0}}},
+
+  // ── VESTUARIO ──
+  {id:'c21',cat:'vestuario',emoji:'🇧🇷',ctx:'El brasileño entra llorando al despacho…',
+   title:'Cumpleaños en Brasil',desc:'Tu estrella brasileña dice que su hermana cumple años y debe viajar ya, antes del sábado.',
+   a:{label:'Dejarle ir',hint:'La familia es lo primero',fx:{money:0,press:-10,vest:+15,power:-10}},
+   b:{label:'Negarle el permiso',hint:'Aquí el jefe soy yo',fx:{money:0,press:+5,vest:-20,power:+10}}},
+
+  {id:'c22',cat:'vestuario',emoji:'🍺',ctx:'El utillero entra llorando al despacho…',
+   title:'Resaca Matutina',desc:'Tu centrocampista estrella llega al entrenamiento oliendo a alcohol.',
+   a:{label:'Sancionarlo públicamente',hint:'Tolerancia cero',fx:{money:0,press:+10,vest:-15,power:+5}},
+   b:{label:'Taparlo',hint:'Lo que pasa en el vestuario…',fx:{money:0,press:-10,vest:+10,power:-5},bomb:true},
+   paper:{name:'El Chiringuito News',headline:'¡BORRACHO! El centrocampista llega fundido al entreno del lunes',sub:'Fuentes del vestuario confirman que aún llevaba la pulsera del garito de la noche anterior.'}},
+
+  {id:'c23',cat:'vestuario',emoji:'💔',ctx:'Los jugadores no se miran a la cara…',
+   title:'El Triángulo Amoroso',desc:'El delantero estrella sale con la exesposa del capitán. El vestuario está roto.',
+   a:{label:'Vender al delantero',hint:'El vestuario primero',fx:{money:+15,press:-10,vest:+20,power:+5}},
+   b:{label:'Vender al capitán',hint:'La estrella es intocable',fx:{money:0,press:-15,vest:-10,power:0}}},
+
+  {id:'c24',cat:'vestuario',emoji:'🍻',ctx:'El paparazzi manda las fotos a redacción…',
+   title:'Silla del Dentista',desc:'Se filtran fotos de tus jugadores bebiendo en un pub inglés la noche antes del partido.',
+   a:{label:'Sancionarlos',hint:'¡A todos!',fx:{money:0,press:+15,vest:-20,power:+10}},
+   b:{label:'Negar la mayor',hint:'Son montajes',fx:{money:0,press:-20,vest:+10,power:-5}}},
+
+  {id:'c25',cat:'vestuario',emoji:'✂️',ctx:'El extremo llama desde el aeropuerto…',
+   title:'Peluquero a Bordo',desc:'El extremo exige que su peluquero personal viaje siempre en el avión del equipo.',
+   a:{label:'Aceptar',hint:'Lo que pida la estrella',fx:{money:-10,press:-5,vest:+15,power:-10}},
+   b:{label:'Negarte',hint:'Eso es demasiado',fx:{money:0,press:+5,vest:-15,power:+5}}},
+
+  {id:'c26',cat:'vestuario',emoji:'🍔',ctx:'El preparador físico llega furioso al despacho…',
+   title:'Hamburguesa en el Descanso',desc:'El preparador físico pilla a un jugador comiendo comida rápida en el vestuario.',
+   a:{label:'Multa y humillación',hint:'¡Disciplina!',fx:{money:+5,press:+5,vest:-15,power:+5}},
+   b:{label:'Hablarlo en privado',hint:'Con mano izquierda',fx:{money:0,press:0,vest:+5,power:0}}},
+
+  {id:'c27',cat:'vestuario',emoji:'🃏',ctx:'La noche antes del derbi se hace muy larga…',
+   title:'Póker Clandestino',desc:'Descubres una timba de altas apuestas en el hotel de concentración.',
+   a:{label:'Denunciarla al míster',hint:'¡Orden!',fx:{money:0,press:+5,vest:-20,power:+10}},
+   b:{label:'Mirar para otro lado',hint:'Lo que no sé no me daña',fx:{money:0,press:-10,vest:+10,power:0},bomb:true}},
+
+  {id:'c28',cat:'vestuario',emoji:'👊',ctx:'Dos jugadores casi se agarran en el área de penalti…',
+   title:'Pelea por el Penalti',desc:'Dos jugadores casi se pegan por ver quién tira el penalti decisivo. El árbitro espera.',
+   a:{label:'Dejarlos decidirlo',hint:'Que se apaleen',fx:{money:0,press:0,vest:-10,power:-5}},
+   b:{label:'Ordenar quién lanza',hint:'Yo mando aquí',fx:{money:0,press:+5,vest:-5,power:+10}}},
+
+  {id:'c29',cat:'vestuario',emoji:'🎤',ctx:'El departamento de comunicación entra en pánico…',
+   title:'El Rapero',desc:'Un jugador quiere lanzar un disco criticando abiertamente a la directiva.',
+   a:{label:'Prohibírselo',hint:'Eso no',fx:{money:0,press:-10,vest:-10,power:+15}},
+   b:{label:'Dejarle ser artista',hint:'Libertad de expresión',fx:{money:0,press:+10,vest:+10,power:-10}}},
+
+  {id:'c30',cat:'vestuario',emoji:'📱',ctx:'El vídeo ya tiene 2 millones de vistas…',
+   title:'Instagram Live Fatal',desc:'Un canterano emite en directo desde el vestuario y se ven las tácticas en la pizarra.',
+   a:{label:'Cesión inmediata',hint:'Fuera del club',fx:{money:+10,press:+5,vest:-15,power:+10}},
+   b:{label:'Multa y formación',hint:'Que aprenda',fx:{money:-5,press:0,vest:-5,power:+5}}},
+
+  {id:'c31',cat:'vestuario',emoji:'💒',ctx:'El portero lleva tres días desaparecido…',
+   title:'Boda en Las Vegas',desc:'Tu portero se ha escapado en mitad de la temporada para casarse en Las Vegas sin avisar.',
+   a:{label:'Rescindirle el contrato',hint:'Inaceptable',fx:{money:-10,press:+10,vest:-10,power:+15}},
+   b:{label:'Multa y perdón',hint:'El amor es el amor',fx:{money:-5,press:-5,vest:+5,power:0}}},
+
+  {id:'c32',cat:'vestuario',emoji:'🏖️',ctx:'Las fotos de Ibiza llegan al departamento médico…',
+   title:'El Virus FIFA',desc:'Tu estrella finge lesión con su selección para irse de vacaciones a Ibiza.',
+   a:{label:'Denunciar a la selección',hint:'¡Tramposos!',fx:{money:0,press:+5,vest:-10,power:+10}},
+   b:{label:'Cubrirle las espaldas',hint:'Todos necesitan descanso',fx:{money:0,press:-10,vest:+15,power:-5}}},
+
+  {id:'c33',cat:'vestuario',emoji:'⌚',ctx:'El vestuario ha montado un juicio sumarísimo…',
+   title:'Reloj Desaparecido',desc:'Desaparece un reloj de 50 000 € del vestuario. Los jugadores sospechan entre ellos.',
+   a:{label:'Llamar a la policía',hint:'Esto es robo',fx:{money:0,press:-10,vest:-20,power:0}},
+   b:{label:'Investigación interna',hint:'En familia',fx:{money:-10,press:0,vest:-10,power:+5}}},
+
+  {id:'c34',cat:'vestuario',emoji:'🏎️',ctx:'Las cámaras de seguridad lo han grabado todo…',
+   title:'El Bólido Estrellado',desc:'Tu joven promesa estrella un Ferrari contra la puerta de la ciudad deportiva a las 3 AM.',
+   a:{label:'Venderlo en el mercado',hint:'Un error demasiado caro',fx:{money:+20,press:+10,vest:0,power:+5}},
+   b:{label:'Apoyo y tratamiento',hint:'Necesita ayuda',fx:{money:-10,press:-10,vest:+10,power:-5}}},
+
+  {id:'c35',cat:'vestuario',emoji:'🎮',ctx:'El stream tiene 50 000 espectadores en directo…',
+   title:'Directo en Twitch',desc:'Un jugador lesionado pasa la noche jugando online y critica tus tácticas en directo.',
+   a:{label:'Sanción dura',hint:'Inaceptable',fx:{money:0,press:+5,vest:-15,power:+10}},
+   b:{label:'Pedir disculpas públicas',hint:'Solo un malentendido',fx:{money:0,press:-5,vest:-5,power:0}}},
+
+  {id:'c36',cat:'vestuario',emoji:'👟',ctx:'Nadie puede respirar en el vestuario…',
+   title:'El Amuleto Apestoso',desc:'Un defensa se niega a lavar sus botas de la suerte. El olor es insoportable.',
+   a:{label:'Ordenar lavarlas',hint:'¡Higiene!',fx:{money:0,press:0,vest:-10,power:+5}},
+   b:{label:'Dejarle con sus rituales',hint:'Si gana con ellas…',fx:{money:0,press:0,vest:+5,power:-5}}},
+
+  {id:'c37',cat:'vestuario',emoji:'🎭',ctx:'Los fans esperan 3 horas bajo la lluvia…',
+   title:'El Doble del Jugador',desc:'Descubres que tu estrella envió a un actor parecido a él a firmar autógrafos.',
+   a:{label:'Hacerlo público',hint:'La afición merece saber',fx:{money:0,press:-15,vest:0,power:0}},
+   b:{label:'Silenciarlo',hint:'Nadie tiene por qué saber',fx:{money:-10,press:0,vest:+5,power:+5}}},
+
+  {id:'c38',cat:'vestuario',emoji:'💪',ctx:'Los jóvenes se organizan en el vestuario…',
+   title:'Boicot al Capitán',desc:'El grupo de los jóvenes quiere quitarle el brazalete al veterano.',
+   a:{label:'Apoyar a los jóvenes',hint:'El futuro primero',fx:{money:0,press:-5,vest:-10,power:0}},
+   b:{label:'Mantener al capitán',hint:'El respeto se gana',fx:{money:0,press:+5,vest:-15,power:+10}}},
+
+  {id:'c39',cat:'vestuario',emoji:'🎬',ctx:'Amazon Prime Video llama a la puerta…',
+   title:'El Documental de Amazon',desc:'Una estrella exige que rueden su documental de Amazon dentro del vestuario.',
+   a:{label:'Aceptar',hint:'Visibilidad mundial',fx:{money:+20,press:+10,vest:-10,power:-10}},
+   b:{label:'Negarle',hint:'El vestuario es sagrado',fx:{money:0,press:-5,vest:+5,power:+10}}},
+
+  {id:'c40',cat:'vestuario',emoji:'🥗',ctx:'El nutricionista trae los análisis de la semana…',
+   title:'Dieta Rebelde',desc:'El nutricionista denuncia que el delantero se niega a comer verduras desde hace tres meses.',
+   a:{label:'Cláusula alimentaria',hint:'Comerás brócoli o no juegas',fx:{money:0,press:0,vest:-10,power:+10}},
+   b:{label:'Dejarle comer lo que quiera',hint:'Si marca, da igual',fx:{money:0,press:0,vest:+10,power:-5}}},
+
+  // ── BANQUILLO ──
+  {id:'c41',cat:'banquillo',emoji:'🚁',ctx:'El asistente táctico llega con una propuesta muy turbia…',
+   title:'Espionaje con Dron',desc:'Tu entrenador envía un dron para grabar el entrenamiento a puerta cerrada del rival.',
+   a:{label:'Aprobar la operación',hint:'Info es poder',fx:{money:0,press:-15,vest:+10,power:+5},bomb:true},
+   b:{label:'Prohibirlo',hint:'Eso es trampa',fx:{money:0,press:+10,vest:-5,power:0}},
+   paper:{name:'Diario Marca-A',headline:'OPERACIÓN DRON: El club espía los entrenamientos del rival',sub:'La Federación abre expediente. El entrenador lo niega todo.'}},
+
+  {id:'c42',cat:'banquillo',emoji:'👁️',ctx:'La tangana del túnel ha llegado a todos lados…',
+   title:'El Dedo en el Ojo',desc:'En plena tangana, tu entrenador le mete el dedo en el ojo al asistente rival.',
+   a:{label:'Defenderle públicamente',hint:'Fue sin querer',fx:{money:-10,press:-20,vest:+10,power:+5}},
+   b:{label:'Distanciarte',hint:'Eso es intolerable',fx:{money:0,press:+10,vest:-10,power:-5}}},
+
+  {id:'c43',cat:'banquillo',emoji:'🎙️',ctx:'La rueda de prensa ha sido un terremoto…',
+   title:'Rueda de Prensa Incendiaria',desc:'Tras perder, el entrenador dice que la plantilla es mediocre y no da para más.',
+   a:{label:'Apoyar sus palabras',hint:'Tiene razón',fx:{money:0,press:-20,vest:-25,power:+5}},
+   b:{label:'Desmentirle públicamente',hint:'No habla por mí',fx:{money:0,press:+10,vest:+5,power:-15}}},
+
+  {id:'c44',cat:'banquillo',emoji:'🚌',ctx:'El míster entra con un rotulador y una pizarra llena de flechas…',
+   title:'El Autobús',desc:'El míster propone jugar con 10 defensas el próximo partido. Efectivo pero espantoso.',
+   a:{label:'Apoyar la táctica',hint:'Si no se pierde…',fx:{money:0,press:-15,vest:-5,power:+10}},
+   b:{label:'Intervenir',hint:'El fútbol ha de ser bonito',fx:{money:0,press:+10,vest:+5,power:-15}}},
+
+  {id:'c45',cat:'banquillo',emoji:'🔥',ctx:'El chamán trae sus instrumentos a la ciudad deportiva…',
+   title:'El Chamán',desc:'Para curar la rodilla de la estrella, el entrenador trae un curandero con rituales de fuego.',
+   a:{label:'Dejarlo pasar',hint:'Si él lo dice…',fx:{money:-5,press:-10,vest:+15,power:-5}},
+   b:{label:'Parar el circo',hint:'Medicina real, por favor',fx:{money:0,press:+10,vest:-10,power:+5}}},
+
+  {id:'c46',cat:'banquillo',emoji:'🥬',ctx:'Los jugadores están amotinados en el comedor…',
+   title:'Prohibido el Ketchup',desc:'El nuevo entrenador prohíbe las salsas y los dulces. Los jugadores están furiosos.',
+   a:{label:'Apoyarle',hint:'El profe sabe más',fx:{money:0,press:0,vest:-15,power:+10}},
+   b:{label:'Negociar la norma',hint:'Hay que ceder algo',fx:{money:0,press:0,vest:+10,power:-10}}},
+
+  {id:'c47',cat:'banquillo',emoji:'🏨',ctx:'El hotel recibe a todo el equipo con maletas para dos semanas…',
+   title:'Concentración Militar',desc:'Tras una mala racha, el míster quiere encerrar al equipo 15 días en un hotel.',
+   a:{label:'Aprobarlo',hint:'La disciplina ante todo',fx:{money:-20,press:+5,vest:-20,power:+10}},
+   b:{label:'Negarlo',hint:'Eso es una cárcel',fx:{money:0,press:-5,vest:+10,power:-15}}},
+
+  {id:'c48',cat:'banquillo',emoji:'⚽',ctx:'El míster pone el once y todos se miran con cara rara…',
+   title:'El Hijo del Míster',desc:'El entrenador insiste en alinear a su hijo, que claramente no tiene nivel.',
+   a:{label:'Ceder',hint:'Familia es familia',fx:{money:0,press:-15,vest:-15,power:+20}},
+   b:{label:'Negarte',hint:'Meritocracia',fx:{money:0,press:+10,vest:+10,power:-25}}},
+
+  {id:'c49',cat:'banquillo',emoji:'😤',ctx:'Los jugadores salen del entrenamiento cabizbajos…',
+   title:'Psicología Inversa',desc:'El entrenador decide insultar públicamente a tu mejor jugador para "motivarlo".',
+   a:{label:'Apoyar el método',hint:'Loco pero funciona',fx:{money:0,press:-10,vest:-20,power:+5}},
+   b:{label:'Parar los insultos',hint:'Eso es inaceptable',fx:{money:0,press:+5,vest:+10,power:-10}}},
+
+  {id:'c50',cat:'banquillo',emoji:'📓',ctx:'El utillero trae el hallazgo del siglo…',
+   title:'El Cuaderno del Rival',desc:'Un utillero encuentra la libreta de tácticas del entrenador rival olvidada en el vestuario.',
+   a:{label:'Leerla y usarla',hint:'Regalo del cielo',fx:{money:0,press:-10,vest:+10,power:+15}},
+   b:{label:'Devolvérsela',hint:'Juego limpio',fx:{money:0,press:+20,vest:+5,power:-5}}},
+
+  {id:'c51',cat:'banquillo',emoji:'⏱️',ctx:'El míster hace una señal rarísima desde el banquillo…',
+   title:'Cambio en el Minuto 1',desc:'El míster quiere cambiar a un jugador en el primer minuto solo para humillarlo.',
+   a:{label:'Permitirlo',hint:'Es el jefe del banquillo',fx:{money:0,press:-10,vest:-20,power:+10}},
+   b:{label:'Impedirlo',hint:'Eso es una humillación',fx:{money:0,press:+5,vest:+10,power:-15}}},
+
+  {id:'c52',cat:'banquillo',emoji:'🌅',ctx:'Son las 4 AM y suena el teléfono del club…',
+   title:'Entrenamiento a las 6 AM',desc:'Como castigo por perder, el míster cita a la plantilla al amanecer.',
+   a:{label:'Apoyarlo',hint:'Que sufran',fx:{money:0,press:0,vest:-15,power:+10}},
+   b:{label:'Modificar el horario',hint:'Tampoco hay que pasarse',fx:{money:0,press:0,vest:+10,power:-10}}},
+
+  {id:'c53',cat:'banquillo',emoji:'🎙️',ctx:'El técnico de sonido hace un hallazgo preocupante…',
+   title:'El Micrófono Oculto',desc:'Encuentras una grabadora escondida debajo de la mesa de la oficina del entrenador.',
+   a:{label:'Denunciar al míster',hint:'¿Qué grababas?',fx:{money:0,press:+15,vest:+5,power:-20}},
+   b:{label:'Confrontarle en privado',hint:'Entre nosotros',fx:{money:0,press:0,vest:0,power:-5}}},
+
+  {id:'c54',cat:'banquillo',emoji:'📺',ctx:'La cámara está encendida y él lo sabe perfectamente…',
+   title:'Dimisión en Directo',desc:'El entrenador amaga con dimitir en televisión si no le traes un fichaje ahora mismo.',
+   a:{label:'Ceder y fichar',hint:'No hay más remedio',fx:{money:-25,press:+5,vest:+10,power:-5}},
+   b:{label:'Aceptar su dimisión',hint:'¡Pues adiós!',fx:{money:-15,press:-10,vest:-5,power:+5}}},
+
+  {id:'c55',cat:'banquillo',emoji:'🤐',ctx:'La sala de prensa lleva días completamente vacía…',
+   title:'Ley del Silencio',desc:'El míster prohíbe que nadie del club dé entrevistas. La prensa está enfurecida.',
+   a:{label:'Apoyar la medida',hint:'Boca cerrada',fx:{money:0,press:-25,vest:+10,power:+10}},
+   b:{label:'Abrir la comunicación',hint:'La transparencia vende',fx:{money:0,press:+15,vest:-5,power:-10}}},
+
+  {id:'c56',cat:'banquillo',emoji:'🎨',ctx:'El jefe de ojeadores pide hablar en privado…',
+   title:'El Ojeador Daltónico',desc:'Tu jefe de ojeadores confiesa que es daltónico y por eso fichó al jugador del equipo que vestía igual.',
+   a:{label:'Despedirlo',hint:'No puede ser',fx:{money:-10,press:+5,vest:0,power:+5}},
+   b:{label:'Darle otra oportunidad',hint:'Todos cometemos errores',fx:{money:0,press:-5,vest:0,power:-5}}},
+
+  {id:'c57',cat:'banquillo',emoji:'💧',ctx:'El utillero llega con una manguera de jardín…',
+   title:'La Manguera al Descanso',desc:'El míster pide inundar el campo en el descanso para frenar el juego rápido del rival.',
+   a:{label:'Hacerlo',hint:'Por el bien del equipo',fx:{money:0,press:-10,vest:+10,power:+5}},
+   b:{label:'Negarte',hint:'El reglamento dice…',fx:{money:0,press:+5,vest:-5,power:0}}},
+
+  {id:'c58',cat:'banquillo',emoji:'🗣️',ctx:'La rueda de prensa es un circo total…',
+   title:'El Traductor Traidor',desc:'El traductor del entrenador extranjero cambia las respuestas para evitar polémicas.',
+   a:{label:'Despedirle',hint:'Fidelidad ante todo',fx:{money:0,press:-10,vest:0,power:+10}},
+   b:{label:'Mantenerle y usarlo',hint:'Muy útil en realidad',fx:{money:0,press:+10,vest:0,power:-5}}},
+
+  {id:'c59',cat:'banquillo',emoji:'🎮',ctx:'El míster llega con un iPad y una idea terrible…',
+   title:'Formación 1-2-7',desc:'El míster quiere probar una táctica suicida porque la vio funcionar en el FIFA.',
+   a:{label:'Dejarlo probar',hint:'Quizás funcione',fx:{money:0,press:-5,vest:-10,power:+5}},
+   b:{label:'Vetar la táctica',hint:'No estamos en un videojuego',fx:{money:0,press:+5,vest:+5,power:-15}}},
+
+  {id:'c60',cat:'banquillo',emoji:'🔧',ctx:'El utillero de toda la vida espera en el pasillo…',
+   title:'Pelea con el Utillero',desc:'El míster ha despedido al utillero de toda la vida porque transmite "mala energía".',
+   a:{label:'Apoyar al míster',hint:'El míster tiene razón',fx:{money:0,press:-5,vest:-5,power:+15}},
+   b:{label:'Reinstalar al utillero',hint:'El utillero es de la casa',fx:{money:0,press:+5,vest:+10,power:-15}}},
+
+  // ── PRENSA ──
+  {id:'c61',cat:'prensa',emoji:'😤',ctx:'Los ultras esperan en la oscuridad del parking…',
+   title:'Reunión con los Ultras',desc:'Los líderes de la grada radical exigen "hablar" a solas con los jugadores.',
+   a:{label:'Permitir la reunión',hint:'El diálogo siempre',fx:{money:0,press:+10,vest:-15,power:-5}},
+   b:{label:'Negarla',hint:'Ahí no se entra',fx:{money:0,press:-15,vest:+5,power:+10}}},
+
+  {id:'c62',cat:'prensa',emoji:'🎤',ctx:'El vídeo ya tiene 10 millones de views…',
+   title:'Trending Topic',desc:'Un vídeo de tu capitán cayéndose borracho en una boda se hace viral en TikTok.',
+   a:{label:'Sancionarlo públicamente',hint:'Imagen del club ante todo',fx:{money:0,press:+15,vest:-15,power:+5}},
+   b:{label:'Defenderlo',hint:'Es su vida privada',fx:{money:0,press:-20,vest:+10,power:-5}}},
+
+  {id:'c63',cat:'prensa',emoji:'📰',ctx:'Los fans están quemando camisetas fuera del estadio…',
+   title:'La Portada Inventada',desc:'Un periódico se inventa que tu estrella se va al máximo rival. Los fans enloquecen.',
+   a:{label:'Desmentir con dureza',hint:'Mentiras absolutas',fx:{money:0,press:+10,vest:+10,power:+5}},
+   b:{label:'No decir nada',hint:'Solo alimenta el fuego',fx:{money:0,press:-15,vest:-10,power:-5}}},
+
+  {id:'c64',cat:'prensa',emoji:'💵',ctx:'La portada del periódico llega al vestuario…',
+   title:'Filtración del Contrato',desc:'El diario más leído publica exactamente cuánto cobra tu delantero, neto y bruto.',
+   a:{label:'Denunciar la filtración',hint:'Ilegal y deplorable',fx:{money:-10,press:0,vest:-5,power:+5}},
+   b:{label:'Confirmar el salario',hint:'No hay nada que ocultar',fx:{money:0,press:-10,vest:-5,power:-10}}},
+
+  {id:'c65',cat:'prensa',emoji:'📢',ctx:'El árbitro amenaza con suspender el partido…',
+   title:'El Cántico Ofensivo',desc:'La grada canta insultos graves al árbitro. La Federación amenaza con cerrar el estadio.',
+   a:{label:'Condenar públicamente',hint:'Eso no se hace',fx:{money:0,press:+15,vest:-10,power:0}},
+   b:{label:'Defenderlo como cultura',hint:'Siempre se ha hecho',fx:{money:0,press:-20,vest:+15,power:-5}}},
+
+  {id:'c66',cat:'prensa',emoji:'🎙️',ctx:'El periodista está en la puerta con su grabadora…',
+   title:'Periodista Vetado',desc:'Un periodista muy crítico pide entrar a la rueda de prensa.',
+   a:{label:'Prohibirle la entrada',hint:'Aquí decido yo',fx:{money:0,press:-15,vest:0,power:+10}},
+   b:{label:'Dejarle pasar',hint:'Libertad de prensa',fx:{money:0,press:+10,vest:0,power:-5}}},
+
+  {id:'c67',cat:'prensa',emoji:'🤚',ctx:'Los pañuelos blancos llenan el estadio…',
+   title:'La Pañolada',desc:'El estadio entero te pita y saca pañuelos blancos pidiendo tu dimisión.',
+   a:{label:'Aguantar estoicamente',hint:'No me voy a ningún lado',fx:{money:0,press:-10,vest:0,power:-15}},
+   b:{label:'Dar rueda de prensa urgente',hint:'Hay que dar la cara',fx:{money:0,press:+10,vest:0,power:+5}}},
+
+  {id:'c68',cat:'prensa',emoji:'🚩',ctx:'La pancarta ya está pintada en el parking…',
+   title:'Tifo Político',desc:'Los fans quieren desplegar una pancarta gigante con un mensaje político muy polémico.',
+   a:{label:'Permitirlo',hint:'El estadio es de todos',fx:{money:0,press:-10,vest:+15,power:-10}},
+   b:{label:'Prohibirlo',hint:'El fútbol y la política…',fx:{money:0,press:-5,vest:-10,power:+10}}},
+
+  {id:'c69',cat:'prensa',emoji:'🎙️',ctx:'El streamer ya tiene 100 000 espectadores en directo…',
+   title:'Entrevista sin Permiso',desc:'Tu estrella da una entrevista a un streamer sin el permiso del club.',
+   a:{label:'Multa y comunicado',hint:'Se necesita permiso',fx:{money:+5,press:0,vest:-10,power:+10}},
+   b:{label:'Ignorarlo',hint:'El jugador vende bien',fx:{money:0,press:+5,vest:+5,power:-5}}},
+
+  {id:'c70',cat:'prensa',emoji:'😮',ctx:'Alguien grabó la conversación en el palco…',
+   title:'Micrófono Abierto',desc:'Te pillan diciendo en privado que los aficionados son "unos malagradecidos".',
+   a:{label:'Pedir perdón públicamente',hint:'Lo siento mucho',fx:{money:0,press:+10,vest:0,power:-15}},
+   b:{label:'Defender tus palabras',hint:'La verdad es la verdad',fx:{money:0,press:-20,vest:0,power:+10}}},
+
+  {id:'c71',cat:'prensa',emoji:'🖌️',ctx:'La ciudad deportiva amanece con pintadas amenazantes…',
+   title:'Amenazas en la Valla',desc:'Aparecen pintadas amenazantes en la puerta de la ciudad deportiva.',
+   a:{label:'Llamar a la policía',hint:'Esto es delito',fx:{money:0,press:+5,vest:-10,power:-5}},
+   b:{label:'Callarlo internamente',hint:'No hay que alarmar',fx:{money:0,press:0,vest:+5,power:+5},bomb:true}},
+
+  {id:'c72',cat:'prensa',emoji:'🎪',ctx:'La animación flojea bastante esta tarde…',
+   title:'La Claque Pagada',desc:'Te sugieren regalar entradas a un grupo de animación para que canten tu nombre.',
+   a:{label:'Hacerlo',hint:'Un aplauso nunca viene mal',fx:{money:-15,press:+15,vest:0,power:+5}},
+   b:{label:'No comprarlo',hint:'Si nos quieren, que lo demuestren',fx:{money:0,press:0,vest:0,power:0}}},
+
+  {id:'c73',cat:'prensa',emoji:'🔍',ctx:'La alineación aparece publicada antes de que tú la sepas…',
+   title:'Filtración del Once',desc:'Un periodista siempre sabe la alineación un día antes. ¿Trampa para pillar al topo?',
+   a:{label:'Trampa con once falso',hint:'A ver quién pica',fx:{money:-5,press:-5,vest:-10,power:+10}},
+   b:{label:'Ignorarlo',hint:'Que sigan filtrando',fx:{money:0,press:-5,vest:0,power:0}}},
+
+  {id:'c74',cat:'prensa',emoji:'🤡',ctx:'El meme del portero ya es global…',
+   title:'El Meme Global',desc:'Un fallo garrafal de tu portero se convierte en el meme más usado del mundo esta semana.',
+   a:{label:'Apoyar al portero',hint:'Todos fallamos',fx:{money:0,press:-5,vest:+20,power:0}},
+   b:{label:'Venderle',hint:'La imagen del club',fx:{money:+10,press:+5,vest:-15,power:0}}},
+
+  {id:'c75',cat:'prensa',emoji:'📻',ctx:'La radio emite su programa destructor a todas horas…',
+   title:'Exjugador Rajón',desc:'Una leyenda del club te destruye cada semana en su programa de radio.',
+   a:{label:'Invitarle a que venga',hint:'Que lo diga a la cara',fx:{money:0,press:+10,vest:+5,power:-5}},
+   b:{label:'Vetarle acceso al club',hint:'Persona non grata',fx:{money:0,press:-15,vest:0,power:+10}}},
+
+  {id:'c76',cat:'prensa',emoji:'🏃',ctx:'El espontáneo ya sale en todas las portadas…',
+   title:'Invasión de Campo',desc:'Un espontáneo salta al campo para abrazar a tu estrella, deteniendo un ataque rival.',
+   a:{label:'Celebrarlo',hint:'¡Qué pasión!',fx:{money:0,press:+10,vest:+10,power:-5}},
+   b:{label:'Comunicado de disculpa',hint:'Protocolos de seguridad',fx:{money:0,press:-5,vest:0,power:+5}}},
+
+  {id:'c77',cat:'prensa',emoji:'🎵',ctx:'El estadio lleva semanas de tensión política…',
+   title:'Pitada al Himno',desc:'Tu afición pita el himno del país en la final de Copa.',
+   a:{label:'Condenarlos',hint:'Inaceptable',fx:{money:0,press:+15,vest:-20,power:-5}},
+   b:{label:'Defenderlos',hint:'Libertad de expresión',fx:{money:0,press:-20,vest:+20,power:-5}}},
+
+  {id:'c78',cat:'prensa',emoji:'🤫',ctx:'El estadio está en silencio total esta tarde…',
+   title:'Boicot de Animación',desc:'Los ultras deciden estar callados todo el partido como protesta contra ti.',
+   a:{label:'Reunirte con ellos',hint:'Hay que hablar',fx:{money:-5,press:+5,vest:0,power:-10}},
+   b:{label:'Ignorarlo',hint:'El partido sigue igual',fx:{money:0,press:-15,vest:0,power:+5}}},
+
+  {id:'c79',cat:'prensa',emoji:'⭐',ctx:'Los reporteros esperan en la zona mixta con grabadoras…',
+   title:'Venta de Humo',desc:'La prensa pide que prometas un fichaje galáctico imposible para calmar los ánimos.',
+   a:{label:'Prometer el galáctico',hint:'Lo traeremos, prometido',fx:{money:0,press:+20,vest:+5,power:+10},bomb:true},
+   b:{label:'Ser honesto',hint:'Hacemos lo que podemos',fx:{money:0,press:-10,vest:0,power:0}}},
+
+  {id:'c80',cat:'prensa',emoji:'😱',ctx:'Los fans están fuera con antorchas y pancartas…',
+   title:'Cesión al Rival',desc:'La prensa revela que estás cediendo a un canterano al máximo rival.',
+   a:{label:'Cancelar la operación',hint:'Error garrafal mío',fx:{money:-15,press:+15,vest:0,power:-5}},
+   b:{label:'Defender la decisión',hint:'Es lo mejor para él',fx:{money:+10,press:-20,vest:0,power:+5}}},
+
+  // ── PARTIDO ──
+  {id:'c81',cat:'partido',emoji:'🎁',ctx:'El delegado susurra algo muy inquietante…',
+   title:'El Regalo al Árbitro',desc:'El delegado te pregunta si debe dejar "bolsas con camisetas" en el vestuario del árbitro.',
+   a:{label:'Dejar las bolsas',hint:'Tradición del club',fx:{money:-10,press:-10,vest:+10,power:+15},bomb:true},
+   b:{label:'Nada de regalos',hint:'Jugamos limpio',fx:{money:0,press:+10,vest:0,power:-5}}},
+
+  {id:'c82',cat:'partido',emoji:'📺',ctx:'El monitor del VAR pita de forma muy sospechosa…',
+   title:'El VAR Roto',desc:'El monitor del VAR deja de funcionar en una jugada clave a tu favor.',
+   a:{label:'Presionar para pararlo',hint:'Que sigan con el gol',fx:{money:0,press:-10,vest:+10,power:+5}},
+   b:{label:'Dejar que decida el árbitro',hint:'Las normas son las normas',fx:{money:0,press:+10,vest:0,power:-5}}},
+
+  {id:'c83',cat:'partido',emoji:'⏰',ctx:'Van ganando 1-0 en el minuto 85…',
+   title:'Recogepelotas Pícaros',desc:'Vas ganando en el 85\'. ¿Le dices a los recogepelotas que escondan los balones?',
+   a:{label:'Hacerlo',hint:'El tiempo es nuestro amigo',fx:{money:0,press:-10,vest:+10,power:+5}},
+   b:{label:'Juego limpio',hint:'No a esas mañas',fx:{money:0,press:+10,vest:-5,power:-5}}},
+
+  {id:'c84',cat:'partido',emoji:'🏊',ctx:'El árbitro señala el punto de penalti…',
+   title:'Piscina Olímpica',desc:'Tu extremo finge un penalti y el árbitro lo pita. ¿Le pides que lo falle por juego limpio?',
+   a:{label:'Que lo chute',hint:'El árbitro lo ha dado',fx:{money:0,press:-5,vest:+10,power:0}},
+   b:{label:'Pedirle que lo falle',hint:'Fue trampa',fx:{money:0,press:+20,vest:-10,power:-5}}},
+
+  {id:'c85',cat:'partido',emoji:'💉',ctx:'El médico del club llega con un sobre cerrado…',
+   title:'Dopaje Sospechoso',desc:'El control antidoping da un "falso positivo" en tu mejor jugador. ¿Retrasar la noticia?',
+   a:{label:'Retrasar la publicación',hint:'Tiempo para prepararnos',fx:{money:-15,press:-10,vest:+5,power:+5},bomb:true},
+   b:{label:'Hacer transparencia total',hint:'La verdad siempre',fx:{money:0,press:+15,vest:0,power:-5}},
+   paper:{name:'Diario Marca-A',headline:'DOPAJE EN EL CLUB: El positivo que intentaron ocultar',sub:'La UEFA confirma que recibió el informe con semanas de retraso. Expediente disciplinario abierto.'}},
+
+  {id:'c86',cat:'partido',emoji:'💧',ctx:'El rival celebra su título en tu propio campo…',
+   title:'Aspersores Oportunos',desc:'El rival celebra su título en tu campo. ¿Enciendes los aspersores para echarlos?',
+   a:{label:'Encender los aspersores',hint:'Fin de la fiesta',fx:{money:0,press:-15,vest:+20,power:+5}},
+   b:{label:'Dejarlos celebrar',hint:'El fútbol tiene estas cosas',fx:{money:0,press:+15,vest:-5,power:-5}}},
+
+  {id:'c87',cat:'partido',emoji:'💡',ctx:'El portero rival se queja con la FIFA…',
+   title:'Luces Cegadoras',desc:'El portero rival se queja de que tus focos están colocados para dejarlo ciego.',
+   a:{label:'Negarlo todo',hint:'Los focos son estándar',fx:{money:0,press:-10,vest:+10,power:+5}},
+   b:{label:'Mover los focos',hint:'Justo y honesto',fx:{money:-5,press:+10,vest:-5,power:-5}}},
+
+  {id:'c88',cat:'partido',emoji:'👊',ctx:'El túnel de vestuarios es una guerra campal…',
+   title:'Tangana en el Túnel',desc:'Al pitar el final, se arma una pelea masiva en el túnel. ¿No viste nada?',
+   a:{label:'No vi nada',hint:'Total oscuridad',fx:{money:0,press:-15,vest:+10,power:-5}},
+   b:{label:'Declarar a la prensa',hint:'Cuento todo lo que vi',fx:{money:0,press:+10,vest:-10,power:+5}}},
+
+  {id:'c89',cat:'partido',emoji:'🥇',ctx:'El delantero lleva 3 partidos sin pasar el balón…',
+   title:'El Pichichi Egoísta',desc:'Tu delantero se niega a pasarle el balón a un compañero para ganar la Bota de Oro.',
+   a:{label:'Apoyar su derecho',hint:'Es el goleador',fx:{money:+10,press:+5,vest:-20,power:0}},
+   b:{label:'Alinearlo en el banquillo',hint:'El equipo por encima de todo',fx:{money:-10,press:0,vest:+10,power:+5}}},
+
+  {id:'c90',cat:'partido',emoji:'🤢',ctx:'El hotel del rival amanece con ambulancias…',
+   title:'Gastroenteritis Misteriosa',desc:'Todo el equipo rival cae enfermo la noche antes del partido tras cenar en el hotel que gestiona el club.',
+   a:{label:'No preguntar',hint:'Qué mala suerte la de ellos',fx:{money:0,press:-5,vest:+5,power:+10},bomb:true},
+   b:{label:'Investigar y desvincularse',hint:'Esto no tiene que ver con nosotros',fx:{money:0,press:+10,vest:0,power:-10}}},
+
+  {id:'c91',cat:'partido',emoji:'✋',ctx:'El replay deja claro que fue con la mano…',
+   title:'La Mano de Dios',desc:'Tu capitán marca un gol con la mano que os da el campeonato. ¿Confiesas?',
+   a:{label:'Confesar',hint:'La honestidad ante todo',fx:{money:0,press:+20,vest:-5,power:-15}},
+   b:{label:'Callarse para siempre',hint:'Historia del club',fx:{money:0,press:-5,vest:+15,power:+5},bomb:true}},
+
+  {id:'c92',cat:'partido',emoji:'🏃',ctx:'El banquillo entero invade el campo…',
+   title:'El Banquillo Invasor',desc:'Todo tu banquillo salta al campo para cortar una contra letal del rival.',
+   a:{label:'Defenderlos',hint:'Haría lo mismo',fx:{money:-10,press:-15,vest:+20,power:-5}},
+   b:{label:'Sancionarlos',hint:'Inaceptable',fx:{money:0,press:+10,vest:-15,power:+10}}},
+
+  {id:'c93',cat:'partido',emoji:'🔥',ctx:'Las bengalas llenan el estadio de humo naranja…',
+   title:'Fuego en la Grada',desc:'Los hinchas encienden bengalas y el partido se suspende por el humo.',
+   a:{label:'Defenderse en público',hint:'No somos responsables',fx:{money:-5,press:-20,vest:-5,power:-5}},
+   b:{label:'Aceptar la sanción',hint:'Asumimos la responsabilidad',fx:{money:-20,press:+5,vest:-5,power:-10}}},
+
+  {id:'c94',cat:'partido',emoji:'👻',ctx:'El balón botó dentro, todos lo vieron…',
+   title:'El Gol Fantasma',desc:'El balón bota dentro de la portería rival, pero el árbitro dice que no entró.',
+   a:{label:'Montar el escándalo',hint:'¡Robo!',fx:{money:0,press:+5,vest:+10,power:-10}},
+   b:{label:'Aceptar la decisión',hint:'El árbitro siempre tiene razón',fx:{money:0,press:-5,vest:-5,power:+5}}},
+
+  {id:'c95',cat:'partido',emoji:'🧱',ctx:'El objeto ya está en manos de la Federación…',
+   title:'Objeto Arrojado',desc:'Lanzan un objeto desde tu grada. La Federación quiere cerrarte el estadio.',
+   a:{label:'Culpar a provocadores',hint:'No es culpa nuestra',fx:{money:0,press:-15,vest:+10,power:+5}},
+   b:{label:'Aceptar la responsabilidad',hint:'Es nuestro estadio',fx:{money:-20,press:+15,vest:-5,power:-10}}},
+
+  {id:'c96',cat:'partido',emoji:'⏱️',ctx:'El árbitro saca un descuento absolutamente ridículo…',
+   title:'Descuento Infinito',desc:'El árbitro añade 10 minutos injustificados hasta que el rival empata.',
+   a:{label:'Bajar a gritarle',hint:'¡Ladrón!',fx:{money:-5,press:-10,vest:+20,power:-5}},
+   b:{label:'Quedarte en el palco',hint:'La dignidad primero',fx:{money:0,press:0,vest:-5,power:+5}}},
+
+  {id:'c97',cat:'partido',emoji:'👟',ctx:'La imagen del gol descalzo ya es icónica…',
+   title:'La Bota Rota',desc:'Tu jugador marca un gol jugando descalzo porque se le rompió la bota. El rival exige anularlo.',
+   a:{label:'Defender el gol',hint:'Es gol válido',fx:{money:0,press:+10,vest:+10,power:+5}},
+   b:{label:'Aceptar anularlo',hint:'Las normas son las normas',fx:{money:0,press:-10,vest:-15,power:-5}}},
+
+  {id:'c98',cat:'partido',emoji:'👁️',ctx:'El linier no llevaba las gafas puestas hoy…',
+   title:'El Linier Miope',desc:'El linier no ve un fuera de juego de 3 metros y marcas gol. ¿Lo celebras?',
+   a:{label:'Celebrar y seguir',hint:'El reglamento no dice nada',fx:{money:0,press:-5,vest:+15,power:+5}},
+   b:{label:'Pedir anularlo',hint:'Juego limpio',fx:{money:0,press:+25,vest:-10,power:-10}}},
+
+  {id:'c99',cat:'partido',emoji:'🌾',ctx:'El utillero señala al campo con una sonrisa de oreja a oreja…',
+   title:'Césped Tramposo',desc:'El rival juega al toque. El utillero pregunta si deja el césped largo y seco.',
+   a:{label:'Dejar el césped trampa',hint:'Ventaja local',fx:{money:0,press:-10,vest:+10,power:+5}},
+   b:{label:'Césped en condiciones',hint:'Que gane el mejor',fx:{money:0,press:+10,vest:-5,power:-5}}},
+
+  {id:'c100',cat:'partido',emoji:'🏆',ctx:'El estadio lleva semanas sin dormir de emoción…',
+   title:'La Final de Europa',desc:'El club llega a la final de la UEFA Champions League. Todo lo que hiciste llevó a este momento.',
+   a:{label:'Todo por la gloria europea',hint:'¡A ganar!',fx:{money:-20,press:+50,vest:+30,power:+20},win:true},
+   b:{label:'Gestión conservadora',hint:'Sin riesgos',fx:{money:+10,press:+10,vest:+5,power:+5}}}
+];
+
+// ── FIFA BOSS CARDS ──
+const FIFA_BOSS_CARDS=[
+  {id:'fifa1',isFifaBoss:true,emoji:'🤝',cat:'directiva',
+   ctx:'Un helicóptero privado aterriza en el estadio…',
+   title:'El Gran Jefe de la FIFA',
+   desc:'El Gran Jefe te ofrece una "oportunidad única": esconder tu Caja durante 10 semanas a cambio de 40 puntos extra.',
+   a:{label:'¡Trato hecho!',hint:'El fútbol tiene sus reglas',fx:{money:+40,press:-10,vest:0,power:+5},fifaCurse:{stat:'money',weeks:10}},
+   b:{label:'Rechazar la oferta',hint:'No necesito ese dinero',fx:{money:-10,press:+15,vest:0,power:0}}},
+  {id:'fifa2',isFifaBoss:true,emoji:'🎩',cat:'directiva',
+   ctx:'El Gran Jefe llega en limusina con una valija de documentos…',
+   title:'El Gran Jefe Regresa',
+   desc:'Propone hacerte invisible a la Prensa durante 8 semanas a cambio de quedarse con el 20 % de tu próxima venta.',
+   a:{label:'Firmar el pacto',hint:'La impunidad tiene precio',fx:{money:-20,press:+30,vest:0,power:+10},fifaCurse:{stat:'press',weeks:8}},
+   b:{label:'Rechazar',hint:'Gracias pero no',fx:{money:0,press:-10,vest:+5,power:0}}},
+  {id:'fifa3',isFifaBoss:true,emoji:'💫',cat:'directiva',
+   ctx:'El Gran Jefe aparece en la pantalla gigante del estadio…',
+   title:'La Bendición Maldita',
+   desc:'El Gran Jefe garantiza "paz del vestuario" durante 12 semanas. El precio: perder visibilidad de tus Puntos.',
+   a:{label:'¡Acepto!',hint:'Un vestuario tranquilo vale todo',fx:{money:+15,press:0,vest:+20,power:-5},fifaCurse:{stat:'power',weeks:12}},
+   b:{label:'No gracias',hint:'Prefiero verlo todo',fx:{money:0,press:+5,vest:-10,power:0}}}
+];
+
+// ── MOTES ──
+const MOTE_BY_WEEKS=[
+  {t:0,  n:'El Becario del Palco'},
+  {t:10, n:'El Aprendiz de Tiburón'},
+  {t:20, n:'El Gestor de Crisis'},
+  {t:35, n:'El Intrigante del Palco'},
+  {t:50, n:'El Manipulador de Balones'},
+  {t:65, n:'El Barón de los Traspasos'},
+  {t:85, n:'El Padrino del Césped'}
+];
+const MOTE_BY_STAT=[
+  {c:g=>g.stats.money>=80,   n:'El Jeque de Gasolinera'},
+  {c:g=>g.stats.press>=80,   n:'El Relaciones Públicas de Lujo'},
+  {c:g=>g.stats.vest>=80,    n:'El Padre del Vestuario'},
+  {c:g=>g.stats.power>=80,   n:'El Genio Táctico'},
+  {c:g=>g.track.corrupt>=8,  n:'El Padrino del Césped'},
+  {c:g=>g.track.honest>=8,   n:'El Caballero del Escudo Limpio'},
+  {c:g=>g.stats.money<20&&g.stats.press<20, n:'El Impresentable'}
+];
+
+// ── DEATH HEADLINES ──
+const DEATH_HL={
+  press:{paper:'El Chiringuito News',
+    headline:'¡ESCÁNDALO TOTAL! Encuentran muerto en un puticlub de Torrelodones al presidente del club tras una timba de póker con fondos del estadio',
+    sub:'El club confirma su renuncia "por motivos personales". La afición ya quema su retrato en la explanada del estadio.'},
+  money:{paper:'Diario Marca-A',
+    headline:'¡QUIEBRA! El presidente huye en un patinete eléctrico hacia Andorra dejando una deuda de 400 millones',
+    sub:'Los acreedores cercan la ciudad deportiva. El utillero vende camisetas para pagar la luz. Los jugadores exigen sus nóminas en Bitcoin.'},
+  vest:{paper:'La Gaceta del Palco',
+    headline:'¡MOTÍN! Los jugadores secuestran el autobús del equipo y abandonan al presidente en una gasolinera de la meseta',
+    sub:'El capitán confirma que dejaron la maleta del presidente en el arcén de la A-4. El GPS del autobús fue desactivado en Manzanares.'},
+  power:{paper:'AS de Palo',
+    headline:'¡GOLPE DE ESTADO! La junta directiva vota la destitución del presidente por 14 votos a 1 (el único a favor era su secretaria)',
+    sub:'El expresidente fue escoltado fuera del palco con una caja de cartón con sus pertenencias. Solo quedó la planta.'},
+  legend:{paper:'Diario Marca-A',
+    headline:'¡CAMPEONES DE EUROPA! El presidente lleva el club a la gloria eterna bajo una lluvia de serpentinas doradas',
+    sub:'Miles de aficionados invaden las calles. El alcalde propone poner una estatua. El presidente llora en el podio con la Copa.'},
+  collapse:{paper:'El Chiringuito News',
+    headline:'¡COLAPSO TOTAL! El club desaparece del mapa del fútbol profesional para siempre',
+    sub:'La FIFA interviene el club. Tres jugadores ficharon por clubes de tercera. El escudo se subastó en eBay por 12 €.'}
+};
+
+const RANDOM_PAPERS=['Diario Marca-A','El Chiringuito News','La Gaceta del Palco','AS de Palo'];
+const RANDOM_OPENINGS=['¡EXCLUSIVA!','¡BOMBA!','FUENTES CONFIRMAN:','¡ESCÁNDALO!','SE DESTAPA:'];
+const RANDOM_SUBS=[
+  'Fuentes cercanas al palco confirman que la decisión fue tomada a las 3 AM con una copa de whisky en la mano.',
+  'El abogado del club ya ha pedido hora al juez. La directiva guarda silencio.',
+  'El delantero del equipo rival lo sabía antes que nadie. Sospechoso, cuanto menos.',
+  'La Federación ha abierto expediente. Los papeles llegaron en sobre manila sin remitente.'
+];
+const PORTRAITS=['👔','🎩','😤','🤵','😎','🧐','🥸','🤨','😏','🫅','👑','🤴'];
+
+// ─────────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────────
+function makeState(){
+  return {
+    screen:'setup',
+    clubName:'',
+    weeks:0,
+    stats:{money:55,press:55,vest:55,power:55},
+    statsHidden:{money:false,press:false,vest:false,power:false},
+    fifaCurses:[],             // [{stat,endsAt}]
+    nextFifaBossAt:50,
+    fifaBossUsed:new Set(),
+    presName:null,
+    presBonus:null,
+    reign:1,
+    seen:new Set(),
+    currentCard:null,
+    pendingNewspaper:null,
+    bombs:[],                  // [{at,card}]
+    timeline:[],               // kept across "Siguiente Sucesor"
+    currentPortrait:randPortrait(),
+    track:{totalTurns:0,corrupt:0,honest:0},
+    inherited:null,
+    deathType:null
+  };
+}
+let G=makeState();
+let DRAG={active:false,startX:0,currentX:0,threshold:72,locked:false};
+let toastTimer=null;
+
+function randPortrait(){return PORTRAITS[Math.floor(Math.random()*PORTRAITS.length)];}
+
+// ─────────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────────
+function clamp(v){return Math.max(0,Math.min(100,v));}
+function rnd(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function catInfo(id){return CATS.find(c=>c.id===id)||{label:id,emoji:'⚽',color:'#888'};}
+
+function getMote(){
+  for(const m of MOTE_BY_STAT){if(m.c(G))return m.n;}
+  let name=MOTE_BY_WEEKS[0].n;
+  for(const lvl of MOTE_BY_WEEKS){if(G.weeks>=lvl.t)name=lvl.n;}
+  return name;
+}
+
+function statMeta(){
+  return[
+    {k:'money',lbl:'💰 Caja',    fc:'fill-money',vc:'val-money'},
+    {k:'press', lbl:'📸 Prensa',  fc:'fill-press', vc:'val-press'},
+    {k:'vest',  lbl:'🍺 Vestuario',fc:'fill-vest', vc:'val-vest'},
+    {k:'power', lbl:'⚽ Puntos',  fc:'fill-power', vc:'val-power'}
+  ];
+}
+
+// ─────────────────────────────────────────────────────────────────
+// CARD PICKING
+// ─────────────────────────────────────────────────────────────────
+function pickCard(){
+  // FIFA Boss check
+  if(G.weeks>=G.nextFifaBossAt){
+    const avail=FIFA_BOSS_CARDS.filter(c=>!G.fifaBossUsed.has(c.id));
+    if(avail.length>0){
+      G.nextFifaBossAt+=50;
+      const bc=rnd(avail);
+      G.fifaBossUsed.add(bc.id);
+      return bc;
+    }
+  }
+  // Bomb queue
+  if(G.bombs.length>0&&G.weeks>=G.bombs[0].at){
+    return G.bombs.shift().card;
+  }
+  let pool=CARDS.filter(c=>!G.seen.has(c.id));
+  if(pool.length===0){G.seen.clear();pool=CARDS.filter(c=>c.id!=='c100');}
+  // Champions card when doing well
+  if(G.stats.money>60&&G.stats.press>60&&G.weeks>30){
+    const f=CARDS.find(c=>c.id==='c100');
+    if(f&&!G.seen.has('c100'))pool.push(f);
+  }
+  return rnd(pool);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// CHOOSE
+// ─────────────────────────────────────────────────────────────────
+function choose(idx){
+  if(DRAG.locked)return;
+  const card=G.currentCard;
+  if(!card)return;
+  const ch=idx===0?card.a:card.b;
+  const other=idx===0?card.b:card.a;
+  if(!ch)return;
+
+  try{
+    // Track
+    if(ch.bomb){G.track.corrupt++;}
+    else if(other&&other.bomb){G.track.honest++;}
+
+    // Win
+    if(ch.win){
+      applyFx(ch.fx);
+      G.weeks++;G.track.totalTurns++;
+      G.seen.add(card.id);
+      endRound('legend');
+      return;
+    }
+
+    applyFx(ch.fx);
+
+    // FIFA curse
+    if(ch.fifaCurse){
+      G.fifaCurses.push({stat:ch.fifaCurse.stat,endsAt:G.weeks+ch.fifaCurse.weeks});
+      G.statsHidden[ch.fifaCurse.stat]=true;
+      showToast('⚠️ El Gran Jefe oculta tu '+statLabel(ch.fifaCurse.stat)+' durante '+ch.fifaCurse.weeks+' semanas');
+    }
+
+    // Schedule bomb card
+    if(ch.bomb){
+      const pool=CARDS.filter(c=>c.id!==card.id&&!c.win);
+      G.bombs.push({at:G.weeks+3+Math.floor(Math.random()*4),card:rnd(pool)});
+    }
+
+    // Newspaper popup
+    if(card.paper&&idx===0&&ch.bomb){
+      G.pendingNewspaper=card.paper;
+    } else if(ch.bomb&&Math.random()<0.55){
+      G.pendingNewspaper={
+        name:rnd(RANDOM_PAPERS),
+        headline:rnd(RANDOM_OPENINGS)+' '+card.title.toUpperCase()+' — El presidente implicado',
+        sub:rnd(RANDOM_SUBS)
+      };
+    }
+
+    G.seen.add(card.id);
+    G.weeks++;G.track.totalTurns++;
+    tickFifaCurses();
+
+    const end=checkEnd();
+    if(end){endRound(end);return;}
+
+    G.currentCard=pickCard();
+    render();
+  }finally{DRAG.locked=false;}
+}
+
+function applyFx(fx){
+  Object.keys(fx).forEach(k=>{
+    if(G.stats[k]!==undefined)G.stats[k]=clamp(G.stats[k]+fx[k]);
+  });
+}
+
+function tickFifaCurses(){
+  G.fifaCurses=G.fifaCurses.filter(c=>{
+    if(G.weeks>=c.endsAt){
+      G.statsHidden[c.stat]=false;
+      showToast('🎉 '+statLabel(c.stat)+' ya es visible de nuevo');
+      return false;
+    }
+    return true;
+  });
+}
+
+function statLabel(k){return({money:'💰 Caja',press:'📸 Prensa',vest:'🍺 Vestuario',power:'⚽ Puntos'})[k]||k;}
+
+function checkEnd(){
+  const s=G.stats;
+  if(s.press<=0)return'press';
+  if(s.money<=0)return'money';
+  if(s.vest<=0)return'vest';
+  if(s.power<=0)return'power';
+  if(s.press>=100&&s.money<10&&s.vest<10)return'collapse';
+  return null;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// ROUND END / DEATH
+// ─────────────────────────────────────────────────────────────────
+function endRound(type){
+  G.deathType=type;
+  // Save to timeline
+  G.timeline.push({
+    pres:G.presName||'Desconocido',
+    weeks:G.weeks,
+    cause:type,
+    portrait:G.currentPortrait,
+    reign:G.reign
+  });
+  G.screen='death';
+  G.pendingNewspaper=null;
+  render();
+}
+
+// "Siguiente Sucesor" – new reign, keep timeline
+function nextSuccessor(){
+  const tl=G.timeline;
+  const clubName=G.clubName;
+  const newG=makeState();
+  newG.timeline=tl;
+  newG.clubName=clubName;
+  newG.reign=tl.length+1;
+  // Inherit slightly degraded stats
+  const last=tl[tl.length-1];
+  const penalty=last&&last.cause==='legend'?0:10;
+  newG.stats.money=clamp(55-penalty);
+  newG.stats.press=clamp(55-penalty);
+  newG.screen='presSelect';
+  newG.inherited=last?humanCause(last.cause):null;
+  G=newG;
+  render();
+}
+
+// Full restart
+function fullRestart(){
+  G=makeState();
+  render();
+}
+
+function humanCause(c){
+  return{press:'La prensa destruyó al presidente anterior',money:'El club está casi en quiebra',
+    vest:'El vestuario está en llamas',power:'El poder quedó destrozado',
+    legend:'El legado anterior fue glorioso',collapse:'El club casi desapareció'}[c]||'El mandato anterior terminó mal';
+}
+
+// ─────────────────────────────────────────────────────────────────
+// PRES SELECT
+// ─────────────────────────────────────────────────────────────────
+const PRES_TYPES=[
+  {emoji:'💼',name:'Tecnócrata',     desc:'Arranca con +15 Caja',     bonus:'money'},
+  {emoji:'🕶️',name:'Operador Oscuro',desc:'Arranca con +15 Puntos',   bonus:'power'},
+  {emoji:'📸',name:'Estrella Mediática',desc:'Arranca con +15 Prensa',bonus:'press'},
+  {emoji:'🍺',name:'Hombre del Vestuario',desc:'Arranca con +15 Vestuario',bonus:'vest'}
+];
+
+function selectPres(i){
+  const p=PRES_TYPES[i];
+  G.presName=p.name;
+  G.presBonus=p.bonus;
+  G.stats[p.bonus]=clamp(G.stats[p.bonus]+15);
+  G.currentPortrait=randPortrait();
+  G.currentCard=pickCard();
+  G.screen='game';
+  render();
+}
+
+// Setup
+function startGame(){
+  const inp=document.getElementById('club-name-input');
+  const name=(inp?inp.value.trim():'')||'Mi Club FC';
+  G.clubName=name;
+  G.screen='presSelect';
+  render();
+}
+
+// Close newspaper
+function closeNewspaper(){
+  G.pendingNewspaper=null;
+  render();
+}
+
+// ─────────────────────────────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────────────────────────────
+function render(){
+  const el=document.getElementById('ui');
+  if(!el)return;
+  if(G.pendingNewspaper){el.innerHTML=renderGame();showNewspaper();return;}
+  if(G.screen==='setup')   {el.innerHTML=renderSetup();attachSetup();return;}
+  if(G.screen==='presSelect'){el.innerHTML=renderPresSelect();return;}
+  if(G.screen==='death')   {el.innerHTML=renderDeath();return;}
+  el.innerHTML=renderGame();
+  attachSwipe();
+}
+
+// ── Setup ──
+function renderSetup(){
+  return`<div class="setup-scr">
+    <div class="setup-logo">⚽</div>
+    <div class="setup-title">El Presidente</div>
+    <div class="setup-sub">Sátira de Corrupción Futbolística</div>
+    <div class="setup-lbl">Nombre del club</div>
+    <input id="club-name-input" class="setup-input" type="text" maxlength="30"
+      placeholder="Ej: FC Torrelodones" value="${esc(G.clubName)}">
+    <button class="setup-btn" onclick="startGame()">Tomar el mando →</button>
+    <div class="setup-note">Swipe a la derecha para aceptar · Swipe a la izquierda para rechazar<br>Las decisiones tienen consecuencias…</div>
+  </div>`;
+}
+function attachSetup(){
+  const inp=document.getElementById('club-name-input');
+  if(inp)inp.addEventListener('keydown',e=>{if(e.key==='Enter')startGame();});
+}
+
+// ── Pres Select ──
+function renderPresSelect(){
+  return`<div class="pres-scr">
+    ${renderHeader()}
+    ${G.inherited?`<div class="legacy-warn">⚠️ ${esc(G.inherited)}. El club sobrevive, pero las heridas pesan.</div>`:''}
+    ${renderStats()}
+    <div class="pres-title">Elige tu nuevo presidente (Mandato ${G.reign})</div>
+    <div class="pres-grid">${PRES_TYPES.map((p,i)=>`
+      <div class="pres-card" onclick="selectPres(${i})">
+        <div class="pres-em">${p.emoji}</div>
+        <div class="pres-name">${p.name}</div>
+        <div class="pres-desc">${p.desc}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ── Game ──
+function renderGame(){
+  const card=G.currentCard;
+  const s=G.stats;
+  const alerts=[];
+  if(s.power<15)alerts.push({cls:'a-danger',msg:'Estás perdiendo el control político. Actúa rápido.'});
+  if(s.money<15)alerts.push({cls:'a-danger',msg:'Las finanzas del club están al límite.'});
+  if(s.vest<15) alerts.push({cls:'a-warn',  msg:'El vestuario está en llamas.'});
+  if(s.press<15)alerts.push({cls:'a-warn',  msg:'La prensa te está destruyendo.'});
+  if(G.bombs.length>0)alerts.push({cls:'a-info',msg:'Alguna decisión pasada puede volver a golpearte…'});
+
+  return`
+    ${renderHeader()}
+    ${renderStats()}
+    <div class="alerts">${alerts.map(a=>`<div class="alert ${a.cls}">${a.msg}</div>`).join('')}</div>
+    <div class="turn-badge">Semana ${G.weeks+1} · Mandato ${G.reign} · ${esc(G.presName||'')}</div>
+    ${card?renderCard(card):''}
+  `;
+}
+
+function renderHeader(){
+  return`<div class="hdr">
+    <div class="hdr-row">
+      <div class="hdr-title">El Presidente</div>
+      <div class="hdr-weeks">Semana ${G.weeks} de mandato</div>
+    </div>
+    <div class="hdr-club">${esc(G.clubName)}</div>
+    <div class="hdr-mote">${getMote()}</div>
+  </div>`;
+}
+
+function renderStats(){
+  return`<div class="stats-grid">${statMeta().map(m=>{
+    const v=G.stats[m.k];
+    const hidden=G.statsHidden[m.k];
+    const danger=v<15;
+    return`<div class="stat-item${danger?' danger':''}${hidden?' hidden':''}">
+      <div class="stat-hdr">
+        <span class="stat-lbl">${m.lbl}</span>
+        <span class="stat-val ${m.vc}">${hidden?'???':v}</span>
+      </div>
+      <div class="stat-bar"><div class="stat-fill ${m.fc}" style="width:${hidden?50:v}%"></div></div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function renderCard(card){
+  const cat=catInfo(card.cat);
+  const isBoss=!!card.isFifaBoss;
+  return`<div class="card-area">
+    <div class="ctx-text">${esc(card.ctx||'')}</div>
+    <div class="card-outer" id="card-outer">
+      <div class="swipe-hint hint-l" id="hint-l">← ${esc(card.b.label)}</div>
+      <div class="swipe-hint hint-r" id="hint-r">${esc(card.a.label)} →</div>
+      <div class="ev-card${isBoss?' fifa-boss':''}" id="ev-card">
+        <div class="card-banner">
+          <span class="card-cat" style="color:${isBoss?'#1a1100':cat.color}">${isBoss?'⭐ EL GRAN JEFE DE LA FIFA':cat.emoji+' '+cat.label}</span>
+        </div>
+        <div class="card-img-area">
+          <div class="card-emoji">${card.emoji}</div>
+          <div class="card-title">${esc(card.title)}</div>
+          <div class="card-desc">${esc(card.desc)}</div>
+        </div>
+        <div class="card-foot">
+          <span class="card-week">Sem. ${G.weeks+1}</span>
+          <span class="card-week">Mandato ${G.reign}</span>
+        </div>
+      </div>
+    </div>
+    <div class="swipe-actions">
+      <button class="sw-btn" onclick="choose(1)">
+        <div class="sw-dir">← Rechazar</div>
+        <div class="sw-lbl">${esc(card.b.label)}</div>
+      </button>
+      <button class="sw-btn right" onclick="choose(0)">
+        <div class="sw-dir">Aceptar →</div>
+        <div class="sw-lbl">${esc(card.a.label)}</div>
+      </button>
+    </div>
+  </div>`;
+}
+
+// ── Newspaper ──
+function showNewspaper(){
+  const np=G.pendingNewspaper;
+  if(!np)return;
+  let overlay=document.getElementById('np-overlay');
+  if(!overlay){
+    overlay=document.createElement('div');
+    overlay.id='np-overlay';
+    overlay.className='np-overlay';
+    document.getElementById('app').appendChild(overlay);
+  }
+  overlay.innerHTML=`<div class="np-paper">
+    <div class="np-redbar">Edición especial · Noticias de última hora</div>
+    <div class="np-name">${esc(np.name)}</div>
+    <div class="np-body">
+      <div class="np-headline">${esc(np.headline)}</div>
+      <div class="np-sub">${esc(np.sub)}</div>
+    </div>
+    <button class="np-close" onclick="closeNewspaper()">CERRAR EDICIÓN ESPECIAL ✕</button>
+  </div>`;
+  overlay.style.display='flex';
+}
+
+// ── Death ──
+function renderDeath(){
+  const type=G.deathType||'power';
+  const hl=DEATH_HL[type]||DEATH_HL.power;
+  const last=G.timeline[G.timeline.length-1];
+
+  return`<div class="death-screen">
+    <div class="death-hdr">
+      <div class="death-hdr-lbl">Crónica Negra · Edición Especial</div>
+      <div class="death-paper">${esc(hl.paper)}</div>
+    </div>
+    <div class="death-body">
+      <div class="death-hl">${esc(hl.headline)}</div>
+      <div class="death-sub">${esc(hl.sub)}</div>
+      <div class="death-badges">
+        <span class="death-badge">⏱ ${last?last.weeks:G.weeks} semanas de mandato</span>
+        <span class="death-badge">📋 Mandato ${G.reign}</span>
+        <span class="death-badge">🏷 ${getMote()}</span>
+      </div>
+    </div>
+    <div class="tl-section">
+      <div class="tl-title">🕰 Línea de Mandatos</div>
+      ${renderTimeline()}
+    </div>
+    <div class="death-actions">
+      <button class="btn-successor" onclick="nextSuccessor()">👔 Siguiente Sucesor</button>
+      <button class="btn-restart"   onclick="fullRestart()">↺ Nueva Dinastía (borrar todo)</button>
+    </div>
+  </div>`;
+}
+
+function renderTimeline(){
+  if(G.timeline.length===0)return`<div style="font-size:12px;color:rgba(240,230,208,.3);font-family:system-ui,sans-serif;padding:8px 0;">Aún no hay historia que contar.</div>`;
+  const items=G.timeline.map((item,i)=>{
+    const isCurrent=i===G.timeline.length-1;
+    const causeBadge={legend:'🏆',press:'📰',money:'💸',vest:'🍺',power:'👊',collapse:'💀'}[item.cause]||'❓';
+    return`<div class="tl-item">
+      <div class="tl-portrait${isCurrent?' current':''}">${item.portrait}</div>
+      <div class="tl-dot"></div>
+      <div class="tl-name">${causeBadge} Mandato ${item.reign}</div>
+      <div class="tl-weeks">${item.weeks} sem.</div>
+    </div>`;
+  });
+  // Interleave connectors
+  const withConnectors=[];
+  items.forEach((it,i)=>{
+    withConnectors.push(it);
+    if(i<items.length-1)withConnectors.push(`<div class="tl-connector"></div>`);
+  });
+  return`<div class="tl-scroll"><div class="tl-track">${withConnectors.join('')}</div></div>`;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// SWIPE
+// ─────────────────────────────────────────────────────────────────
+function attachSwipe(){
+  const outer=document.getElementById('card-outer');
+  if(!outer)return;
+  outer.addEventListener('pointerdown',onDown,{passive:false});
+  outer.addEventListener('pointermove',onMove,{passive:false});
+  outer.addEventListener('pointerup',onUp,{passive:false});
+  outer.addEventListener('pointercancel',onCancel);
+}
+
+function onDown(e){
+  if(DRAG.locked)return;
+  e.preventDefault();
+  DRAG.active=true;
+  DRAG.startX=e.clientX;
+  DRAG.currentX=e.clientX;
+  try{document.getElementById('card-outer').setPointerCapture(e.pointerId);}catch(_){DRAG.active=false;return;}
+  const card=document.getElementById('ev-card');
+  if(card){card.style.transition='none';card.classList.add('is-dragging');}
+}
+
+function onMove(e){
+  if(!DRAG.active)return;
+  e.preventDefault();
+  DRAG.currentX=e.clientX;
+  updateDrag();
+}
+
+function onUp(e){
+  if(!DRAG.active)return;
+  DRAG.active=false;
+  const dx=DRAG.currentX-DRAG.startX;
+  const card=document.getElementById('ev-card');
+  if(card)card.classList.remove('is-dragging');
+  if(Math.abs(dx)>=DRAG.threshold){
+    DRAG.locked=true;
+    animateOut(dx>0?'right':'left',dx>0?0:1);
+  }else{
+    snapBack();
+  }
+}
+
+function onCancel(){DRAG.active=false;snapBack();}
+
+function updateDrag(){
+  const card=document.getElementById('ev-card');
+  const hl=document.getElementById('hint-l');
+  const hr=document.getElementById('hint-r');
+  if(!card)return;
+  const dx=DRAG.currentX-DRAG.startX;
+  const rot=dx*0.07;
+  card.style.transform=`translateX(${dx}px) rotate(${rot}deg)`;
+  const pct=Math.min(Math.abs(dx)/DRAG.threshold,1);
+  if(hr)hr.style.opacity=dx>0?pct:0;
+  if(hl)hl.style.opacity=dx<0?pct:0;
+}
+
+function snapBack(){
+  const card=document.getElementById('ev-card');
+  const hl=document.getElementById('hint-l');
+  const hr=document.getElementById('hint-r');
+  if(card){card.style.transition='transform .35s cubic-bezier(.25,.8,.25,1)';card.style.transform='';}
+  if(hl)hl.style.opacity=0;
+  if(hr)hr.style.opacity=0;
+}
+
+function animateOut(dir,idx){
+  const card=document.getElementById('ev-card');
+  if(card){
+    card.style.transition='transform .28s ease-in,opacity .28s ease-in';
+    card.style.transform=`translateX(${dir==='right'?340:-340}px) rotate(${dir==='right'?18:-18}deg)`;
+    card.style.opacity='0';
+  }
+  setTimeout(()=>{DRAG.locked=false;choose(idx);},290);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// TOAST
+// ─────────────────────────────────────────────────────────────────
+function showToast(msg){
+  const t=document.getElementById('toast');
+  if(!t)return;
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// UTILS
+// ─────────────────────────────────────────────────────────────────
+function esc(s){
+  if(s===null||s===undefined)return'';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─────────────────────────────────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
