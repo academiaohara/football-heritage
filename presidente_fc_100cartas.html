@@ -1,60 +1,105 @@
 
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-#app { padding: 0.75rem 0; max-width: 580px; margin: 0 auto; font-family: var(--font-sans); }
+#app { padding: 0.75rem 0; max-width: 480px; margin: 0 auto; font-family: var(--font-sans, system-ui, sans-serif); }
 
-.top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
-.club-name { font-size: 17px; font-weight: 500; color: var(--color-text-primary); }
-.reign-info { font-size: 12px; color: var(--color-text-secondary); }
+/* ── Top bar ── */
+.top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; gap: 8px; }
+.club-name-wrap { display: flex; align-items: center; gap: 7px; min-width: 0; }
+.club-name { font-size: 16px; font-weight: 600; color: var(--color-text-primary, #111); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.reign-info { font-size: 12px; color: var(--color-text-secondary, #666); white-space: nowrap; }
 
+/* ── Stats ── */
 .stats { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 6px; margin-bottom: 0.75rem; }
-.stat { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 8px 6px; text-align: center; }
-.stat-lbl { font-size: 10px; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
-.stat-track { height: 5px; background: var(--color-border-tertiary); border-radius: 3px; margin: 3px 0; overflow: hidden; }
+.stat { background: var(--color-background-secondary, #f5f5f5); border-radius: var(--border-radius-md, 8px); padding: 8px 6px; text-align: center; }
+.stat-lbl { font-size: 10px; color: var(--color-text-secondary, #666); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+.stat-track { height: 5px; background: var(--color-border-tertiary, #ddd); border-radius: 3px; margin: 3px 0; overflow: hidden; }
 .stat-fill { height: 100%; border-radius: 3px; transition: width 0.35s ease; }
 .f-money { background: #1D9E75; } .f-press { background: #378ADD; } .f-vest { background: #7F77DD; } .f-power { background: #BA7517; }
 .stat-n { font-size: 12px; font-weight: 500; }
 .n-money { color: #0F6E56; } .n-press { color: #185FA5; } .n-vest { color: #534AB7; } .n-power { color: #854F0B; }
 
-.alert { border-radius: var(--border-radius-md); padding: 8px 12px; font-size: 12px; line-height: 1.5; margin-bottom: 0.6rem; }
+/* ── Alerts ── */
+.alert { border-radius: var(--border-radius-md, 8px); padding: 8px 12px; font-size: 12px; line-height: 1.5; margin-bottom: 0.6rem; }
 .alert-warn { background: #FAEEDA; border: 0.5px solid #EF9F27; color: #633806; }
 .alert-danger { background: #FCEBEB; border: 0.5px solid #E24B4A; color: #501313; }
 .alert-info { background: #E6F1FB; border: 0.5px solid #85B7EB; color: #042C53; }
 
-.card-wrap { margin-bottom: 0.75rem; }
-.ev-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-lg); padding: 1.1rem 1.1rem 0.75rem; }
+/* ── Swipe card ── */
+.card-swipe-outer { position: relative; margin-bottom: 0.75rem; overflow: visible; }
+.card-swipe-wrap { position: relative; cursor: grab; touch-action: none; user-select: none; will-change: transform; }
+.card-swipe-wrap.is-dragging { cursor: grabbing; }
+.ev-card { background: var(--color-background-primary, #fff); border: 0.5px solid var(--color-border-secondary, #ddd); border-radius: var(--border-radius-lg, 12px); padding: 1.1rem 1.1rem 0.75rem; transform-origin: center bottom; transition: transform 0.1s ease; }
+.card-swipe-wrap.snap-back .ev-card { transition: transform 0.35s cubic-bezier(.25,.8,.25,1); }
 .card-cat { font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
-.card-title { font-size: 16px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 6px; line-height: 1.35; }
-.card-desc { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 0.75rem; }
-.card-meta { font-size: 11px; color: var(--color-text-tertiary); border-top: 0.5px solid var(--color-border-tertiary); padding-top: 7px; display: flex; justify-content: space-between; }
+.card-title { font-size: 16px; font-weight: 500; color: var(--color-text-primary, #111); margin-bottom: 6px; line-height: 1.35; }
+.card-desc { font-size: 13px; color: var(--color-text-secondary, #666); line-height: 1.6; margin-bottom: 0.75rem; }
+.card-meta { font-size: 11px; color: var(--color-text-tertiary, #999); border-top: 0.5px solid var(--color-border-tertiary, #eee); padding-top: 7px; display: flex; justify-content: space-between; }
 
-.choices { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.ch-btn { background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 10px 9px; cursor: pointer; text-align: left; transition: background 0.12s; }
-.ch-btn:hover { background: var(--color-background-secondary); }
-.ch-label { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 3px; line-height: 1.3; }
-.ch-fx { font-size: 11px; color: var(--color-text-secondary); line-height: 1.5; }
-.up { color: #0F6E56; } .dn { color: #A32D2D; }
+/* Swipe hint overlays */
+.swipe-hint { position: absolute; top: 14px; padding: 4px 11px; border-radius: 6px; font-size: 12px; font-weight: 700; letter-spacing: 0.03em; opacity: 0; pointer-events: none; z-index: 10; max-width: 46%; text-align: center; line-height: 1.3; transition: opacity 0.05s; }
+.swipe-hint-right { right: 12px; color: #0F6E56; border: 2px solid #0F6E56; background: rgba(15,110,86,0.06); }
+.swipe-hint-left  { left:  12px; color: #A32D2D; border: 2px solid #A32D2D; background: rgba(163,45,45,0.06); }
 
+/* Swipe action bar below card */
+.swipe-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sw-btn { background: var(--color-background-primary, #fff); border: 0.5px solid var(--color-border-secondary, #ddd); border-radius: var(--border-radius-md, 8px); padding: 10px 9px; cursor: pointer; text-align: left; transition: background 0.12s; }
+.sw-btn:active { background: var(--color-background-secondary, #f5f5f5); }
+.sw-btn-right { text-align: right; }
+.sw-arrow { font-size: 11px; color: var(--color-text-tertiary, #999); margin-bottom: 2px; }
+.sw-label { font-size: 13px; font-weight: 500; color: var(--color-text-primary, #111); line-height: 1.3; }
+
+/* ── Titles & badges ── */
 .titles { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 0.6rem; }
 .t-badge { background: #EEEDFE; border: 0.5px solid #AFA9EC; border-radius: 20px; padding: 2px 9px; font-size: 11px; color: #3C3489; }
+.ach-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 0.6rem; }
+.ach-badge { background: #FFF8E6; border: 0.5px solid #EFB94A; border-radius: 20px; padding: 2px 9px; font-size: 11px; color: #7A5000; }
+.mote-badge { display: inline-block; background: #F0F8FF; border: 0.5px solid #6BAED6; border-radius: 20px; padding: 2px 9px; font-size: 11px; color: #08306B; margin: 2px 3px 2px 0; }
 
-.pres-pick { margin-top: 1.5rem; }
+/* ── Pres pick ── */
+.pres-pick { margin-top: 1.25rem; }
+.section-lbl { font-size: 13px; color: var(--color-text-secondary, #666); margin-bottom: 0.5rem; }
 .pres-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.75rem; }
-.pres-btn { background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; cursor: pointer; text-align: left; }
-.pres-btn:hover { background: var(--color-background-secondary); }
-.pres-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
-.pres-desc { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+.pres-btn { background: var(--color-background-primary, #fff); border: 0.5px solid var(--color-border-secondary, #ddd); border-radius: var(--border-radius-md, 8px); padding: 10px 12px; cursor: pointer; text-align: left; }
+.pres-btn:hover { background: var(--color-background-secondary, #f5f5f5); }
+.pres-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary, #111); }
+.pres-desc { font-size: 11px; color: var(--color-text-secondary, #666); margin-top: 2px; }
 
+/* ── End screen ── */
 .end-scr { text-align: center; padding: 1.5rem 0.5rem; }
+.end-shield { margin: 0 auto 10px; display: block; }
 .end-emoji { font-size: 40px; margin-bottom: 8px; }
-.end-title { font-size: 20px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 6px; }
-.end-sub { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 1.25rem; line-height: 1.6; }
-.hist-box { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; margin-bottom: 1rem; text-align: left; max-height: 200px; overflow-y: auto; }
-.hist-row { font-size: 12px; color: var(--color-text-secondary); padding: 3px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.end-title { font-size: 20px; font-weight: 500; color: var(--color-text-primary, #111); margin-bottom: 6px; }
+.end-sub { font-size: 13px; color: var(--color-text-secondary, #666); margin-bottom: 1.25rem; line-height: 1.6; }
+.end-section-lbl { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-tertiary, #999); margin: 0.75rem 0 0.3rem; text-align: left; }
+.hist-box { background: var(--color-background-secondary, #f5f5f5); border-radius: var(--border-radius-md, 8px); padding: 10px 12px; margin-bottom: 1rem; text-align: left; max-height: 180px; overflow-y: auto; }
+.hist-row { font-size: 12px; color: var(--color-text-secondary, #666); padding: 3px 0; border-bottom: 0.5px solid var(--color-border-tertiary, #eee); }
 .hist-row:last-child { border: none; }
-.rst-btn { background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 9px 22px; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
-.rst-btn:hover { background: var(--color-background-secondary); }
-.counter { font-size: 11px; color: var(--color-text-tertiary); text-align: right; margin-bottom: 0.5rem; }
+.rst-btn { background: var(--color-background-primary, #fff); border: 0.5px solid var(--color-border-secondary, #ddd); border-radius: var(--border-radius-md, 8px); padding: 9px 22px; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--color-text-primary, #111); }
+.rst-btn:hover { background: var(--color-background-secondary, #f5f5f5); }
+.counter { font-size: 11px; color: var(--color-text-tertiary, #999); text-align: right; margin-bottom: 0.5rem; }
+
+/* ── Setup screen ── */
+.setup-screen { padding: 0.5rem 0; }
+.setup-title { font-size: 22px; font-weight: 700; color: var(--color-text-primary, #111); margin-bottom: 4px; }
+.setup-sub { font-size: 13px; color: var(--color-text-secondary, #666); margin-bottom: 1.25rem; line-height: 1.5; }
+.setup-lbl { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-secondary, #666); margin-bottom: 6px; }
+.setup-input { width: 100%; background: var(--color-background-primary, #fff); border: 0.5px solid var(--color-border-secondary, #ddd); border-radius: var(--border-radius-md, 8px); padding: 10px 12px; font-size: 15px; color: var(--color-text-primary, #111); font-family: inherit; outline: none; margin-bottom: 1.1rem; }
+.setup-input:focus { border-color: #378ADD; }
+.shield-preview-wrap { display: flex; justify-content: center; margin: 0.5rem 0 1rem; }
+.design-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 1rem; }
+.design-item { background: var(--color-background-primary, #fff); border: 2px solid var(--color-border-secondary, #ddd); border-radius: var(--border-radius-md, 8px); padding: 10px 6px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; transition: border-color 0.15s; }
+.design-item.selected { border-color: #378ADD; background: #E6F1FB; }
+.design-item-lbl { font-size: 10px; color: var(--color-text-secondary, #666); text-align: center; }
+.color-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 1.25rem; }
+.color-swatch { width: 100%; aspect-ratio: 1; border-radius: 50%; border: 3px solid transparent; cursor: pointer; transition: border-color 0.15s, transform 0.1s; }
+.color-swatch.selected { border-color: #378ADD; transform: scale(1.15); }
+.start-btn { width: 100%; background: #185FA5; color: #fff; border: none; border-radius: var(--border-radius-md, 8px); padding: 13px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.start-btn:hover { background: #1470C0; }
+
+/* Achievement unlock toast */
+.ach-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #fff; border-radius: 24px; padding: 8px 18px; font-size: 13px; font-weight: 500; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
+.ach-toast.show { opacity: 1; }
 </style>
 
 <div id="app"><div id="ui"></div></div>
@@ -470,132 +515,331 @@ const CARDS = [
    b:{label:'Gestión conservadora',fx:{money:+10,press:+10,vest:+5,power:+5}}}
 ];
 
-const PRES_TYPES = [
-  {name:'Tecnócrata',desc:'Mejor en finanzas',bonus:'money'},
-  {name:'Operador oscuro',desc:'Resiste el riesgo legal',bonus:'power'},
-  {name:'Estrella mediática',desc:'Arranca con más prensa',bonus:'press'},
-  {name:'Hombre del vestuario',desc:'Domina los egos',bonus:'vest'}
+/* ── Shield designs (4 SVG paths, viewBox 0 0 100 100) ── */
+const SHIELDS = [
+  { id:'classic', label:'Clásico',   path:'M 50,5 L 95,20 L 95,60 Q 88,82 50,96 Q 12,82 5,60 L 5,20 Z' },
+  { id:'modern',  label:'Moderno',   path:'M 5,5 L 95,5 L 95,62 L 50,95 L 5,62 Z' },
+  { id:'italian', label:'Italiano',  path:'M 12,5 L 88,5 L 88,66 L 50,95 L 12,66 Z' },
+  { id:'round',   label:'Circular',  path:'M 50,5 A 45,38 0 0 1 95,43 L 95,66 L 50,95 L 5,66 L 5,43 A 45,38 0 0 1 50,5 Z' }
 ];
 
+/* ── 6 colour schemes [primary, secondary] ── */
+const SHIELD_COLORS = [
+  { id:'rw', p:'#CC2020', s:'#FFFFFF', name:'Rojo y Blanco' },
+  { id:'bg', p:'#1A4BCC', s:'#FFD700', name:'Azul y Oro' },
+  { id:'gk', p:'#1A7A2E', s:'#EEEEEE', name:'Verde y Plata' },
+  { id:'br', p:'#111111', s:'#CC2020', name:'Negro y Rojo' },
+  { id:'ps', p:'#6B3FA0', s:'#F0D050', name:'Morado y Oro' },
+  { id:'ny', p:'#003399', s:'#FFCC00', name:'Marino y Amarillo' }
+];
+
+/* ── Manager types ── */
+const PRES_TYPES = [
+  {name:'Tecnócrata',    desc:'Mejor en finanzas',         bonus:'money'},
+  {name:'Operador oscuro', desc:'Resiste el riesgo legal', bonus:'power'},
+  {name:'Estrella mediática', desc:'Arranca con más prensa', bonus:'press'},
+  {name:'Hombre del vestuario', desc:'Domina los egos',    bonus:'vest'}
+];
+
+/* ── Achievements (logros) ── */
+const ACHIEVEMENTS = [
+  { id:'first_title',  icon:'🏆', name:'Primera Gloria',      desc:'Gana tu primera Champions League',                 check: g => g.titles.length >= 1 },
+  { id:'two_titles',   icon:'🌟', name:'Leyenda de Europa',    desc:'Gana 2 Champions League',                          check: g => g.titles.length >= 2 },
+  { id:'survivor',     icon:'💪', name:'Superviviente',        desc:'Llega al tercer legado',                           check: g => g.reign >= 3 },
+  { id:'dynasty',      icon:'👑', name:'Dinastía',             desc:'Alcanza el quinto legado',                         check: g => g.reign >= 5 },
+  { id:'honest',       icon:'🤝', name:'Manos Limpias',        desc:'Rechaza 5 ofertas corruptas',                      check: g => g.track.corruptRejected >= 5 },
+  { id:'corrupt',      icon:'💰', name:'Negocios Sucios',      desc:'Acepta 5 decisiones turbias',                      check: g => g.track.corruptAccepted >= 5 },
+  { id:'press_king',   icon:'📰', name:'El Relaciones',        desc:'Consigue +10 de prensa en una sola jugada',         check: g => g.track.bestPressDelta >= 10 },
+  { id:'banker',       icon:'🏦', name:'El Banquero',          desc:'Llega a 90 de dinero',                             check: g => g.stats.money >= 90 },
+  { id:'century',      icon:'💯', name:'Centenario',           desc:'Juega 100 turnos en total',                        check: g => g.track.totalTurns >= 100 },
+  { id:'iron_fist',    icon:'👊', name:'Puño de Hierro',       desc:'Llega a 90 de poder',                              check: g => g.stats.power >= 90 }
+];
+
+/* ── Motes (nicknames earned per legacy) ── */
+const MOTES = [
+  { id:'corrupto',   name:'el Corrupto',          check: g => g.track.legCorruptAccepted > g.track.legCorruptRejected && g.track.legCorruptAccepted >= 3 },
+  { id:'honrado',    name:'el Honrado',            check: g => g.track.legCorruptRejected >= 4 && g.track.legCorruptAccepted === 0 },
+  { id:'populista',  name:'el Populista',          check: g => g.track.legPressFriendly >= 6 },
+  { id:'tirano',     name:'el Tirano',             check: g => g.track.legPowerChoices >= 7 && g.track.legVestSanctions >= 4 },
+  { id:'padre',      name:'el Padre del Vestuario', check: g => g.track.legVestFriendly >= 6 && g.track.legVestSanctions < 2 },
+  { id:'tacano',     name:'el Tacaño',             check: g => g.stats.money >= 75 && g.track.legPressFriendly < 3 },
+  { id:'galactico',  name:'el Galáctico',          check: g => g.titles.length >= 1 && g.track.legCorruptRejected >= 2 },
+  { id:'impresentable', name:'el Impresentable',  check: () => false } // fallback on catastrophic loss
+];
+
+/* ── Game state ── */
 let G = {
-  club:'FC Villamora', reign:1, year:2010, turns:0,
-  stats:{money:55,press:55,vest:55,power:55},
-  pres:null, history:[], titles:[], inherited:null,
-  bombs:[], gameOver:false, endType:null,
-  seen:new Set(), currentCard:null
+  clubSetup: false,
+  club: '',
+  shield: { design: 0, color: 0 },
+  setupDesign: 0,
+  setupColor: 0,
+  reign: 1, year: 2010, turns: 0,
+  stats: { money:55, press:55, vest:55, power:55 },
+  pres: null, history: [], titles: [], inherited: null,
+  bombs: [], gameOver: false, endType: null,
+  seen: new Set(), currentCard: null,
+  achievements: [],
+  motes: [],
+  track: {
+    totalTurns: 0,
+    corruptAccepted: 0, corruptRejected: 0,
+    bestPressDelta: 0,
+    // per-legacy
+    legCorruptAccepted: 0, legCorruptRejected: 0,
+    legPressFriendly: 0, legVestFriendly: 0,
+    legVestSanctions: 0, legPowerChoices: 0
+  }
 };
 
-function clamp(v){return Math.max(0,Math.min(100,v));}
+/* ── Drag/swipe state ── */
+let DRAG = { active: false, startX: 0, currentX: 0, threshold: 75, locked: false };
 
-function pickCard(){
-  let pool=CARDS.filter(c=>!G.seen.has(c.id));
-  if(pool.length===0){G.seen.clear();pool=CARDS.filter(c=>c.id!=='c100');}
-  const s=G.stats;
-  if(s.money>60&&s.press>60&&G.turns>10){
-    const f=CARDS.find(c=>c.id==='c100');
-    if(f)pool.push(f);
-  }
-  if(G.bombs.length>0&&G.turns>=G.bombs[0].at){
-    const b=G.bombs.shift();
-    return b.card;
-  }
-  return pool[Math.floor(Math.random()*pool.length)];
+/* ─────────────── Core helpers ─────────────── */
+
+function clamp(v){ return Math.max(0, Math.min(100, v)); }
+
+function shieldSVG(dIdx, cIdx, size) {
+  const d = SHIELDS[dIdx];
+  const c = SHIELD_COLORS[cIdx];
+  return `<svg width="${size}" height="${size}" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="${d.path}" fill="${c.p}" stroke="${c.s}" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M 50,18 L 82,28 L 82,55 Q 77,72 50,82 Q 23,72 18,55 L 18,28 Z" fill="none" stroke="${c.s}" stroke-width="1.5" opacity="0.4"/>
+  </svg>`;
 }
 
-function choose(idx){
-  const card=G.currentCard;
-  const ch=card.choices?card[idx===0?'a':'b']:null;
-  if(!ch)return;
+function catColor(id){ return (CATS.find(c=>c.id===id)||{color:'#888'}).color; }
+function catLabel(id){ return (CATS.find(c=>c.id===id)||{label:id}).label; }
 
-  if(ch.win){
-    G.titles.push('UEFA Champions League '+G.year);
+/* ─────────────── Setup ─────────────── */
+
+function pickDesign(i) {
+  G.setupDesign = i;
+  renderSetupPreview();
+}
+function pickColor(i) {
+  G.setupColor = i;
+  renderSetupPreview();
+}
+function renderSetupPreview() {
+  const el = document.getElementById('shield-preview');
+  if (el) el.innerHTML = shieldSVG(G.setupDesign, G.setupColor, 80);
+  // update design selection
+  document.querySelectorAll('.design-item').forEach((el,i) => el.classList.toggle('selected', i === G.setupDesign));
+  document.querySelectorAll('.color-swatch').forEach((el,i) => el.classList.toggle('selected', i === G.setupColor));
+}
+
+function startGame() {
+  const input = document.getElementById('club-name-input');
+  const name = (input ? input.value.trim() : '') || 'Mi Club FC';
+  G.club = name;
+  G.shield = { design: G.setupDesign, color: G.setupColor };
+  G.clubSetup = true;
+  render();
+}
+
+/* ─────────────── Card picking ─────────────── */
+
+function pickCard() {
+  let pool = CARDS.filter(c => !G.seen.has(c.id));
+  if (pool.length === 0) { G.seen.clear(); pool = CARDS.filter(c => c.id !== 'c100'); }
+  const s = G.stats;
+  if (s.money > 60 && s.press > 60 && G.turns > 10) {
+    const f = CARDS.find(c => c.id === 'c100');
+    if (f) pool.push(f);
+  }
+  if (G.bombs.length > 0 && G.turns >= G.bombs[0].at) {
+    const b = G.bombs.shift();
+    return b.card;
+  }
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+/* ─────────────── Choices ─────────────── */
+
+function choose(idx) {
+  if (DRAG.locked) return;
+  const card = G.currentCard;
+  const ch = idx === 0 ? card.a : card.b;
+  const other = idx === 0 ? card.b : card.a;
+  if (!ch) return;
+
+  // Track corrupt choices
+  if (ch.bomb) {
+    G.track.corruptAccepted++;
+    G.track.legCorruptAccepted++;
+  } else if (other && other.bomb) {
+    G.track.corruptRejected++;
+    G.track.legCorruptRejected++;
+  }
+
+  // Track behaviour signals from fx
+  const fx = ch.fx;
+  if (fx.press > 0) G.track.legPressFriendly++;
+  if (fx.vest > 0) G.track.legVestFriendly++;
+  if (fx.vest < 0) G.track.legVestSanctions++;
+  if (fx.power > 0) G.track.legPowerChoices++;
+  if (fx.press > G.track.bestPressDelta) G.track.bestPressDelta = fx.press;
+
+  if (ch.win) {
+    G.titles.push('UEFA Champions League ' + G.year);
     applyFx(ch.fx);
-    log(card.title+' → '+ch.label+' ★ CAMPEONES');
-    endGame('legend');return;
+    log(card.title + ' → ' + ch.label + ' ★ CAMPEONES');
+    checkAchievements();
+    endGame('legend');
+    return;
   }
 
   applyFx(ch.fx);
-  if(ch.bomb){
-    const pool=CARDS.filter(c=>c.id!==card.id&&!c.win);
-    const bc=pool[Math.floor(Math.random()*pool.length)];
-    G.bombs.push({at:G.turns+3+Math.floor(Math.random()*4),card:bc});
+
+  if (ch.bomb) {
+    const pool = CARDS.filter(c => c.id !== card.id && !c.win);
+    const bc = pool[Math.floor(Math.random() * pool.length)];
+    G.bombs.push({ at: G.turns + 3 + Math.floor(Math.random() * 4), card: bc });
   }
 
   G.seen.add(card.id);
   G.turns++;
-  if(G.turns%8===0)G.year++;
-  log(card.title+' → '+ch.label);
+  G.track.totalTurns++;
+  if (G.turns % 8 === 0) G.year++;
+  log(card.title + ' → ' + ch.label);
 
-  const end=checkEnd();
-  if(end){handleReignEnd(end);return;}
-  G.currentCard=pickCard();
+  checkAchievements();
+
+  const end = checkEnd();
+  if (end) { handleLegacyEnd(end); return; }
+  G.currentCard = pickCard();
   render();
 }
 
-function applyFx(fx){Object.keys(fx).forEach(k=>{G.stats[k]=clamp((G.stats[k]||0)+fx[k]);});}
+function applyFx(fx) {
+  Object.keys(fx).forEach(k => { G.stats[k] = clamp((G.stats[k] || 0) + fx[k]); });
+}
 
-function log(txt){G.history.push({reign:G.reign,year:G.year,pres:G.pres?G.pres.name:'',txt});}
+function log(txt) {
+  G.history.push({ reign: G.reign, year: G.year, pres: G.pres ? G.pres.name : '', txt });
+}
 
-function checkEnd(){
-  const s=G.stats;
-  if(s.power<=0)return'resign';
-  if(s.vest<=0&&s.press<=5)return'fired';
-  if(s.money<=0&&s.press<=10)return'bankrupt';
+function checkEnd() {
+  const s = G.stats;
+  if (s.power <= 0) return 'resign';
+  if (s.vest <= 0 && s.press <= 5) return 'fired';
+  if (s.money <= 0 && s.press <= 10) return 'bankrupt';
   return null;
 }
 
-function handleReignEnd(reason){
-  const msgs={resign:'Perdiste todo el poder político',fired:'El vestuario y la prensa te destruyeron',bankrupt:'El club está en quiebra técnica'};
+/* ─────────────── Legacy end ─────────────── */
+
+function handleLegacyEnd(reason) {
+  const msgs = {
+    resign: 'Perdiste todo el poder político',
+    fired: 'El vestuario y la prensa te destruyeron',
+    bankrupt: 'El club está en quiebra técnica'
+  };
   log(msgs[reason]);
-  if(G.stats.money<=0&&G.stats.press<=5&&G.stats.power<=0){endGame('collapse');return;}
-  G.inherited={msg:msgs[reason]};
-  G.reign++;G.pres=null;
-  G.stats.money=clamp(G.stats.money-5);
-  G.stats.press=clamp(G.stats.press-10);
-  G.stats.vest=clamp(40+Math.floor(Math.random()*20));
-  G.stats.power=clamp(40+Math.floor(Math.random()*20));
-  G.turns=0;G.currentCard=null;
+
+  // Assign mote for this legacy
+  const mote = assignMote();
+  if (mote) {
+    G.motes.push({ reign: G.reign, name: mote.name, pres: G.pres ? G.pres.name : '?' });
+  }
+
+  if (G.stats.money <= 0 && G.stats.press <= 5 && G.stats.power <= 0) {
+    endGame('collapse'); return;
+  }
+
+  G.inherited = { msg: msgs[reason] };
+  G.reign++;
+  G.pres = null;
+  G.stats.money = clamp(G.stats.money - 5);
+  G.stats.press = clamp(G.stats.press - 10);
+  G.stats.vest = clamp(40 + Math.floor(Math.random() * 20));
+  G.stats.power = clamp(40 + Math.floor(Math.random() * 20));
+  G.turns = 0;
+  G.currentCard = null;
+  // Reset per-legacy tracking
+  G.track.legCorruptAccepted = 0; G.track.legCorruptRejected = 0;
+  G.track.legPressFriendly = 0;  G.track.legVestFriendly = 0;
+  G.track.legVestSanctions = 0;  G.track.legPowerChoices = 0;
+
+  checkAchievements();
   render();
 }
 
-function endGame(type){G.gameOver=true;G.endType=type;render();}
+function endGame(type) { G.gameOver = true; G.endType = type; render(); }
 
-function selectPres(i){
-  G.pres=PRES_TYPES[i];
-  G.inherited=null;
-  G.stats[G.pres.bonus]=clamp(G.stats[G.pres.bonus]+15);
-  G.currentCard=pickCard();
+function selectPres(i) {
+  G.pres = PRES_TYPES[i];
+  G.inherited = null;
+  G.stats[G.pres.bonus] = clamp(G.stats[G.pres.bonus] + 15);
+  G.currentCard = pickCard();
   render();
 }
 
-function restart(){
-  G={club:'FC Villamora',reign:1,year:2010,turns:0,
-    stats:{money:55,press:55,vest:55,power:55},
-    pres:null,history:[],titles:[],inherited:null,
-    bombs:[],gameOver:false,endType:null,seen:new Set(),currentCard:null};
+function restart() {
+  G = {
+    clubSetup: false, club: '', shield: { design: 0, color: 0 },
+    setupDesign: 0, setupColor: 0,
+    reign: 1, year: 2010, turns: 0,
+    stats: { money:55, press:55, vest:55, power:55 },
+    pres: null, history: [], titles: [], inherited: null,
+    bombs: [], gameOver: false, endType: null,
+    seen: new Set(), currentCard: null,
+    achievements: [], motes: [],
+    track: {
+      totalTurns: 0, corruptAccepted: 0, corruptRejected: 0, bestPressDelta: 0,
+      legCorruptAccepted: 0, legCorruptRejected: 0,
+      legPressFriendly: 0, legVestFriendly: 0, legVestSanctions: 0, legPowerChoices: 0
+    }
+  };
   render();
 }
 
-function catColor(id){return (CATS.find(c=>c.id===id)||{color:'#888'}).color;}
-function catLabel(id){return (CATS.find(c=>c.id===id)||{label:id}).label;}
+/* ─────────────── Achievements & Motes ─────────────── */
 
-function fxStr(fx){
-  const icons={money:'💰',press:'📣',vest:'⚽',power:'👑'};
-  return Object.entries(fx).map(([k,v])=>{
-    const cls=v>0?'up':'dn';
-    return `<span class="${cls}">${icons[k]}${v>0?'+':''}${v}</span>`;
-  }).join(' ');
+function checkAchievements() {
+  ACHIEVEMENTS.forEach(a => {
+    if (!G.achievements.includes(a.id) && a.check(G)) {
+      G.achievements.push(a.id);
+      showAchToast(a.icon + ' Logro: ' + a.name);
+    }
+  });
 }
 
-function renderStats(){
-  const meta=[
-    {k:'money',lbl:'💰 Dinero',fc:'f-money',nc:'n-money'},
-    {k:'press',lbl:'📣 Prensa',fc:'f-press',nc:'n-press'},
-    {k:'vest', lbl:'⚽ Vestuario',fc:'f-vest', nc:'n-vest'},
-    {k:'power',lbl:'👑 Poder',fc:'f-power',nc:'n-power'}
+function showAchToast(msg) {
+  let toast = document.getElementById('ach-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'ach-toast';
+    toast.className = 'ach-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => toast.classList.remove('show'), 2800);
+}
+
+function assignMote() {
+  for (const m of MOTES) {
+    if (m.id !== 'impresentable' && m.check(G)) return m;
+  }
+  // Fallback: gave up on a catastrophic reign
+  if (G.stats.money < 20 && G.stats.press < 20) return MOTES.find(m => m.id === 'impresentable');
+  return null;
+}
+
+/* ─────────────── Stats renderer ─────────────── */
+
+function renderStats() {
+  const meta = [
+    { k:'money', lbl:'💰 Dinero',    fc:'f-money', nc:'n-money' },
+    { k:'press', lbl:'📣 Prensa',    fc:'f-press', nc:'n-press' },
+    { k:'vest',  lbl:'⚽ Vestuario', fc:'f-vest',  nc:'n-vest'  },
+    { k:'power', lbl:'👑 Poder',     fc:'f-power', nc:'n-power' }
   ];
-  return `<div class="stats">${meta.map(m=>{
-    const v=G.stats[m.k];
+  return `<div class="stats">${meta.map(m => {
+    const v = G.stats[m.k];
     return `<div class="stat">
       <div class="stat-lbl">${m.lbl}</div>
       <div class="stat-track"><div class="stat-fill ${m.fc}" style="width:${v}%"></div></div>
@@ -604,83 +848,264 @@ function renderStats(){
   }).join('')}</div>`;
 }
 
-function render(){
-  const el=document.getElementById('ui');
-  if(G.gameOver){el.innerHTML=renderEnd();return;}
-  if(!G.pres){el.innerHTML=renderPresSelect();return;}
-  el.innerHTML=renderGame();
+/* ─────────────── Render ─────────────── */
+
+function render() {
+  const el = document.getElementById('ui');
+  if (G.gameOver)       { el.innerHTML = renderEnd();       return; }
+  if (!G.clubSetup)     { el.innerHTML = renderSetup();     attachSetupListeners(); return; }
+  if (!G.pres)          { el.innerHTML = renderPresSelect(); return; }
+  el.innerHTML = renderGame();
+  attachSwipeListeners();
 }
 
-function renderPresSelect(){
+/* ── Setup screen ── */
+function renderSetup() {
+  const designBtns = SHIELDS.map((sh, i) =>
+    `<div class="design-item${i === G.setupDesign ? ' selected' : ''}" onclick="pickDesign(${i})">
+      ${shieldSVG(i, G.setupColor, 44)}
+      <div class="design-item-lbl">${sh.label}</div>
+    </div>`
+  ).join('');
+
+  const colorSwatches = SHIELD_COLORS.map((c, i) =>
+    `<div class="color-swatch${i === G.setupColor ? ' selected' : ''}" title="${c.name}"
+      style="background:${c.p};border-color:${i === G.setupColor ? '#378ADD' : 'transparent'}"
+      onclick="pickColor(${i})"></div>`
+  ).join('');
+
+  return `<div class="setup-screen">
+    <div class="setup-title">⚽ Football Heritage</div>
+    <div class="setup-sub">Funda tu club, elige tus colores y construye un legado.</div>
+
+    <div class="setup-lbl">Nombre del club</div>
+    <input id="club-name-input" class="setup-input" type="text" maxlength="30"
+      placeholder="Ej: FC Villamora" value="${G.club}" />
+
+    <div class="setup-lbl">Escudo — diseño</div>
+    <div class="design-grid">${designBtns}</div>
+
+    <div class="setup-lbl">Color del escudo</div>
+    <div class="color-grid">${colorSwatches}</div>
+
+    <div class="shield-preview-wrap">
+      <div id="shield-preview">${shieldSVG(G.setupDesign, G.setupColor, 80)}</div>
+    </div>
+
+    <button class="start-btn" onclick="startGame()">Empezar legado →</button>
+  </div>`;
+}
+
+function attachSetupListeners() {
+  const input = document.getElementById('club-name-input');
+  if (input) {
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') startGame(); });
+  }
+}
+
+/* ── Pres select ── */
+function renderPresSelect() {
   return `<div class="top-bar">
-    <div class="club-name">${G.club}</div>
-    <div class="reign-info">Reinado ${G.reign} · ${G.year}</div>
+    <div class="club-name-wrap">
+      ${shieldSVG(G.shield.design, G.shield.color, 28)}
+      <div class="club-name">${G.club}</div>
+    </div>
+    <div class="reign-info">Legado ${G.reign} · ${G.year}</div>
   </div>
-  ${G.inherited?`<div class="alert alert-warn">${G.inherited.msg}. El club sobrevive, pero las heridas pesan.</div>`:''}
+  ${G.inherited ? `<div class="alert alert-warn">${G.inherited.msg}. El club sobrevive, pero las heridas pesan.</div>` : ''}
   ${renderStats()}
+  ${G.motes.length ? `<div class="ach-bar">${G.motes.map(m => `<span class="mote-badge">Legado ${m.reign}: ${m.pres} ${m.name}</span>`).join('')}</div>` : ''}
   <div class="pres-pick">
-    <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:0.25rem">Elige tu próximo presidente</div>
-    <div class="pres-grid">${PRES_TYPES.map((p,i)=>`<button class="pres-btn" onclick="selectPres(${i})">
+    <div class="section-lbl">Elige tu nuevo técnico</div>
+    <div class="pres-grid">${PRES_TYPES.map((p, i) => `<button class="pres-btn" onclick="selectPres(${i})">
       <div class="pres-name">${p.name}</div>
       <div class="pres-desc">${p.desc}</div>
     </button>`).join('')}</div>
   </div>`;
 }
 
-function renderGame(){
-  const card=G.currentCard;
-  const s=G.stats;
-  const alerts=[];
-  if(s.power<15)alerts.push({cls:'alert-danger',msg:'Estás perdiendo el control político. Actúa rápido.'});
-  if(s.money<15)alerts.push({cls:'alert-danger',msg:'Las finanzas del club están al límite.'});
-  if(s.vest<15)alerts.push({cls:'alert-warn',msg:'El vestuario está en llamas.'});
-  if(s.press<15)alerts.push({cls:'alert-warn',msg:'La prensa te está destruyendo.'});
-  if(G.bombs.length>0)alerts.push({cls:'alert-info',msg:'Alguna decisión pasada puede volver a golpearte...'});
+/* ── Main game screen ── */
+function renderGame() {
+  const card = G.currentCard;
+  const s = G.stats;
+  const alerts = [];
+  if (s.power < 15) alerts.push({ cls:'alert-danger', msg:'Estás perdiendo el control político. Actúa rápido.' });
+  if (s.money < 15) alerts.push({ cls:'alert-danger', msg:'Las finanzas del club están al límite.' });
+  if (s.vest < 15)  alerts.push({ cls:'alert-warn',   msg:'El vestuario está en llamas.' });
+  if (s.press < 15) alerts.push({ cls:'alert-warn',   msg:'La prensa te está destruyendo.' });
+  if (G.bombs.length > 0) alerts.push({ cls:'alert-info', msg:'Alguna decisión pasada puede volver a golpearte...' });
+
+  const achUnlocked = ACHIEVEMENTS.filter(a => G.achievements.includes(a.id));
 
   return `<div class="top-bar">
-    <div class="club-name">${G.club}</div>
-    <div class="reign-info">Reinado ${G.reign} · ${G.year} · ${G.pres.name}</div>
+    <div class="club-name-wrap">
+      ${shieldSVG(G.shield.design, G.shield.color, 28)}
+      <div class="club-name">${G.club}</div>
+    </div>
+    <div class="reign-info">Legado ${G.reign} · ${G.year} · ${G.pres.name}</div>
   </div>
-  ${G.titles.length?`<div class="titles">${G.titles.map(t=>`<span class="t-badge">${t}</span>`).join('')}</div>`:''}
+  ${G.titles.length ? `<div class="titles">${G.titles.map(t => `<span class="t-badge">🏆 ${t}</span>`).join('')}</div>` : ''}
+  ${achUnlocked.length ? `<div class="ach-bar">${achUnlocked.map(a => `<span class="ach-badge">${a.icon} ${a.name}</span>`).join('')}</div>` : ''}
   ${renderStats()}
-  ${alerts.map(a=>`<div class="alert ${a.cls}">${a.msg}</div>`).join('')}
-  <div class="counter">Carta ${G.turns+1} · ${CARDS.length-G.seen.size} restantes</div>
-  ${card?`<div class="card-wrap">
-    <div class="ev-card">
-      <div class="card-cat" style="color:${catColor(card.cat)}">${catLabel(card.cat)}</div>
-      <div class="card-title">${card.title}</div>
-      <div class="card-desc">${card.desc}</div>
-      <div class="card-meta"><span>${G.year}</span><span>Reinado ${G.reign}</span></div>
+  ${alerts.map(a => `<div class="alert ${a.cls}">${a.msg}</div>`).join('')}
+  <div class="counter">Turno ${G.turns + 1} · Legado ${G.reign}</div>
+  ${card ? `
+  <div class="card-swipe-outer">
+    <div id="card-swipe-wrap" class="card-swipe-wrap">
+      <div class="swipe-hint swipe-hint-left"  id="hint-left">← ${card.b.label}</div>
+      <div class="swipe-hint swipe-hint-right" id="hint-right">${card.a.label} →</div>
+      <div class="ev-card" id="ev-card-inner">
+        <div class="card-cat" style="color:${catColor(card.cat)}">${catLabel(card.cat)}</div>
+        <div class="card-title">${card.title}</div>
+        <div class="card-desc">${card.desc}</div>
+        <div class="card-meta"><span>${G.year}</span><span>Legado ${G.reign} · ${G.pres.name}</span></div>
+      </div>
     </div>
   </div>
-  <div class="choices">
-    <button class="ch-btn" onclick="choose(0)">
-      <div class="ch-label">${card.a.label}</div>
-      <div class="ch-fx">${fxStr(card.a.fx)}</div>
+  <div class="swipe-actions">
+    <button class="sw-btn" onclick="choose(1)">
+      <div class="sw-arrow">← Desliza</div>
+      <div class="sw-label">${card.b.label}</div>
     </button>
-    <button class="ch-btn" onclick="choose(1)">
-      <div class="ch-label">${card.b.label}</div>
-      <div class="ch-fx">${fxStr(card.b.fx)}</div>
+    <button class="sw-btn sw-btn-right" onclick="choose(0)">
+      <div class="sw-arrow">Desliza →</div>
+      <div class="sw-label">${card.a.label}</div>
     </button>
-  </div>`:''}`;
+  </div>` : ''}`;
 }
 
-function renderEnd(){
-  const types={
-    legend:{emoji:'🏆',title:'Leyenda del fútbol europeo'},
-    collapse:{emoji:'🪦',title:'El club ha desaparecido'},
-    fired:{emoji:'📉',title:'Destituido sin remisión'},
-    bankrupt:{emoji:'💸',title:'Quiebra total'}
+/* ── End screen ── */
+function renderEnd() {
+  const types = {
+    legend:   { emoji:'🏆', title:'Leyenda del fútbol europeo' },
+    collapse: { emoji:'🪦', title:'El club ha desaparecido para siempre' },
+    fired:    { emoji:'📉', title:'Destituido sin remisión' },
+    bankrupt: { emoji:'💸', title:'Quiebra total' }
   };
-  const t=types[G.endType]||types.fired;
-  const rows=G.history.slice(-10).map(h=>`<div class="hist-row">Reinado ${h.reign} (${h.year}) · ${h.pres} · ${h.txt}</div>`).join('');
+  const t = types[G.endType] || types.fired;
+  const rows = G.history.slice(-10).map(h =>
+    `<div class="hist-row">Legado ${h.reign} (${h.year}) · ${h.pres} · ${h.txt}</div>`
+  ).join('');
+
+  const achUnlocked = ACHIEVEMENTS.filter(a => G.achievements.includes(a.id));
+
   return `<div class="end-scr">
+    ${shieldSVG(G.shield.design, G.shield.color, 64)}
     <div class="end-emoji">${t.emoji}</div>
     <div class="end-title">${t.title}</div>
-    <div class="end-sub">${G.club} · ${G.year}<br>${G.reign} presidentes · ${G.titles.length?G.titles.join(', '):'Ningún título europeo'}</div>
+    <div class="end-sub">${G.club} · ${G.year}<br>${G.reign} legados · ${G.titles.length ? G.titles.join(', ') : 'Ningún título europeo'}</div>
+
+    ${G.motes.length ? `
+    <div class="end-section-lbl">Apodos ganados</div>
+    <div style="margin-bottom:0.75rem;text-align:left">${G.motes.map(m =>
+      `<span class="mote-badge">Legado ${m.reign}: ${m.pres} ${m.name}</span>`
+    ).join('')}</div>` : ''}
+
+    ${achUnlocked.length ? `
+    <div class="end-section-lbl">Logros desbloqueados</div>
+    <div style="margin-bottom:0.75rem;text-align:left">${achUnlocked.map(a =>
+      `<span class="ach-badge">${a.icon} ${a.name}</span>`
+    ).join(' ')}</div>` : ''}
+
+    <div class="end-section-lbl">Últimas decisiones</div>
     <div class="hist-box">${rows}</div>
     <button class="rst-btn" onclick="restart()">Nueva dinastía</button>
   </div>`;
+}
+
+/* ─────────────── Swipe / drag handlers ─────────────── */
+
+function attachSwipeListeners() {
+  const wrap = document.getElementById('card-swipe-wrap');
+  if (!wrap) return;
+
+  wrap.addEventListener('pointerdown', onDragStart, { passive: false });
+  wrap.addEventListener('pointermove', onDragMove,  { passive: false });
+  wrap.addEventListener('pointerup',   onDragEnd,   { passive: false });
+  wrap.addEventListener('pointercancel', onDragCancel);
+}
+
+function onDragStart(e) {
+  if (DRAG.locked) return;
+  e.preventDefault();
+  DRAG.active = true;
+  DRAG.startX = e.clientX;
+  DRAG.currentX = e.clientX;
+  const wrap = document.getElementById('card-swipe-wrap');
+  if (wrap) {
+    wrap.setPointerCapture(e.pointerId);
+    wrap.classList.add('is-dragging');
+    const card = document.getElementById('ev-card-inner');
+    if (card) card.style.transition = 'none';
+  }
+}
+
+function onDragMove(e) {
+  if (!DRAG.active) return;
+  e.preventDefault();
+  DRAG.currentX = e.clientX;
+  updateCardDrag();
+}
+
+function onDragEnd(e) {
+  if (!DRAG.active) return;
+  DRAG.active = false;
+  const dx = DRAG.currentX - DRAG.startX;
+  const wrap = document.getElementById('card-swipe-wrap');
+  if (wrap) wrap.classList.remove('is-dragging');
+
+  if (Math.abs(dx) >= DRAG.threshold) {
+    DRAG.locked = true;
+    animateCardOut(dx > 0 ? 'right' : 'left', dx > 0 ? 0 : 1);
+  } else {
+    snapBack();
+  }
+}
+
+function onDragCancel() {
+  DRAG.active = false;
+  snapBack();
+}
+
+function updateCardDrag() {
+  const card = document.getElementById('ev-card-inner');
+  const hintR = document.getElementById('hint-right');
+  const hintL = document.getElementById('hint-left');
+  if (!card) return;
+
+  const dx = DRAG.currentX - DRAG.startX;
+  const rot = dx * 0.08;
+  card.style.transform = `translateX(${dx}px) rotate(${rot}deg)`;
+
+  const pct = Math.min(Math.abs(dx) / DRAG.threshold, 1);
+  if (hintR) hintR.style.opacity = dx > 0 ? pct : 0;
+  if (hintL) hintL.style.opacity = dx < 0 ? pct : 0;
+}
+
+function snapBack() {
+  const wrap = document.getElementById('card-swipe-wrap');
+  const card = document.getElementById('ev-card-inner');
+  const hintR = document.getElementById('hint-right');
+  const hintL = document.getElementById('hint-left');
+  if (wrap) wrap.classList.add('snap-back');
+  if (card) { card.style.transition = 'transform 0.35s cubic-bezier(.25,.8,.25,1)'; card.style.transform = ''; }
+  if (hintR) hintR.style.opacity = 0;
+  if (hintL) hintL.style.opacity = 0;
+  setTimeout(() => { if (wrap) wrap.classList.remove('snap-back'); }, 400);
+}
+
+function animateCardOut(dir, choiceIdx) {
+  const card = document.getElementById('ev-card-inner');
+  if (card) {
+    card.style.transition = 'transform 0.3s ease-in, opacity 0.3s ease-in';
+    const tx = dir === 'right' ? 340 : -340;
+    card.style.transform = `translateX(${tx}px) rotate(${dir === 'right' ? 18 : -18}deg)`;
+    card.style.opacity = '0';
+  }
+  setTimeout(() => {
+    DRAG.locked = false;
+    choose(choiceIdx);
+  }, 300);
 }
 
 render();
