@@ -58,8 +58,8 @@ export let DRAG = {
   active: false, startX: 0, currentX: 0, threshold: 75, locked: false
 };
 
-/** Timer reference for the achievement toast */
-export let toastTimer = null;
+/** Timer reference for the achievement toast (private to this module) */
+let toastTimer = null;
 
 /* ─────────────── localStorage persistence ─────────────── */
 
@@ -338,17 +338,19 @@ export function selectPres(i) {
 
 /**
  * Reset all game state and start a new game from the setup screen.
+ * Properties are mutated in-place (Object.assign) so that the exported `G`
+ * reference remains valid in every importing module.
  */
 export function restart() {
   try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
-  G = {
+  Object.assign(G, {
     clubSetup: false, club: '', shield: { design: 0, color: 0 },
     setupDesign: 0, setupColor: 0,
     reign: 1, year: 2010, turns: 0,
     stats: { money: 55, press: 55, vest: 55, power: 55 },
     pres: null, history: [], titles: [], inherited: null,
     bombs: [], gameOver: false, endType: null,
-    seen: new Set(), currentCard: null,
+    currentCard: null,
     achievements: [], motes: [],
     track: {
       totalTurns: 0,      corruptAccepted: 0, corruptRejected: 0,
@@ -357,7 +359,8 @@ export function restart() {
       legPressFriendly: 0,   legVestFriendly: 0,
       legVestSanctions: 0,   legPowerChoices: 0
     }
-  };
+  });
+  G.seen = new Set();
   _render();
 }
 

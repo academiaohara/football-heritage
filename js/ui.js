@@ -14,6 +14,22 @@ import {
 } from './game.js';
 import { attachSwipeListeners } from './swipe.js';
 
+/* ─────────────── HTML escaping ─────────────── */
+
+/**
+ * Escape user-supplied strings before embedding them in innerHTML to prevent XSS.
+ * @param {string} str
+ * @returns {string}
+ */
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 /* ─────────────── Main render dispatcher ─────────────── */
 
 /**
@@ -55,7 +71,7 @@ function renderSetup() {
 
     <div class="setup-lbl">Nombre del club</div>
     <input id="club-name-input" class="setup-input" type="text" maxlength="30"
-      placeholder="Ej: FC Villamora" value="${G.club}" />
+      placeholder="Ej: FC Villamora" value="${escapeHtml(G.club)}" />
 
     <div class="setup-lbl">Escudo — diseño</div>
     <div class="design-grid">${designBtns}</div>
@@ -147,7 +163,7 @@ function renderPresSelect() {
   return `<div class="top-bar">
     <div class="club-name-wrap">
       ${shieldSVG(G.shield.design, G.shield.color, 28)}
-      <div class="club-name">${G.club}</div>
+      <div class="club-name">${escapeHtml(G.club)}</div>
     </div>
     <div class="reign-info">Legado ${G.reign} · ${G.year}</div>
   </div>
@@ -188,7 +204,7 @@ function renderGame() {
   return `<div class="top-bar">
     <div class="club-name-wrap">
       ${shieldSVG(G.shield.design, G.shield.color, 28)}
-      <div class="club-name">${G.club}</div>
+      <div class="club-name">${escapeHtml(G.club)}</div>
     </div>
     <div class="reign-info">Legado ${G.reign} · ${G.year} · ${G.pres.name}</div>
   </div>
@@ -246,7 +262,7 @@ function renderEnd() {
     ${shieldSVG(G.shield.design, G.shield.color, 64)}
     <div class="end-emoji">${t.emoji}</div>
     <div class="end-title">${t.title}</div>
-    <div class="end-sub">${G.club} · ${G.year}<br>${G.reign} legados · ${G.titles.length ? G.titles.join(', ') : 'Ningún título europeo'}</div>
+    <div class="end-sub">${escapeHtml(G.club)} · ${G.year}<br>${G.reign} legados · ${G.titles.length ? G.titles.join(', ') : 'Ningún título europeo'}</div>
 
     ${G.motes.length ? `
     <div class="end-section-lbl">Apodos ganados</div>
