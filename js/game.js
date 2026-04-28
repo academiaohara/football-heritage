@@ -156,7 +156,14 @@ export function startGame() {
  */
 export function pickCard() {
   let pool = CARDS.filter(c => !G.seen.has(c.id));
-  if (pool.length === 0) { G.seen.clear(); pool = CARDS.filter(c => c.id !== 'c100'); }
+  if (pool.length === 0) {
+    G.seen.clear();
+    pool = CARDS.filter(c => c.id !== 'c100');
+  }
+  // Fallback guard: should never happen with 100 cards, but prevents a crash
+  if (pool.length === 0) {
+    pool = CARDS.slice();
+  }
 
   const s = G.stats;
   if (s.money > 60 && s.press > 60 && G.turns > 10) {
