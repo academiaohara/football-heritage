@@ -14,35 +14,35 @@ import {
 } from './game.js';
 import { attachSwipeListeners } from './swipe.js';
 
-/* ─────────────── HTML escaping ─────────────── */
-
-/**
- * Escape user-supplied strings before embedding them in innerHTML to prevent XSS.
- * @param {string} str
- * @returns {string}
- */
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
 /* ─────────────── Main render dispatcher ─────────────── */
 
 /**
  * Decide which screen to display and inject its HTML into #ui.
+ * After setting innerHTML, user-controlled strings are applied via textContent
+ * to ensure no HTML injection can occur.
  */
 export function render() {
   const el = document.getElementById('ui');
   if (!el) return;
-  if (G.gameOver)    { el.innerHTML = renderEnd();        return; }
-  if (!G.clubSetup)  { el.innerHTML = renderSetup();      attachSetupListeners(); return; }
-  if (!G.pres)       { el.innerHTML = renderPresSelect(); return; }
+  if (G.gameOver)    { el.innerHTML = renderEnd();        _applyUserText(el); return; }
+  if (!G.clubSetup)  { el.innerHTML = renderSetup();      _applyUserText(el); attachSetupListeners(); return; }
+  if (!G.pres)       { el.innerHTML = renderPresSelect(); _applyUserText(el); return; }
   el.innerHTML = renderGame();
+  _applyUserText(el);
   attachSwipeListeners();
+}
+
+/**
+ * Replace placeholder elements (data-club-name) with user-controlled text
+ * via textContent, which is immune to HTML injection.
+ * @param {Element} root  The container element to search within
+ */
+function _applyUserText(root) {
+  root.querySelectorAll('[data-club-name]').forEach(el => {
+    el.textContent = G.club;
+  });
+  const input = root.querySelector('#club-name-input');
+  if (input) input.value = G.club;
 }
 
 /* ─────────────── Setup screen ─────────────── */
@@ -71,7 +71,7 @@ function renderSetup() {
 
     <div class="setup-lbl">Nombre del club</div>
     <input id="club-name-input" class="setup-input" type="text" maxlength="30"
-      placeholder="Ej: FC Villamora" value="${escapeHtml(G.club)}" />
+      placeholder="Ej: FC Villamora" />
 
     <div class="setup-lbl">Escudo — diseño</div>
     <div class="design-grid">${designBtns}</div>
@@ -163,7 +163,7 @@ function renderPresSelect() {
   return `<div class="top-bar">
     <div class="club-name-wrap">
       ${shieldSVG(G.shield.design, G.shield.color, 28)}
-      <div class="club-name">${escapeHtml(G.club)}</div>
+      <div class="club-name" data-club-name></div>
     </div>
     <div class="reign-info">Legado ${G.reign} · ${G.year}</div>
   </div>
@@ -204,7 +204,7 @@ function renderGame() {
   return `<div class="top-bar">
     <div class="club-name-wrap">
       ${shieldSVG(G.shield.design, G.shield.color, 28)}
-      <div class="club-name">${escapeHtml(G.club)}</div>
+      <div class="club-name" data-club-name></div>
     </div>
     <div class="reign-info">Legado ${G.reign} · ${G.year} · ${G.pres.name}</div>
   </div>
@@ -262,7 +262,7 @@ function renderEnd() {
     ${shieldSVG(G.shield.design, G.shield.color, 64)}
     <div class="end-emoji">${t.emoji}</div>
     <div class="end-title">${t.title}</div>
-    <div class="end-sub">${escapeHtml(G.club)} · ${G.year}<br>${G.reign} legados · ${G.titles.length ? G.titles.join(', ') : 'Ningún título europeo'}</div>
+    <div class="end-sub"><span data-club-name></span> · ${G.year}<br>${G.reign} legados · ${G.titles.length ? G.titles.join(', ') : 'Ningún título europeo'}</div>
 
     ${G.motes.length ? `
     <div class="end-section-lbl">Apodos ganados</div>
