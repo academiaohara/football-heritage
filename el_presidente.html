@@ -1017,6 +1017,8 @@ function startGame(){
 // Close newspaper
 function closeNewspaper(){
   G.pendingNewspaper=null;
+  const overlay=document.getElementById('np-overlay');
+  if(overlay)overlay.style.display='none';
   render();
 }
 
