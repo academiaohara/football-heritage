@@ -34,7 +34,7 @@ export let G = {
   setupDesign: 0,
   setupColor: 0,
   reign: 1, year: 2010, turns: 0,
-  stats: { money: 55, press: 55, vest: 55, power: 55 },
+  stats: { money: 40, press: 40, vest: 40, power: 40 },
   pres: null, history: [], titles: [], inherited: null,
   bombs: [], gameOver: false, endType: null,
   seen: new Set(), currentCard: null,
@@ -155,20 +155,28 @@ export function startGame() {
  * @returns {Object} A card definition object
  */
 export function pickCard() {
-  let pool = CARDS.filter(c => !G.seen.has(c.id));
+  // Special cards (c100, cBlatter) are always excluded from the normal seen pool
+  let pool = CARDS.filter(c => !G.seen.has(c.id) && c.id !== 'c100' && c.id !== 'cBlatter');
   if (pool.length === 0) {
     G.seen.clear();
-    pool = CARDS.filter(c => c.id !== 'c100');
+    pool = CARDS.filter(c => c.id !== 'c100' && c.id !== 'cBlatter');
   }
   // Fallback guard: should never happen with 100 cards, but prevents a crash
   if (pool.length === 0) {
-    pool = CARDS.slice();
+    pool = CARDS.filter(c => c.id !== 'cBlatter');
   }
 
   const s = G.stats;
-  if (s.money > 60 && s.press > 60 && G.turns > 10) {
+  // Champions League final: appears when club is doing well
+  if (s.money > 50 && s.press > 50 && G.turns > 15) {
     const f = CARDS.find(c => c.id === 'c100');
     if (f) pool.push(f);
+  }
+
+  // Blatter final boss: appears when player has built a dynasty
+  if (G.titles.length >= 2 && s.power > 55 && s.money > 45 && G.reign >= 3) {
+    const b = CARDS.find(c => c.id === 'cBlatter');
+    if (b) pool.push(b);
   }
 
   if (G.bombs.length > 0 && G.turns >= G.bombs[0].at) {
@@ -210,19 +218,37 @@ export function choose(idx) {
     if (fx.power > 0) G.track.legPowerChoices++;
     if (fx.press > G.track.bestPressDelta) G.track.bestPressDelta = fx.press;
 
-    if (ch.win) {
+    if (ch.win_final) {
+      // Final boss defeated – true game ending
+      applyFx(ch.fx);
+      log(card.title + ' → ' + ch.label + ' ★ BLATTER DERROTADO');
+      checkAchievements();
+      endGame('blatter');
+      return;
+    }
+
+    if (ch.champ) {
+      // Win Champions League – add title but continue the game
       G.titles.push('UEFA Champions League ' + G.year);
       applyFx(ch.fx);
       log(card.title + ' → ' + ch.label + ' ★ CAMPEONES');
+      // Don't add c100 to seen so it can reappear for future championships
+      G.turns++;
+      G.track.totalTurns++;
+      if (G.turns % 8 === 0) G.year++;
       checkAchievements();
-      endGame('legend');
+      const endC = checkEnd();
+      if (endC) { handleLegacyEnd(endC); return; }
+      G.currentCard = pickCard();
+      saveState();
+      _render();
       return;
     }
 
     applyFx(ch.fx);
 
     if (ch.bomb) {
-      const pool = CARDS.filter(c => c.id !== card.id && !c.win);
+      const pool = CARDS.filter(c => c.id !== card.id && !c.win_final && !c.champ);
       const bc = pool[Math.floor(Math.random() * pool.length)];
       G.bombs.push({ at: G.turns + 3 + Math.floor(Math.random() * 4), card: bc });
     }
@@ -301,10 +327,10 @@ export function handleLegacyEnd(reason) {
   G.inherited = { msg: msgs[reason] };
   G.reign++;
   G.pres   = null;
-  G.stats.money = clamp(G.stats.money - 5);
-  G.stats.press = clamp(G.stats.press - 10);
-  G.stats.vest  = clamp(40 + Math.floor(Math.random() * 20));
-  G.stats.power = clamp(40 + Math.floor(Math.random() * 20));
+  G.stats.money = clamp(G.stats.money - 4);
+  G.stats.press = clamp(G.stats.press - 8);
+  G.stats.vest  = clamp(30 + Math.floor(Math.random() * 20));
+  G.stats.power = clamp(30 + Math.floor(Math.random() * 20));
   G.turns = 0;
   G.currentCard = null;
 
@@ -337,7 +363,7 @@ export function endGame(type) {
 export function selectPres(i) {
   G.pres = PRES_TYPES[i];
   G.inherited = null;
-  G.stats[G.pres.bonus] = clamp(G.stats[G.pres.bonus] + 15);
+  G.stats[G.pres.bonus] = clamp(G.stats[G.pres.bonus] + 8);
   G.currentCard = pickCard();
   saveState();
   _render();
@@ -354,7 +380,7 @@ export function restart() {
     clubSetup: false, club: '', shield: { design: 0, color: 0 },
     setupDesign: 0, setupColor: 0,
     reign: 1, year: 2010, turns: 0,
-    stats: { money: 55, press: 55, vest: 55, power: 55 },
+    stats: { money: 40, press: 40, vest: 40, power: 40 },
     pres: null, history: [], titles: [], inherited: null,
     bombs: [], gameOver: false, endType: null,
     currentCard: null,
