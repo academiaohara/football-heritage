@@ -52,19 +52,18 @@
 
   #app {
     width: 100%;
-    max-width: 480px;
+    max-width: 640px;
     padding: 1.5rem;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
   }
 
   /* Larger touch targets not needed on desktop – restore comfortable sizing */
-  .sw-btn  { padding: 12px 11px; }
+  .sw-hint { padding: 12px 11px; }
   .rst-btn { padding: 10px 28px; font-size: 14px; }
   .start-btn { font-size: 16px; padding: 15px; }
 
   /* Hover effects only on non-touch devices */
   @media (hover: hover) {
-    .sw-btn:hover { background: var(--color-background-secondary); }
     .design-item:hover { border-color: #9DBBDF; }
   }
 }

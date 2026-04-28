@@ -38,6 +38,8 @@
 
 /* Swipe action bar below card */
 .swipe-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sw-hint { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 10px 9px; text-align: left; pointer-events: none; }
+.sw-hint.sw-hint-right { text-align: right; }
 .sw-btn { background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 10px 9px; cursor: pointer; text-align: left; transition: background 0.12s; }
 .sw-btn:active { background: var(--color-background-secondary); }
 .sw-btn-right { text-align: right; }

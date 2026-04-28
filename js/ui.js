@@ -199,6 +199,16 @@ function renderGame() {
   if (s.press < 15) alerts.push({ cls:'alert-warn',   msg:'La prensa te está destruyendo.' });
   if (G.bombs.length > 0) alerts.push({ cls:'alert-info', msg:'Alguna decisión pasada puede volver a golpearte...' });
 
+  // Blatter progress hints
+  const blatReqs = [
+    G.titles.length >= 2 ? null : `${G.titles.length}/2 títulos europeos`,
+    G.reign >= 3 ? null : `Legado ${G.reign}/3`,
+    s.power > 55 ? null : `Poder ${s.power}/55`
+  ].filter(Boolean);
+  if (blatReqs.length > 0 && blatReqs.length <= 2) {
+    alerts.push({ cls:'alert-info', msg:'⚔️ Blatter se acerca… Necesitas: ' + blatReqs.join(' · ') });
+  }
+
   const achUnlocked = ACHIEVEMENTS.filter(a => G.achievements.includes(a.id));
 
   return `<div class="top-bar">
@@ -227,14 +237,14 @@ function renderGame() {
     </div>
   </div>
   <div class="swipe-actions">
-    <button class="sw-btn" onclick="choose(1)">
-      <div class="sw-arrow">← Desliza</div>
+    <div class="sw-hint">
+      <div class="sw-arrow">← Desliza izquierda</div>
       <div class="sw-label">${card.b.label}</div>
-    </button>
-    <button class="sw-btn sw-btn-right" onclick="choose(0)">
-      <div class="sw-arrow">Desliza →</div>
+    </div>
+    <div class="sw-hint sw-hint-right">
+      <div class="sw-arrow">Desliza derecha →</div>
       <div class="sw-label">${card.a.label}</div>
-    </button>
+    </div>
   </div>` : ''}`;
 }
 
@@ -247,6 +257,7 @@ function renderGame() {
 function renderEnd() {
   const types = {
     legend:   { emoji:'🏆', title:'Leyenda del fútbol europeo' },
+    blatter:  { emoji:'⚔️', title:'¡Blatter ha caído! El fútbol es libre' },
     collapse: { emoji:'🪦', title:'El club ha desaparecido para siempre' },
     fired:    { emoji:'📉', title:'Destituido sin remisión' },
     bankrupt: { emoji:'💸', title:'Quiebra total' }
