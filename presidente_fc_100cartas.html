@@ -594,6 +594,7 @@ let G = {
 
 /* ── Drag/swipe state ── */
 let DRAG = { active: false, startX: 0, currentX: 0, threshold: 75, locked: false };
+let toastTimer = null;
 
 /* ─────────────── Core helpers ─────────────── */
 
@@ -664,52 +665,56 @@ function choose(idx) {
   const other = idx === 0 ? card.b : card.a;
   if (!ch) return;
 
-  // Track corrupt choices
-  if (ch.bomb) {
-    G.track.corruptAccepted++;
-    G.track.legCorruptAccepted++;
-  } else if (other && other.bomb) {
-    G.track.corruptRejected++;
-    G.track.legCorruptRejected++;
-  }
+  try {
+    // Track corrupt choices
+    if (ch.bomb) {
+      G.track.corruptAccepted++;
+      G.track.legCorruptAccepted++;
+    } else if (other && other.bomb) {
+      G.track.corruptRejected++;
+      G.track.legCorruptRejected++;
+    }
 
-  // Track behaviour signals from fx
-  const fx = ch.fx;
-  if (fx.press > 0) G.track.legPressFriendly++;
-  if (fx.vest > 0) G.track.legVestFriendly++;
-  if (fx.vest < 0) G.track.legVestSanctions++;
-  if (fx.power > 0) G.track.legPowerChoices++;
-  if (fx.press > G.track.bestPressDelta) G.track.bestPressDelta = fx.press;
+    // Track behaviour signals from fx
+    const fx = ch.fx;
+    if (fx.press > 0) G.track.legPressFriendly++;
+    if (fx.vest > 0) G.track.legVestFriendly++;
+    if (fx.vest < 0) G.track.legVestSanctions++;
+    if (fx.power > 0) G.track.legPowerChoices++;
+    if (fx.press > G.track.bestPressDelta) G.track.bestPressDelta = fx.press;
 
-  if (ch.win) {
-    G.titles.push('UEFA Champions League ' + G.year);
+    if (ch.win) {
+      G.titles.push('UEFA Champions League ' + G.year);
+      applyFx(ch.fx);
+      log(card.title + ' → ' + ch.label + ' ★ CAMPEONES');
+      checkAchievements();
+      endGame('legend');
+      return;
+    }
+
     applyFx(ch.fx);
-    log(card.title + ' → ' + ch.label + ' ★ CAMPEONES');
+
+    if (ch.bomb) {
+      const pool = CARDS.filter(c => c.id !== card.id && !c.win);
+      const bc = pool[Math.floor(Math.random() * pool.length)];
+      G.bombs.push({ at: G.turns + 3 + Math.floor(Math.random() * 4), card: bc });
+    }
+
+    G.seen.add(card.id);
+    G.turns++;
+    G.track.totalTurns++;
+    if (G.turns % 8 === 0) G.year++;
+    log(card.title + ' → ' + ch.label);
+
     checkAchievements();
-    endGame('legend');
-    return;
+
+    const end = checkEnd();
+    if (end) { handleLegacyEnd(end); return; }
+    G.currentCard = pickCard();
+    render();
+  } finally {
+    DRAG.locked = false;
   }
-
-  applyFx(ch.fx);
-
-  if (ch.bomb) {
-    const pool = CARDS.filter(c => c.id !== card.id && !c.win);
-    const bc = pool[Math.floor(Math.random() * pool.length)];
-    G.bombs.push({ at: G.turns + 3 + Math.floor(Math.random() * 4), card: bc });
-  }
-
-  G.seen.add(card.id);
-  G.turns++;
-  G.track.totalTurns++;
-  if (G.turns % 8 === 0) G.year++;
-  log(card.title + ' → ' + ch.label);
-
-  checkAchievements();
-
-  const end = checkEnd();
-  if (end) { handleLegacyEnd(end); return; }
-  G.currentCard = pickCard();
-  render();
 }
 
 function applyFx(fx) {
@@ -816,8 +821,8 @@ function showAchToast(msg) {
   }
   toast.textContent = msg;
   toast.classList.add('show');
-  clearTimeout(toast._t);
-  toast._t = setTimeout(() => toast.classList.remove('show'), 2800);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
 }
 
 function assignMote() {
@@ -1033,7 +1038,12 @@ function onDragStart(e) {
   DRAG.currentX = e.clientX;
   const wrap = document.getElementById('card-swipe-wrap');
   if (wrap) {
-    wrap.setPointerCapture(e.pointerId);
+    try {
+      wrap.setPointerCapture(e.pointerId);
+    } catch (_) {
+      DRAG.active = false;
+      return;
+    }
     wrap.classList.add('is-dragging');
     const card = document.getElementById('ev-card-inner');
     if (card) card.style.transition = 'none';
@@ -1056,7 +1066,8 @@ function onDragEnd(e) {
 
   if (Math.abs(dx) >= DRAG.threshold) {
     DRAG.locked = true;
-    animateCardOut(dx > 0 ? 'right' : 'left', dx > 0 ? 0 : 1);
+    const goRight = dx > 0;
+    animateCardOut(goRight ? 'right' : 'left', goRight ? 0 : 1);
   } else {
     snapBack();
   }
