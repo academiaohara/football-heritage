@@ -1,0 +1,267 @@
+/**
+ * ui.js – Rendering and UI interaction
+ *
+ * Exports:
+ *   render            – main render dispatcher (called by main.js + game.js callback)
+ *   pickDesign        – update shield design preview (exposed to window via main.js)
+ *   pickColor         – update shield colour preview (exposed to window via main.js)
+ */
+
+import { SHIELDS, SHIELD_COLORS, PRES_TYPES, ACHIEVEMENTS } from './data.js';
+import {
+  G, shieldSVG, catColor, catLabel,
+  pickDesign as _pickDesign, pickColor as _pickColor
+} from './game.js';
+import { attachSwipeListeners } from './swipe.js';
+
+/* ─────────────── Main render dispatcher ─────────────── */
+
+/**
+ * Decide which screen to display and inject its HTML into #ui.
+ */
+export function render() {
+  const el = document.getElementById('ui');
+  if (!el) return;
+  if (G.gameOver)    { el.innerHTML = renderEnd();        return; }
+  if (!G.clubSetup)  { el.innerHTML = renderSetup();      attachSetupListeners(); return; }
+  if (!G.pres)       { el.innerHTML = renderPresSelect(); return; }
+  el.innerHTML = renderGame();
+  attachSwipeListeners();
+}
+
+/* ─────────────── Setup screen ─────────────── */
+
+/**
+ * Render the club-setup screen HTML string.
+ * @returns {string}
+ */
+function renderSetup() {
+  const designBtns = SHIELDS.map((sh, i) =>
+    `<div class="design-item${i === G.setupDesign ? ' selected' : ''}" onclick="pickDesign(${i})">
+      ${shieldSVG(i, G.setupColor, 44)}
+      <div class="design-item-lbl">${sh.label}</div>
+    </div>`
+  ).join('');
+
+  const colorSwatches = SHIELD_COLORS.map((c, i) =>
+    `<div class="color-swatch${i === G.setupColor ? ' selected' : ''}" title="${c.name}"
+      style="background:${c.p};border-color:${i === G.setupColor ? '#378ADD' : 'transparent'}"
+      onclick="pickColor(${i})"></div>`
+  ).join('');
+
+  return `<div class="setup-screen">
+    <div class="setup-title">⚽ Football Heritage</div>
+    <div class="setup-sub">Funda tu club, elige tus colores y construye un legado.</div>
+
+    <div class="setup-lbl">Nombre del club</div>
+    <input id="club-name-input" class="setup-input" type="text" maxlength="30"
+      placeholder="Ej: FC Villamora" value="${G.club}" />
+
+    <div class="setup-lbl">Escudo — diseño</div>
+    <div class="design-grid">${designBtns}</div>
+
+    <div class="setup-lbl">Color del escudo</div>
+    <div class="color-grid">${colorSwatches}</div>
+
+    <div class="shield-preview-wrap">
+      <div id="shield-preview">${shieldSVG(G.setupDesign, G.setupColor, 80)}</div>
+    </div>
+
+    <button class="start-btn" onclick="startGame()">Empezar legado →</button>
+  </div>`;
+}
+
+/** Attach keyboard listener to the club-name input (Enter → start). */
+function attachSetupListeners() {
+  const input = document.getElementById('club-name-input');
+  if (input) {
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') window.startGame(); });
+  }
+}
+
+/**
+ * Update only the shield preview and selection highlights without a full re-render.
+ * Called by pickDesign / pickColor wrappers below.
+ */
+function renderSetupPreview() {
+  const el = document.getElementById('shield-preview');
+  if (el) el.innerHTML = shieldSVG(G.setupDesign, G.setupColor, 80);
+  document.querySelectorAll('.design-item').forEach((el, i) =>
+    el.classList.toggle('selected', i === G.setupDesign)
+  );
+  document.querySelectorAll('.color-swatch').forEach((el, i) =>
+    el.classList.toggle('selected', i === G.setupColor)
+  );
+}
+
+/* ─────────────── Setup interaction (exposed to window) ─────────────── */
+
+/**
+ * Handle shield design selection during club setup.
+ * @param {number} i  Design index
+ */
+export function pickDesign(i) {
+  _pickDesign(i);
+  renderSetupPreview();
+}
+
+/**
+ * Handle shield colour selection during club setup.
+ * @param {number} i  Colour index
+ */
+export function pickColor(i) {
+  _pickColor(i);
+  renderSetupPreview();
+}
+
+/* ─────────────── Stats bar ─────────────── */
+
+/**
+ * Render the four-stat bar HTML string.
+ * @returns {string}
+ */
+function renderStats() {
+  const meta = [
+    { k:'money', lbl:'💰 Dinero',    fc:'f-money', nc:'n-money' },
+    { k:'press', lbl:'📣 Prensa',    fc:'f-press', nc:'n-press' },
+    { k:'vest',  lbl:'⚽ Vestuario', fc:'f-vest',  nc:'n-vest'  },
+    { k:'power', lbl:'👑 Poder',     fc:'f-power', nc:'n-power' }
+  ];
+  return `<div class="stats">${meta.map(m => {
+    const v = G.stats[m.k];
+    return `<div class="stat">
+      <div class="stat-lbl">${m.lbl}</div>
+      <div class="stat-track"><div class="stat-fill ${m.fc}" style="width:${v}%"></div></div>
+      <div class="stat-n ${m.nc}">${v}</div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+/* ─────────────── President selection screen ─────────────── */
+
+/**
+ * Render the president/manager selection screen HTML string.
+ * @returns {string}
+ */
+function renderPresSelect() {
+  return `<div class="top-bar">
+    <div class="club-name-wrap">
+      ${shieldSVG(G.shield.design, G.shield.color, 28)}
+      <div class="club-name">${G.club}</div>
+    </div>
+    <div class="reign-info">Legado ${G.reign} · ${G.year}</div>
+  </div>
+  ${G.inherited ? `<div class="alert alert-warn">${G.inherited.msg}. El club sobrevive, pero las heridas pesan.</div>` : ''}
+  ${renderStats()}
+  ${G.motes.length ? `<div class="ach-bar">${G.motes.map(m =>
+    `<span class="mote-badge">Legado ${m.reign}: ${m.pres} ${m.name}</span>`
+  ).join('')}</div>` : ''}
+  <div class="pres-pick">
+    <div class="section-lbl">Elige tu nuevo técnico</div>
+    <div class="pres-grid">${PRES_TYPES.map((p, i) =>
+      `<button class="pres-btn" onclick="selectPres(${i})">
+        <div class="pres-name">${p.name}</div>
+        <div class="pres-desc">${p.desc}</div>
+      </button>`
+    ).join('')}</div>
+  </div>`;
+}
+
+/* ─────────────── Main game screen ─────────────── */
+
+/**
+ * Render the main gameplay screen HTML string.
+ * @returns {string}
+ */
+function renderGame() {
+  const card = G.currentCard;
+  const s    = G.stats;
+  const alerts = [];
+  if (s.power < 15) alerts.push({ cls:'alert-danger', msg:'Estás perdiendo el control político. Actúa rápido.' });
+  if (s.money < 15) alerts.push({ cls:'alert-danger', msg:'Las finanzas del club están al límite.' });
+  if (s.vest  < 15) alerts.push({ cls:'alert-warn',   msg:'El vestuario está en llamas.' });
+  if (s.press < 15) alerts.push({ cls:'alert-warn',   msg:'La prensa te está destruyendo.' });
+  if (G.bombs.length > 0) alerts.push({ cls:'alert-info', msg:'Alguna decisión pasada puede volver a golpearte...' });
+
+  const achUnlocked = ACHIEVEMENTS.filter(a => G.achievements.includes(a.id));
+
+  return `<div class="top-bar">
+    <div class="club-name-wrap">
+      ${shieldSVG(G.shield.design, G.shield.color, 28)}
+      <div class="club-name">${G.club}</div>
+    </div>
+    <div class="reign-info">Legado ${G.reign} · ${G.year} · ${G.pres.name}</div>
+  </div>
+  ${G.titles.length ? `<div class="titles">${G.titles.map(t => `<span class="t-badge">🏆 ${t}</span>`).join('')}</div>` : ''}
+  ${achUnlocked.length ? `<div class="ach-bar">${achUnlocked.map(a => `<span class="ach-badge">${a.icon} ${a.name}</span>`).join('')}</div>` : ''}
+  ${renderStats()}
+  ${alerts.map(a => `<div class="alert ${a.cls}">${a.msg}</div>`).join('')}
+  <div class="counter">Turno ${G.turns + 1} · Legado ${G.reign}</div>
+  ${card ? `
+  <div class="card-swipe-outer">
+    <div id="card-swipe-wrap" class="card-swipe-wrap">
+      <div class="swipe-hint swipe-hint-left"  id="hint-left">← ${card.b.label}</div>
+      <div class="swipe-hint swipe-hint-right" id="hint-right">${card.a.label} →</div>
+      <div class="ev-card" id="ev-card-inner">
+        <div class="card-cat" style="color:${catColor(card.cat)}">${catLabel(card.cat)}</div>
+        <div class="card-title">${card.title}</div>
+        <div class="card-desc">${card.desc}</div>
+        <div class="card-meta"><span>${G.year}</span><span>Legado ${G.reign} · ${G.pres.name}</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="swipe-actions">
+    <button class="sw-btn" onclick="choose(1)">
+      <div class="sw-arrow">← Desliza</div>
+      <div class="sw-label">${card.b.label}</div>
+    </button>
+    <button class="sw-btn sw-btn-right" onclick="choose(0)">
+      <div class="sw-arrow">Desliza →</div>
+      <div class="sw-label">${card.a.label}</div>
+    </button>
+  </div>` : ''}`;
+}
+
+/* ─────────────── End screen ─────────────── */
+
+/**
+ * Render the game-over / end screen HTML string.
+ * @returns {string}
+ */
+function renderEnd() {
+  const types = {
+    legend:   { emoji:'🏆', title:'Leyenda del fútbol europeo' },
+    collapse: { emoji:'🪦', title:'El club ha desaparecido para siempre' },
+    fired:    { emoji:'📉', title:'Destituido sin remisión' },
+    bankrupt: { emoji:'💸', title:'Quiebra total' }
+  };
+  const t = types[G.endType] || types.fired;
+  const rows = G.history.slice(-10).map(h =>
+    `<div class="hist-row">Legado ${h.reign} (${h.year}) · ${h.pres} · ${h.txt}</div>`
+  ).join('');
+
+  const achUnlocked = ACHIEVEMENTS.filter(a => G.achievements.includes(a.id));
+
+  return `<div class="end-scr">
+    ${shieldSVG(G.shield.design, G.shield.color, 64)}
+    <div class="end-emoji">${t.emoji}</div>
+    <div class="end-title">${t.title}</div>
+    <div class="end-sub">${G.club} · ${G.year}<br>${G.reign} legados · ${G.titles.length ? G.titles.join(', ') : 'Ningún título europeo'}</div>
+
+    ${G.motes.length ? `
+    <div class="end-section-lbl">Apodos ganados</div>
+    <div style="margin-bottom:0.75rem;text-align:left">${G.motes.map(m =>
+      `<span class="mote-badge">Legado ${m.reign}: ${m.pres} ${m.name}</span>`
+    ).join('')}</div>` : ''}
+
+    ${achUnlocked.length ? `
+    <div class="end-section-lbl">Logros desbloqueados</div>
+    <div style="margin-bottom:0.75rem;text-align:left">${achUnlocked.map(a =>
+      `<span class="ach-badge">${a.icon} ${a.name}</span>`
+    ).join(' ')}</div>` : ''}
+
+    <div class="end-section-lbl">Últimas decisiones</div>
+    <div class="hist-box">${rows}</div>
+    <button class="rst-btn" onclick="restart()">Nueva dinastía</button>
+  </div>`;
+}

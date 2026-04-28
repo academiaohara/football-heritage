@@ -1,0 +1,10 @@
+{
+  "name": "Football Heritage",
+  "short_name": "Football Heritage",
+  "description": "Gestiona un club de fútbol a través de generaciones de presidentes. Toma decisiones difíciles y construye un legado.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#185FA5",
+  "icons": []
+}
