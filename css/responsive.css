@@ -63,6 +63,7 @@
   .start-btn { font-size: 16px; padding: 15px; }
 
   /* Hover effects only on non-touch devices */
+  /* Note: .sw-hint elements are non-interactive (pointer-events:none), so no hover state needed */
   @media (hover: hover) {
     .design-item:hover { border-color: #9DBBDF; }
   }

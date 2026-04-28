@@ -203,10 +203,11 @@ function renderGame() {
   const blatReqs = [
     G.titles.length >= 2 ? null : `${G.titles.length}/2 títulos europeos`,
     G.reign >= 3 ? null : `Legado ${G.reign}/3`,
-    s.power > 55 ? null : `Poder ${s.power}/55`
+    s.power > 55 ? null : `Poder ${s.power}/55`,
+    s.money > 45 ? null : `Caja ${s.money}/45`
   ].filter(Boolean);
-  if (blatReqs.length > 0 && blatReqs.length <= 2) {
-    alerts.push({ cls:'alert-info', msg:'⚔️ Blatter se acerca… Necesitas: ' + blatReqs.join(' · ') });
+  if (blatReqs.length > 0) {
+    alerts.push({ cls:'alert-info', msg:'⚔️ Para enfrentar a Blatter necesitas: ' + blatReqs.join(' · ') });
   }
 
   const achUnlocked = ACHIEVEMENTS.filter(a => G.achievements.includes(a.id));
