@@ -3,27 +3,192 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- PWA / mobile meta -->
-  <meta name="theme-color" content="#185FA5" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="Football Heritage" />
-  <meta name="description" content="Gestiona un club de fútbol a través de generaciones de presidentes. Toma decisiones difíciles y construye un legado." />
-
-  <title>Football Heritage</title>
-
+  <meta name="theme-color" content="#d4a017" />
+  <meta name="description" content="Gestiona un club de fútbol a través de generaciones de presidentes corruptos. Toma decisiones difíciles y construye un legado." />
+  <title>Football Heritage – El Presidente</title>
   <link rel="manifest" href="manifest.json" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="css/main.css" />
-  <link rel="stylesheet" href="css/components.css" />
-  <link rel="stylesheet" href="css/responsive.css" />
+    body {
+      background: #080808;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Georgia', serif;
+      color: #f0e6d0;
+    }
+
+    .landing {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      background: linear-gradient(160deg, #1a1208 0%, #0d0d0d 50%, #0a0a15 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 48px 32px;
+      text-align: center;
+      position: relative;
+    }
+
+    .landing::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 480px;
+      height: 100%;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        rgba(212, 160, 23, 0.018) 2px,
+        rgba(212, 160, 23, 0.018) 4px
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .landing > * { position: relative; z-index: 1; }
+
+    .badge {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #d4a017;
+      font-family: system-ui, sans-serif;
+      border: 1px solid rgba(212, 160, 23, 0.35);
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+    }
+
+    .logo { font-size: 64px; margin-bottom: 16px; }
+
+    .title {
+      font-size: clamp(28px, 7vw, 42px);
+      color: #f0e6d0;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #d4a017;
+      font-family: system-ui, sans-serif;
+      margin-bottom: 32px;
+    }
+
+    .divider {
+      width: 48px;
+      height: 1px;
+      background: rgba(212, 160, 23, 0.45);
+      margin: 0 auto 32px;
+    }
+
+    .description {
+      font-size: 15px;
+      line-height: 1.75;
+      color: rgba(240, 230, 208, 0.78);
+      max-width: 360px;
+      margin-bottom: 48px;
+    }
+
+    .play-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #c8950f 0%, #d4a017 50%, #b8840d 100%);
+      color: #0d0d0d;
+      font-family: system-ui, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 16px 48px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: filter 0.2s, transform 0.15s;
+      box-shadow: 0 4px 20px rgba(212, 160, 23, 0.3);
+    }
+
+    .play-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+    .play-btn:active { transform: translateY(0); filter: brightness(0.95); }
+    .play-icon { margin-right: 10px; }
+
+    .features {
+      margin-top: 56px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .feature {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(212, 160, 23, 0.15);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .feature-icon { font-size: 20px; margin-bottom: 6px; }
+
+    .feature-text {
+      font-size: 11px;
+      color: rgba(240, 230, 208, 0.6);
+      font-family: system-ui, sans-serif;
+      line-height: 1.4;
+    }
+
+    .footer {
+      margin-top: 48px;
+      font-size: 11px;
+      color: rgba(240, 230, 208, 0.3);
+      font-family: system-ui, sans-serif;
+      letter-spacing: 0.05em;
+    }
+  </style>
 </head>
 <body>
-  <div id="app"><div id="ui"></div></div>
-
-  <!-- ES6 module entry point (automatically deferred) -->
-  <script type="module" src="js/main.js"></script>
+  <main class="landing">
+    <div class="badge">Sátira · Estrategia · Corrupción</div>
+    <div class="logo">⚽</div>
+    <h1 class="title">Football Heritage</h1>
+    <p class="subtitle">El Presidente</p>
+    <div class="divider"></div>
+    <p class="description">
+      Gestiona un club de fútbol a través de generaciones de presidentes corruptos.
+      Cada decisión tiene consecuencias. El dinero, la prensa, el vestuario y el poder
+      penden de un hilo. ¿Construirás un legado… o hunirás el club?
+    </p>
+    <a class="play-btn" href="football_heritage.html"><span class="play-icon">▶</span>JUGAR</a>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🃏</div>
+        <div class="feature-text">100 cartas de eventos únicos</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📊</div>
+        <div class="feature-text">4 estadísticas a gestionar</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📰</div>
+        <div class="feature-text">Sistema de periódicos</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🏆</div>
+        <div class="feature-text">10 logros desbloqueables</div>
+      </div>
+    </div>
+    <p class="footer">Sin frameworks · Solo HTML, CSS y JS · Funciona en móvil y desktop</p>
+  </main>
 </body>
 </html>
