@@ -1,6 +1,6 @@
 # Football Heritage ⚽
 
-Un juego de gestión de clubes de fútbol donde tomas decisiones cruciales como presidente durante generaciones de legados.
+Una sátira de corrupción futbolística donde tomas decisiones cruciales como presidente durante generaciones de legados.
 
 ## Descripción
 
@@ -20,7 +20,7 @@ Gestiona tu club de fútbol a través de múltiples legados de presidentes. Toma
 
 ## Cómo ejecutar
 
-El juego usa módulos ES6 nativos, por lo que **necesita servirse desde un servidor HTTP** (no funciona abriendo el archivo directamente con `file://`).
+El juego es un archivo HTML standalone que funciona directamente en el navegador. Sin embargo, para evitar problemas con rutas locales se recomienda servir desde un servidor HTTP.
 
 ### Python (recomendado si ya lo tienes instalado):
 
@@ -28,7 +28,7 @@ El juego usa módulos ES6 nativos, por lo que **necesita servirse desde un servi
 python3 -m http.server 8000
 ```
 
-Luego abre <http://localhost:8000> en tu navegador.
+Luego abre <http://localhost:8000> en tu navegador (verás la landing page con el botón **JUGAR**).
 
 ### Node.js / npx:
 
@@ -51,22 +51,30 @@ Instala la extensión **Live Server** y haz clic en *Go Live* en la barra de est
 
 ```
 /
-├── index.html              # HTML semántico y limpio
+├── index.html              # Landing page con botón "JUGAR"
+├── football_heritage.html  # Juego completo standalone (archivo principal)
 ├── manifest.json           # Metadatos PWA básicos
-├── css/
-│   ├── main.css            # Reset, variables CSS y contenedor #app
-│   ├── components.css      # Estilos de componentes (cards, stats, botones…)
-│   └── responsive.css      # Media queries para móvil / tablet / desktop
-├── js/
-│   ├── data.js             # Datos estáticos: cartas, escudos, colores, logros
-│   ├── game.js             # Estado del juego y lógica principal
-│   ├── ui.js               # Renderizado de pantallas y templates HTML
-│   ├── swipe.js            # Sistema de gestos táctiles (Pointer Events)
-│   └── main.js             # Punto de entrada: inicialización y orquestación
-├── assets/
-│   └── .gitkeep            # Carpeta reservada para futuros assets
-└── README.md               # Este archivo
+├── README.md               # Este archivo
+├── GUIA.md                 # Guía detallada del juego
+├── css/                    # Archivos modulares (para desarrollo futuro)
+│   ├── main.css
+│   ├── components.css
+│   └── responsive.css
+├── js/                     # Archivos modulares (para desarrollo futuro)
+│   ├── data.js
+│   ├── game.js
+│   ├── ui.js
+│   ├── swipe.js
+│   └── main.js
+└── assets/
+    └── .gitkeep            # Carpeta reservada para futuros assets
 ```
+
+> **Nota:** Los archivos en `css/` y `js/` son una versión modular en desarrollo. El juego funcional y completo es `football_heritage.html`.
+
+## GitHub Pages
+
+El proyecto está disponible en: <https://academiaohara.github.io/football-heritage/>
 
 ## Arquitectura de módulos
 
