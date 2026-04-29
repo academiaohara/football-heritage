@@ -85,7 +85,7 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
 /* === REIGNS-STYLE CARD (cream paper) === */
 .ev-card{background:#f5e6c8;border:none;border-radius:20px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.65),0 2px 8px rgba(0,0,0,.35);min-height:320px;display:flex;flex-direction:column;transform-origin:center bottom;will-change:transform;cursor:grab;}
 .ev-card.is-dragging{cursor:grabbing;}
-.ev-card.fifa-boss .card-illus{background:linear-gradient(160deg,#8b0000 0%,#5a0000 100%) !important;}
+.ev-card.fifa-boss .card-illus{background:linear-gradient(160deg,#7a0000 0%,#4a0000 100%) !important;}
 
 /* Card illustration area (top coloured block) */
 .card-illus{height:170px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;}
@@ -894,6 +894,7 @@ const SVG_STADIUM=`<svg viewBox="0 0 20 20" width="20" height="20" fill="none" s
 const SVG_MEGAPHONE=`<svg viewBox="0 0 20 20" width="20" height="20" fill="white" aria-hidden="true"><path d="M16 1L7 7H3a1 1 0 00-1 1v4a1 1 0 001 1h4l9 6V1z"/><path d="M17 6a4 4 0 010 8" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>`;
 const SVG_FOOTBALL=`<svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="7" r="5"/><path d="M10 2l-1.5 3 1.5 2 1.5-2z" fill="white" stroke="none"/><path d="M5.5 4.5L8 7M14.5 4.5L12 7" stroke="white" stroke-width="1.2"/><path d="M5 15 Q5 18.5 7.5 18.5 L13 18.5 Q15 18.5 15 16.5 L15 15" fill="white" stroke="none"/><path d="M7 13 L7 15 L13 15 L13 13 Q11 12 9 12 Q7 12 7 13Z" fill="white" stroke="none"/></svg>`;
 const SVG_CROWN=`<svg viewBox="0 0 20 20" width="20" height="20" fill="white" aria-hidden="true"><path d="M2 8l2.5 3.5L7 5l3 4.5 3-4.5 2.5 6.5L18 8 17 13H3L2 8z"/><rect x="3" y="14" width="14" height="2.2" rx="1.1"/><rect x="5" y="17" width="10" height="2.2" rx="1.1"/></svg>`;
+const BOSS_ILLUS_COLOR='#7a0000';
 
 // ─────────────────────────────────────────────────────────────────
 // STATE
@@ -1221,16 +1222,16 @@ function renderPresSelect(){
 // ── Game ──
 function renderScoreboard(){
   const defs=[
-    {k:'money',svg:SVG_STADIUM},
-    {k:'press',svg:SVG_MEGAPHONE},
-    {k:'vest', svg:SVG_FOOTBALL},
-    {k:'power',svg:SVG_CROWN}
+    {k:'money',label:'Afición',  svg:SVG_STADIUM},
+    {k:'press',label:'RRPP',     svg:SVG_MEGAPHONE},
+    {k:'vest', label:'Deportivo',svg:SVG_FOOTBALL},
+    {k:'power',label:'Finanzas', svg:SVG_CROWN}
   ];
   return defs.map(d=>{
     const v=G.stats[d.k];
     const danger=v<15;
     const hidden=G.statsHidden[d.k];
-    return`<div class="score-icon${danger?' score-danger':''}${hidden?' score-hidden':''}" title="${['Afición','RRPP','Deportivo','Finanzas'][defs.indexOf(d)]}: ${hidden?'???':v}">${d.svg}</div>`;
+    return`<div class="score-icon${danger?' score-danger':''}${hidden?' score-hidden':''}" title="${d.label}: ${hidden?'???':v}">${d.svg}</div>`;
   }).join('');
 }
 
@@ -1291,7 +1292,7 @@ function renderStats(){
 function renderCard(card){
   const cat=catInfo(card.cat);
   const isBoss=!!card.isFifaBoss;
-  const illusColor=isBoss?'#7a0000':cat.color;
+  const illusColor=isBoss?BOSS_ILLUS_COLOR:cat.color;
   return`<div class="card-area">
     <div class="ctx-text">${esc(card.ctx||'')}</div>
     <div class="card-outer" id="card-outer">
