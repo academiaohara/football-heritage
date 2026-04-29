@@ -219,34 +219,40 @@ function renderGame() {
     </div>
     <div class="reign-info">Legado ${G.reign} · ${G.year} · ${G.pres.name}</div>
   </div>
-  ${G.titles.length ? `<div class="titles">${G.titles.map(t => `<span class="t-badge">🏆 ${t}</span>`).join('')}</div>` : ''}
-  ${achUnlocked.length ? `<div class="ach-bar">${achUnlocked.map(a => `<span class="ach-badge">${a.icon} ${a.name}</span>`).join('')}</div>` : ''}
-  ${renderStats()}
-  ${alerts.map(a => `<div class="alert ${a.cls}">${a.msg}</div>`).join('')}
-  <div class="counter">Turno ${G.turns + 1} · Legado ${G.reign}</div>
-  ${card ? `
-  <div class="card-swipe-outer">
-    <div id="card-swipe-wrap" class="card-swipe-wrap">
-      <div class="swipe-hint swipe-hint-left"  id="hint-left">← ${card.b.label}</div>
-      <div class="swipe-hint swipe-hint-right" id="hint-right">${card.a.label} →</div>
-      <div class="ev-card" id="ev-card-inner">
-        <div class="card-cat" style="color:${catColor(card.cat)}">${catLabel(card.cat)}</div>
-        <div class="card-title">${card.title}</div>
-        <div class="card-desc">${card.desc}</div>
-        <div class="card-meta"><span>${G.year}</span><span>Legado ${G.reign} · ${G.pres.name}</span></div>
+  <div class="game-layout">
+    <div class="game-left">
+      ${card ? `
+      <div class="card-swipe-outer">
+        <div id="card-swipe-wrap" class="card-swipe-wrap">
+          <div class="swipe-hint swipe-hint-left"  id="hint-left">← ${card.b.label}</div>
+          <div class="swipe-hint swipe-hint-right" id="hint-right">${card.a.label} →</div>
+          <div class="ev-card" id="ev-card-inner">
+            <div class="card-cat" style="color:${catColor(card.cat)}">${catLabel(card.cat)}</div>
+            <div class="card-title">${card.title}</div>
+            <div class="card-desc">${card.desc}</div>
+            <div class="card-meta"><span>${G.year}</span><span>Legado ${G.reign} · ${G.pres.name}</span></div>
+          </div>
+        </div>
       </div>
+      <div class="swipe-actions">
+        <div class="sw-hint">
+          <div class="sw-arrow">← Desliza izquierda</div>
+          <div class="sw-label">${card.b.label}</div>
+        </div>
+        <div class="sw-hint sw-hint-right">
+          <div class="sw-arrow">Desliza derecha →</div>
+          <div class="sw-label">${card.a.label}</div>
+        </div>
+      </div>` : ''}
     </div>
-  </div>
-  <div class="swipe-actions">
-    <div class="sw-hint">
-      <div class="sw-arrow">← Desliza izquierda</div>
-      <div class="sw-label">${card.b.label}</div>
+    <div class="game-right">
+      ${G.titles.length ? `<div class="titles">${G.titles.map(t => `<span class="t-badge">🏆 ${t}</span>`).join('')}</div>` : ''}
+      ${achUnlocked.length ? `<div class="ach-bar">${achUnlocked.map(a => `<span class="ach-badge">${a.icon} ${a.name}</span>`).join('')}</div>` : ''}
+      ${renderStats()}
+      ${alerts.map(a => `<div class="alert ${a.cls}">${a.msg}</div>`).join('')}
+      <div class="counter">Turno ${G.turns + 1} · Legado ${G.reign}</div>
     </div>
-    <div class="sw-hint sw-hint-right">
-      <div class="sw-arrow">Desliza derecha →</div>
-      <div class="sw-label">${card.a.label}</div>
-    </div>
-  </div>` : ''}`;
+  </div>`;
 }
 
 /* ─────────────── End screen ─────────────── */
