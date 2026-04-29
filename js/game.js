@@ -40,6 +40,7 @@ export let G = {
   seen: new Set(), currentCard: null,
   achievements: [],
   motes: [],
+  highStatTurns: 0,
   track: {
     totalTurns: 0,
     corruptAccepted: 0, corruptRejected: 0,
@@ -261,6 +262,17 @@ export function choose(idx) {
 
     checkAchievements();
 
+    // Leyenda del Club: all 4 stats > 80 for 5 consecutive turns
+    if (Object.values(G.stats).every(v => v > 80)) {
+      G.highStatTurns = (G.highStatTurns || 0) + 1;
+      if (G.highStatTurns >= 5) {
+        endGame('legend');
+        return;
+      }
+    } else {
+      G.highStatTurns = 0;
+    }
+
     const end = checkEnd();
     if (end) { handleLegacyEnd(end); return; }
     G.currentCard = pickCard();
@@ -293,9 +305,10 @@ export function log(txt) {
  */
 export function checkEnd() {
   const s = G.stats;
-  if (s.power <= 0)                    return 'resign';
-  if (s.vest <= 0  && s.press <= 5)    return 'fired';
-  if (s.money <= 0 && s.press <= 10)   return 'bankrupt';
+  if (s.money <= 0)  return 'fans';      // Afición = 0 → moción de censura
+  if (s.press <= 0)  return 'scandal';   // Relaciones Públicas = 0 → escándalo mediático
+  if (s.vest  <= 0)  return 'relegated'; // Poder Deportivo = 0 → descenso
+  if (s.power <= 0)  return 'bankrupt';  // Finanzas = 0 → quiebra
   return null;
 }
 
@@ -304,15 +317,19 @@ export function checkEnd() {
 /**
  * Handle the end of a legacy (president tenure).
  * Resets per-legacy state and either transitions to a new legacy or ends the game.
- * @param {string} reason  'resign' | 'fired' | 'bankrupt'
+ * @param {string} reason  'fans' | 'scandal' | 'relegated' | 'bankrupt'
  */
 export function handleLegacyEnd(reason) {
   const msgs = {
-    resign:   'Perdiste todo el poder político',
-    fired:    'El vestuario y la prensa te destruyeron',
-    bankrupt: 'El club está en quiebra técnica'
+    fans:      'La afición te dio la espalda – el estadio vacío te expulsó',
+    scandal:   'El escándalo mediático fue insostenible',
+    relegated: 'El equipo descendió y fue desmantelado',
+    bankrupt:  'El club entró en quiebra y administración judicial',
+    // legacy keys kept for backward compat with saved games
+    resign:    'Perdiste todo el poder político',
+    fired:     'El vestuario y la prensa te destruyeron'
   };
-  log(msgs[reason]);
+  log(msgs[reason] || msgs.fans);
 
   // Assign a nickname mote for this legacy
   const mote = assignMote();
@@ -324,7 +341,7 @@ export function handleLegacyEnd(reason) {
     endGame('collapse'); return;
   }
 
-  G.inherited = { msg: msgs[reason] };
+  G.inherited = { msg: msgs[reason] || msgs.fans };
   G.reign++;
   G.pres   = null;
   G.stats.money = clamp(G.stats.money - 4);
@@ -332,6 +349,7 @@ export function handleLegacyEnd(reason) {
   G.stats.vest  = clamp(30 + Math.floor(Math.random() * 20));
   G.stats.power = clamp(30 + Math.floor(Math.random() * 20));
   G.turns = 0;
+  G.highStatTurns = 0;
   G.currentCard = null;
 
   // Reset per-legacy tracking counters
@@ -385,6 +403,7 @@ export function restart() {
     bombs: [], gameOver: false, endType: null,
     currentCard: null,
     achievements: [], motes: [],
+    highStatTurns: 0,
     track: {
       totalTurns: 0,      corruptAccepted: 0, corruptRejected: 0,
       bestPressDelta: 0,

@@ -152,6 +152,15 @@ body{background:#080808;min-height:100vh;display:flex;justify-content:center;fon
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(15,12,5,.96);border:1px solid rgba(212,160,23,.4);color:#f0e6d0;border-radius:24px;padding:9px 20px;font-size:13px;z-index:300;opacity:0;transition:opacity .3s,transform .3s;white-space:nowrap;font-family:system-ui,sans-serif;pointer-events:none;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
+/* === CARD FX PREVIEW === */
+.card-fx-preview{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0 6px;padding:6px 14px;border-top:1px solid rgba(212,160,23,.15);border-bottom:1px solid rgba(212,160,23,.15);}
+.card-fx-col{display:flex;flex-wrap:wrap;gap:4px;align-items:center;font-size:11px;font-family:system-ui,sans-serif;}
+.card-fx-right{justify-content:flex-end;}
+.fx-dir{font-size:10px;font-weight:700;color:rgba(240,230,208,.35);}
+.fx-tag{padding:2px 5px;border-radius:4px;font-weight:700;font-size:10px;}
+.fx-up{background:rgba(29,158,117,.22);color:#4ecdc4;}
+.fx-dn{background:rgba(196,79,168,.18);color:#e879c0;}
+
 /* Scrollbar */
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
@@ -682,7 +691,69 @@ const CARDS=[
   {id:'c100',cat:'partido',emoji:'🏆',ctx:'El estadio lleva semanas sin dormir de emoción…',
    title:'La Final de Europa',desc:'El club llega a la final de la UEFA Champions League. Todo lo que hiciste llevó a este momento.',
    a:{label:'Todo por la gloria europea',hint:'¡A ganar!',fx:{money:-20,press:+50,vest:+30,power:+20},win:true},
-   b:{label:'Gestión conservadora',hint:'Sin riesgos',fx:{money:+10,press:+10,vest:+5,power:+5}}}
+   b:{label:'Gestión conservadora',hint:'Sin riesgos',fx:{money:+10,press:+10,vest:+5,power:+5}}},
+
+  // ── NUEVOS EVENTOS TEMÁTICOS ──
+
+  {id:'c101',cat:'vestuario',emoji:'📋',ctx:'El agente del capitán espera en la puerta…',
+   title:'Renovación del Capitán',desc:'El capitán, ídolo de la afición, exige duplicar su sueldo o se va libre. El vestuario entra en pánico.',
+   a:{label:'Ceder a sus demandas millonarias',hint:'El capitán se queda',fx:{money:+20,press:-5,vest:+25,power:-35}},
+   b:{label:'Dejarle marchar libre',hint:'Nadie es imprescindible',fx:{money:-25,press:-10,vest:-30,power:+10}}},
+
+  {id:'c102',cat:'prensa',emoji:'😤',ctx:'La explanada del estadio está tomada…',
+   title:'Los Ultras Exigen Reunión',desc:'La Fiel Infantería ocupa la explanada del estadio. Exigen hablar contigo cara a cara o "habrá consecuencias".',
+   a:{label:'Reunirte con ellos',hint:'Cara a cara',fx:{money:+25,press:-10,vest:+5,power:-5}},
+   b:{label:'Ignorarlos y emitir comunicado',hint:'Mediante nota de prensa',fx:{money:-20,press:+15,vest:0,power:0}}},
+
+  {id:'c103',cat:'partido',emoji:'🖥️',ctx:'El VAR lleva 10 minutos deliberando…',
+   title:'El VAR Nos Roba el Título',desc:'Una decisión del VAR anula el gol de la victoria en el último minuto. El mundo entero habla de ello.',
+   a:{label:'Protestar furioso en rueda de prensa',hint:'¡Esto es un robo!',fx:{money:+10,press:-20,vest:+15,power:-5}},
+   b:{label:'Callar y aceptar la decisión',hint:'Con dignidad',fx:{money:-15,press:+10,vest:-10,power:+5}}},
+
+  {id:'c104',cat:'directiva',emoji:'🛢️',ctx:'Un helicóptero de lujo aterriza en el estadio…',
+   title:'Oferta de Petrodólares',desc:'Un jeque del Golfo Pérsico ofrece 500 millones por el club. "Modernización sin límites", promete su emisario.',
+   a:{label:'Vender el club al jeque',hint:'El fútbol moderno',fx:{money:-45,press:-10,vest:+5,power:+50}},
+   b:{label:'Rechazar la oferta',hint:'El club no está en venta',fx:{money:+30,press:+20,vest:+10,power:-10}}},
+
+  {id:'c105',cat:'partido',emoji:'💉',ctx:'El análisis llega al despacho en sobre sellado…',
+   title:'Escándalo de Dopaje',desc:'Tu mejor jugador da positivo en un control antidopaje. El laboratorio ya tiene los resultados.',
+   a:{label:'Encubrirlo y retrasar la noticia',hint:'Compramos tiempo',fx:{money:-5,press:-25,vest:+10,power:+5},bomb:true},
+   b:{label:'Transparencia total desde el principio',hint:'Manos limpias',fx:{money:0,press:+20,vest:-15,power:-10}}},
+
+  {id:'c106',cat:'directiva',emoji:'💫',ctx:'El agente del mejor jugador del mundo llama…',
+   title:'El Fichaje Bomba',desc:'El agente del crack galáctico ofrece a tu club el mejor jugador del mundo. La prensa ya lo huele.',
+   a:{label:'Fichar al crack del momento',hint:'Galáctico a bordo',fx:{money:+35,press:+10,vest:+25,power:-50}},
+   b:{label:'Mantener la austeridad',hint:'No hay dinero',fx:{money:-20,press:-10,vest:-5,power:+25}}},
+
+  {id:'c107',cat:'directiva',emoji:'⚖️',ctx:'La UEFA envía un fax muy preocupante…',
+   title:'Descenso por Fair Play Financiero',desc:'La UEFA amenaza con descenso administrativo. Hay que vender o pagar una multa brutal.',
+   a:{label:'Recurrir la sanción hasta el final',hint:'Justicia o muerte',fx:{money:-15,press:-15,vest:0,power:-25}},
+   b:{label:'Vender jugadores y cumplir el límite',hint:'Cumplamos las normas',fx:{money:-10,press:+10,vest:-30,power:+25}}},
+
+  {id:'c108',cat:'directiva',emoji:'🗳️',ctx:'La sala de juntas se llena de caras hostiles…',
+   title:'Moción de Censura en la Junta',desc:'La mitad de la junta directiva presenta una moción de censura contra ti. La votación es mañana.',
+   a:{label:'Presentar un plan de futuro brillante',hint:'Con datos y pasión',fx:{money:+10,press:+25,vest:0,power:-15}},
+   b:{label:'Comprar voluntades con dinero',hint:'El poder tiene precio',fx:{money:-5,press:-5,vest:0,power:-30},bomb:true}},
+
+  {id:'c109',cat:'vestuario',emoji:'✊',ctx:'Los jugadores llegan con pancartas al entrenamiento…',
+   title:'Huelga de la Plantilla',desc:'Los jugadores se niegan a entrenar exigiendo mejoras salariales. El vestuario está paralizado.',
+   a:{label:'Ceder a sus demandas económicas',hint:'Paz social',fx:{money:0,press:-10,vest:+30,power:-35}},
+   b:{label:'Romper la huelga con canteranos',hint:'Nadie es imprescindible',fx:{money:-10,press:-5,vest:-35,power:+5}}},
+
+  {id:'c110',cat:'prensa',emoji:'🏃',ctx:'Las imágenes dan la vuelta al mundo…',
+   title:'Invasión del Campo',desc:'Cientos de aficionados invaden el terreno de juego al final del partido. Las imágenes son históricas.',
+   a:{label:'Celebrar la pasión de la afición',hint:'¡Qué gente!',fx:{money:+20,press:-10,vest:+10,power:-5}},
+   b:{label:'Comunicado de disculpa formal a la UEFA',hint:'Profesionalismo',fx:{money:-5,press:+15,vest:0,power:-5}}},
+
+  {id:'c111',cat:'prensa',emoji:'🎫',ctx:'Los grupos de aficionados amenazan con boicot…',
+   title:'Guerra de Precios de los Abonos',desc:'La prensa destaca que los abonos son los más caros de la liga. Los grupos de socios amenazan con boicot.',
+   a:{label:'Bajar los precios para los socios',hint:'Por la afición',fx:{money:+30,press:+10,vest:+5,power:-20}},
+   b:{label:'Subir precios para financiar el estadio',hint:'Modernización necesaria',fx:{money:-25,press:-15,vest:-5,power:+25}}},
+
+  {id:'c112',cat:'directiva',emoji:'💔',ctx:'Tu perla de la cantera pide reunión urgente…',
+   title:'El Canterano Quiere Irse al Rival',desc:'Tu joya de la cantera, formada desde los 8 años, anuncia que quiere fichar por el máximo rival.',
+   a:{label:'Venderle al rival por la cláusula',hint:'El dinero manda',fx:{money:-30,press:-5,vest:-10,power:+35}},
+   b:{label:'Blindarle con nueva cláusula millonaria',hint:'Quédate con nosotros',fx:{money:+10,press:+10,vest:+15,power:-15}}}
 ];
 
 // ── FIFA BOSS CARDS ──
@@ -730,20 +801,20 @@ const MOTE_BY_STAT=[
 // ── DEATH HEADLINES ──
 const DEATH_HL={
   press:{paper:'El Chiringuito News',
-    headline:'¡ESCÁNDALO TOTAL! Encuentran muerto en un puticlub de Torrelodones al presidente del club tras una timba de póker con fondos del estadio',
-    sub:'El club confirma su renuncia "por motivos personales". La afición ya quema su retrato en la explanada del estadio.'},
+    headline:'¡ESCÁNDALO DE RELACIONES PÚBLICAS! El presidente queda sepultado bajo una avalancha mediática sin precedentes',
+    sub:'La directiva emite un comunicado de tres palabras: "Hemos tomado nota". Los accionistas huyen en taxi.'},
   money:{paper:'Diario Marca-A',
-    headline:'¡QUIEBRA! El presidente huye en un patinete eléctrico hacia Andorra dejando una deuda de 400 millones',
-    sub:'Los acreedores cercan la ciudad deportiva. El utillero vende camisetas para pagar la luz. Los jugadores exigen sus nóminas en Bitcoin.'},
+    headline:'¡ESTADIO VACÍO! La afición abandona al presidente en masa — las gradas solo tienen palomas',
+    sub:'El club confirma que la última venta de abonos fue un fracaso histórico. El presidente huye al vestuario sin poder salir.'},
   vest:{paper:'La Gaceta del Palco',
-    headline:'¡MOTÍN! Los jugadores secuestran el autobús del equipo y abandonan al presidente en una gasolinera de la meseta',
-    sub:'El capitán confirma que dejaron la maleta del presidente en el arcén de la A-4. El GPS del autobús fue desactivado en Manzanares.'},
+    headline:'¡DESCENSO ADMINISTRATIVO! El poder deportivo tocó fondo y la plantilla se desintegró',
+    sub:'El capitán firmó por el rival. El portero se fue al fútbol sala. Los canteranos lloran en la ciudad deportiva.'},
   power:{paper:'AS de Palo',
-    headline:'¡GOLPE DE ESTADO! La junta directiva vota la destitución del presidente por 14 votos a 1 (el único a favor era su secretaria)',
-    sub:'El expresidente fue escoltado fuera del palco con una caja de cartón con sus pertenencias. Solo quedó la planta.'},
+    headline:'¡QUIEBRA JUDICIAL! El club entra en administración – los acreedores cercan la ciudad deportiva',
+    sub:'El juez ha intervenido las cuentas. El utillero vende camisetas para pagar la luz. Los jugadores exigen nóminas en Bitcoin.'},
   legend:{paper:'Diario Marca-A',
-    headline:'¡CAMPEONES DE EUROPA! El presidente lleva el club a la gloria eterna bajo una lluvia de serpentinas doradas',
-    sub:'Miles de aficionados invaden las calles. El alcalde propone poner una estatua. El presidente llora en el podio con la Copa.'},
+    headline:'¡LEYENDA DEL CLUB! El presidente ha logrado la cúspide con los cuatro indicadores al máximo durante cinco semanas consecutivas',
+    sub:'Miles de aficionados invaden las calles. El alcalde propone una estatua. El presidente llora con la Copa en la mano.'},
   collapse:{paper:'El Chiringuito News',
     headline:'¡COLAPSO TOTAL! El club desaparece del mapa del fútbol profesional para siempre',
     sub:'La FIFA interviene el club. Tres jugadores ficharon por clubes de tercera. El escudo se subastó en eBay por 12 €.'}
@@ -783,7 +854,8 @@ function makeState(){
     currentPortrait:randPortrait(),
     track:{totalTurns:0,corrupt:0,honest:0},
     inherited:null,
-    deathType:null
+    deathType:null,
+    highStatTurns:0            // consecutive turns with all stats > 80
   };
 }
 let G=makeState();
@@ -808,10 +880,10 @@ function getMote(){
 
 function statMeta(){
   return[
-    {k:'money',lbl:'💰 Caja',    fc:'fill-money',vc:'val-money'},
-    {k:'press', lbl:'📸 Prensa',  fc:'fill-press', vc:'val-press'},
-    {k:'vest',  lbl:'🍺 Vestuario',fc:'fill-vest', vc:'val-vest'},
-    {k:'power', lbl:'⚽ Puntos',  fc:'fill-power', vc:'val-power'}
+    {k:'money',lbl:'👥 Afición',    fc:'fill-money',vc:'val-money'},
+    {k:'press', lbl:'📰 RRPP',      fc:'fill-press', vc:'val-press'},
+    {k:'vest',  lbl:'⚽ Deportivo', fc:'fill-vest',  vc:'val-vest'},
+    {k:'power', lbl:'💰 Finanzas',  fc:'fill-power', vc:'val-power'}
   ];
 }
 
@@ -898,6 +970,14 @@ function choose(idx){
     G.weeks++;G.track.totalTurns++;
     tickFifaCurses();
 
+    // Leyenda del Club: all 4 stats > 80 for 5 consecutive turns
+    if(Object.values(G.stats).every(v=>v>80)){
+      G.highStatTurns=(G.highStatTurns||0)+1;
+      if(G.highStatTurns>=5){endRound('legend');return;}
+    }else{
+      G.highStatTurns=0;
+    }
+
     const end=checkEnd();
     if(end){endRound(end);return;}
 
@@ -923,7 +1003,7 @@ function tickFifaCurses(){
   });
 }
 
-function statLabel(k){return({money:'💰 Caja',press:'📸 Prensa',vest:'🍺 Vestuario',power:'⚽ Puntos'})[k]||k;}
+function statLabel(k){return({money:'👥 Afición',press:'📰 Relaciones Públicas',vest:'⚽ Poder Deportivo',power:'💰 Finanzas'})[k]||k;}
 
 function checkEnd(){
   const s=G.stats;
@@ -979,8 +1059,10 @@ function fullRestart(){
 }
 
 function humanCause(c){
-  return{press:'La prensa destruyó al presidente anterior',money:'El club está casi en quiebra',
-    vest:'El vestuario está en llamas',power:'El poder quedó destrozado',
+  return{press:'El escándalo mediático destruyó al presidente anterior',
+    money:'La afición abandonó el estadio — queda desolado',
+    vest:'El poder deportivo colapsó y el equipo fue desmantelado',
+    power:'El club está al borde de la quiebra judicial',
     legend:'El legado anterior fue glorioso',collapse:'El club casi desapareció'}[c]||'El mandato anterior terminó mal';
 }
 
@@ -988,10 +1070,10 @@ function humanCause(c){
 // PRES SELECT
 // ─────────────────────────────────────────────────────────────────
 const PRES_TYPES=[
-  {emoji:'💼',name:'Tecnócrata',     desc:'Arranca con +15 Caja',     bonus:'money'},
-  {emoji:'🕶️',name:'Operador Oscuro',desc:'Arranca con +15 Puntos',   bonus:'power'},
-  {emoji:'📸',name:'Estrella Mediática',desc:'Arranca con +15 Prensa',bonus:'press'},
-  {emoji:'🍺',name:'Hombre del Vestuario',desc:'Arranca con +15 Vestuario',bonus:'vest'}
+  {emoji:'💼',name:'Tecnócrata',     desc:'Arranca con +15 Afición',       bonus:'money'},
+  {emoji:'🕶️',name:'Operador Oscuro',desc:'Arranca con +15 Finanzas',       bonus:'power'},
+  {emoji:'📰',name:'Estrella Mediática',desc:'Arranca con +15 RRPP',       bonus:'press'},
+  {emoji:'⚽',name:'Hombre del Vestuario',desc:'Arranca con +15 Poder Deportivo',bonus:'vest'}
 ];
 
 function selectPres(i){
@@ -1076,11 +1158,13 @@ function renderGame(){
   const card=G.currentCard;
   const s=G.stats;
   const alerts=[];
-  if(s.power<15)alerts.push({cls:'a-danger',msg:'Estás perdiendo el control político. Actúa rápido.'});
-  if(s.money<15)alerts.push({cls:'a-danger',msg:'Las finanzas del club están al límite.'});
-  if(s.vest<15) alerts.push({cls:'a-warn',  msg:'El vestuario está en llamas.'});
-  if(s.press<15)alerts.push({cls:'a-warn',  msg:'La prensa te está destruyendo.'});
-  if(G.bombs.length>0)alerts.push({cls:'a-info',msg:'Alguna decisión pasada puede volver a golpearte…'});
+  if(s.power<15)alerts.push({cls:'a-danger',msg:'💰 Las finanzas del club están al límite. Quiebra inminente.'});
+  if(s.money<15)alerts.push({cls:'a-danger',msg:'👥 La afición te da la espalda. El estadio se vacía.'});
+  if(s.vest<15) alerts.push({cls:'a-warn',  msg:'⚽ El poder deportivo está en caída libre.'});
+  if(s.press<15)alerts.push({cls:'a-warn',  msg:'📰 Las relaciones públicas están destrozadas.'});
+  if(G.bombs.length>0)alerts.push({cls:'a-info',msg:'⚠️ Alguna decisión pasada puede volver a golpearte…'});
+  const highTurns=G.highStatTurns||0;
+  if(highTurns>0&&highTurns<5)alerts.push({cls:'a-info',msg:`🏆 ¡Todos los indicadores al máximo! ${highTurns}/5 turnos para la Leyenda del Club.`});
 
   return`
     ${renderHeader()}
@@ -1134,6 +1218,10 @@ function renderCard(card){
           <div class="card-title">${esc(card.title)}</div>
           <div class="card-desc">${esc(card.desc)}</div>
         </div>
+        <div class="card-fx-preview">
+          <div class="card-fx-col">${renderFxPreview(card.b.fx,'←')}</div>
+          <div class="card-fx-col card-fx-right">${renderFxPreview(card.a.fx,'→')}</div>
+        </div>
         <div class="card-foot">
           <span class="card-week">Sem. ${G.weeks+1}</span>
           <span class="card-week">Mandato ${G.reign}</span>
@@ -1151,6 +1239,16 @@ function renderCard(card){
       </button>
     </div>
   </div>`;
+}
+
+function renderFxPreview(fx,dir){
+  const items=[{k:'money',e:'👥'},{k:'press',e:'📰'},{k:'vest',e:'⚽'},{k:'power',e:'💰'}];
+  const tags=items.filter(i=>fx[i.k]!==undefined&&fx[i.k]!==0).map(i=>{
+    const v=fx[i.k];const sign=v>0?'+':'';
+    return`<span class="fx-tag ${v>0?'fx-up':'fx-dn'}">${i.e}${sign}${v}</span>`;
+  });
+  if(!tags.length)return'';
+  return`<span class="fx-dir">${dir}</span> ${tags.join(' ')}`;
 }
 
 // ── Newspaper ──

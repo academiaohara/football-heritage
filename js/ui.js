@@ -138,14 +138,16 @@ export function pickColor(i) {
  */
 function renderStats() {
   const meta = [
-    { k:'money', lbl:'💰 Dinero',    fc:'f-money', nc:'n-money' },
-    { k:'press', lbl:'📣 Prensa',    fc:'f-press', nc:'n-press' },
-    { k:'vest',  lbl:'⚽ Vestuario', fc:'f-vest',  nc:'n-vest'  },
-    { k:'power', lbl:'👑 Poder',     fc:'f-power', nc:'n-power' }
+    { k:'money', lbl:'👥 Afición',            fc:'f-money', nc:'n-money', tip:'Apoyo de socios y aficionados. Baja si pierdes derbis o subes precios.' },
+    { k:'press', lbl:'📰 Relaciones Públicas', fc:'f-press', nc:'n-press', tip:'Imagen ante la prensa y la junta directiva.' },
+    { k:'vest',  lbl:'⚽ Poder Deportivo',     fc:'f-vest',  nc:'n-vest',  tip:'Estado de la plantilla y resultados del equipo.' },
+    { k:'power', lbl:'💰 Finanzas',            fc:'f-power', nc:'n-power', tip:'Dinero en caja del club.' }
   ];
   return `<div class="stats">${meta.map(m => {
     const v = G.stats[m.k];
-    return `<div class="stat">
+    const danger = v < 20;
+    const warn   = v < 40 && !danger;
+    return `<div class="stat${danger ? ' stat-danger' : warn ? ' stat-warn' : ''}" title="${m.tip}">
       <div class="stat-lbl">${m.lbl}</div>
       <div class="stat-track"><div class="stat-fill ${m.fc}" style="width:${v}%"></div></div>
       <div class="stat-n ${m.nc}">${v}</div>
@@ -193,21 +195,27 @@ function renderGame() {
   const card = G.currentCard;
   const s    = G.stats;
   const alerts = [];
-  if (s.power < 15) alerts.push({ cls:'alert-danger', msg:'Estás perdiendo el control político. Actúa rápido.' });
-  if (s.money < 15) alerts.push({ cls:'alert-danger', msg:'Las finanzas del club están al límite.' });
-  if (s.vest  < 15) alerts.push({ cls:'alert-warn',   msg:'El vestuario está en llamas.' });
-  if (s.press < 15) alerts.push({ cls:'alert-warn',   msg:'La prensa te está destruyendo.' });
-  if (G.bombs.length > 0) alerts.push({ cls:'alert-info', msg:'Alguna decisión pasada puede volver a golpearte...' });
+  if (s.money < 15) alerts.push({ cls:'alert-danger', msg:'👥 La afición te da la espalda. El estadio se vacía.' });
+  if (s.press < 15) alerts.push({ cls:'alert-danger', msg:'📰 Las relaciones públicas están destrozadas.' });
+  if (s.vest  < 15) alerts.push({ cls:'alert-warn',   msg:'⚽ El poder deportivo está en caída libre.' });
+  if (s.power < 15) alerts.push({ cls:'alert-warn',   msg:'💰 Las finanzas del club están al límite.' });
+  if (G.bombs.length > 0) alerts.push({ cls:'alert-info', msg:'⚠️ Alguna decisión pasada puede volver a golpearte...' });
 
   // Blatter progress hints
   const blatReqs = [
     G.titles.length >= 2 ? null : `${G.titles.length}/2 títulos europeos`,
     G.reign >= 3 ? null : `Legado ${G.reign}/3`,
-    s.power > 55 ? null : `Poder ${s.power}/55`,
-    s.money > 45 ? null : `Caja ${s.money}/45`
+    s.power > 55 ? null : `💰 Finanzas ${s.power}/55`,
+    s.money > 45 ? null : `👥 Afición ${s.money}/45`
   ].filter(Boolean);
   if (blatReqs.length > 0) {
     alerts.push({ cls:'alert-info', msg:'⚔️ Para enfrentar a Blatter necesitas: ' + blatReqs.join(' · ') });
+  }
+
+  // Leyenda del Club progress
+  const highTurns = G.highStatTurns || 0;
+  if (highTurns > 0 && highTurns < 5) {
+    alerts.push({ cls:'alert-info', msg:`🏆 ¡Todos los indicadores al máximo! ${highTurns}/5 turnos consecutivos para la Leyenda del Club.` });
   }
 
   const achUnlocked = ACHIEVEMENTS.filter(a => G.achievements.includes(a.id));
@@ -217,7 +225,7 @@ function renderGame() {
       ${shieldSVG(G.shield.design, G.shield.color, 28)}
       <div class="club-name" data-club-name></div>
     </div>
-    <div class="reign-info">Legado ${G.reign} · ${G.year} · ${G.pres.name}</div>
+    <div class="reign-info">Semana ${G.turns + 1} · Legado ${G.reign} · ${G.year}</div>
   </div>
   <div class="game-layout">
     <div class="game-left">
@@ -230,6 +238,10 @@ function renderGame() {
             <div class="card-cat" style="color:${catColor(card.cat)}">${catLabel(card.cat)}</div>
             <div class="card-title">${card.title}</div>
             <div class="card-desc">${card.desc}</div>
+            <div class="card-fx-preview">
+              <div class="card-fx-option">${renderFxPreview(card.b.fx, '←')}</div>
+              <div class="card-fx-option card-fx-right">${renderFxPreview(card.a.fx, '→')}</div>
+            </div>
             <div class="card-meta"><span>${G.year}</span><span>Legado ${G.reign} · ${G.pres.name}</span></div>
           </div>
         </div>
@@ -250,9 +262,36 @@ function renderGame() {
       ${achUnlocked.length ? `<div class="ach-bar">${achUnlocked.map(a => `<span class="ach-badge">${a.icon} ${a.name}</span>`).join('')}</div>` : ''}
       ${renderStats()}
       ${alerts.map(a => `<div class="alert ${a.cls}">${a.msg}</div>`).join('')}
-      <div class="counter">Turno ${G.turns + 1} · Legado ${G.reign}</div>
+      <div class="counter">Turno ${G.turns + 1} · Legado ${G.reign} · ${G.pres.name}</div>
     </div>
   </div>`;
+}
+
+/* ─────────────── Card effect preview ─────────────── */
+
+/**
+ * Render a compact preview row showing how a card option affects each stat.
+ * @param {Object} fx   Effect map {money, press, vest, power}
+ * @param {string} dir  Direction label ('←' or '→')
+ * @returns {string}
+ */
+function renderFxPreview(fx, dir) {
+  const items = [
+    { k:'money', emoji:'👥' },
+    { k:'press', emoji:'📰' },
+    { k:'vest',  emoji:'⚽' },
+    { k:'power', emoji:'💰' }
+  ];
+  const tags = items
+    .filter(i => fx[i.k] !== undefined && fx[i.k] !== 0)
+    .map(i => {
+      const v = fx[i.k];
+      const cls = v > 0 ? 'fx-up' : 'fx-down';
+      const sign = v > 0 ? '+' : '';
+      return `<span class="${cls}">${i.emoji}${sign}${v}</span>`;
+    });
+  if (tags.length === 0) return '';
+  return `<span class="fx-dir">${dir}</span> ${tags.join(' ')}`;
 }
 
 /* ─────────────── End screen ─────────────── */
@@ -263,11 +302,16 @@ function renderGame() {
  */
 function renderEnd() {
   const types = {
-    legend:   { emoji:'🏆', title:'Leyenda del fútbol europeo' },
-    blatter:  { emoji:'⚔️', title:'¡Blatter ha caído! El fútbol es libre' },
-    collapse: { emoji:'🪦', title:'El club ha desaparecido para siempre' },
-    fired:    { emoji:'📉', title:'Destituido sin remisión' },
-    bankrupt: { emoji:'💸', title:'Quiebra total' }
+    legend:    { emoji:'🏆', title:'¡Leyenda del Club! Los cuatro indicadores en máximo nivel durante 5 turnos' },
+    blatter:   { emoji:'⚔️', title:'¡Blatter ha caído! El fútbol es libre' },
+    collapse:  { emoji:'🪦', title:'El club ha desaparecido para siempre' },
+    fans:      { emoji:'👥', title:'Moción de censura – el estadio vacío te expulsó' },
+    scandal:   { emoji:'📰', title:'Escándalo mediático insostenible' },
+    relegated: { emoji:'⚽', title:'Descenso deportivo – el equipo fue desmantelado' },
+    bankrupt:  { emoji:'💸', title:'Quiebra del club – administración judicial' },
+    // legacy compat
+    fired:     { emoji:'📉', title:'Destituido sin remisión' },
+    resign:    { emoji:'📉', title:'Destituido sin remisión' }
   };
   const t = types[G.endType] || types.fired;
   const rows = G.history.slice(-10).map(h =>

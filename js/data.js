@@ -417,7 +417,57 @@ export const CARDS = [
   {id:'cBlatter',cat:'directiva',title:'El Día del Juicio: Blatter',
    desc:'Sepp Blatter te convoca en su despacho de Zúrich. Con tus títulos europeos has llegado demasiado lejos. El hombre que controla el fútbol mundial quiere acabar contigo.',
    a:{label:'Desafiarle públicamente',fx:{money:-8,press:+15,vest:+8,power:+15},win_final:true},
-   b:{label:'Doblegarte ante su poder',fx:{money:+6,press:-8,vest:-6,power:-15}}}
+   b:{label:'Doblegarte ante su poder',fx:{money:+6,press:-8,vest:-6,power:-15}}},
+
+  // ── NUEVOS EVENTOS TEMÁTICOS ──
+
+  {id:'c101',cat:'vestuario',title:'Renovación del Capitán',desc:'El capitán, ídolo de la afición, exige duplicar su sueldo o se va libre. Su agente espera respuesta esta tarde.',
+   a:{label:'Ceder a sus demandas millonarias',fx:{money:+8,press:-2,vest:+10,power:-14}},
+   b:{label:'Dejarle marchar libre',fx:{money:-10,press:-4,vest:-12,power:+4}}},
+
+  {id:'c102',cat:'prensa',title:'Los Ultras Exigen Reunión',desc:'La Fiel Infantería ocupa la explanada del estadio. Exigen hablar contigo cara a cara o "habrá consecuencias".',
+   a:{label:'Reunirte con ellos',fx:{money:+10,press:-4,vest:+2,power:-2}},
+   b:{label:'Ignorarlos y emitir comunicado',fx:{money:-8,press:+6,vest:0,power:0}}},
+
+  {id:'c103',cat:'partido',title:'El VAR Nos Roba el Título',desc:'Una decisión del VAR anula el gol de la victoria en el último minuto. El mundo entero habla de ello.',
+   a:{label:'Protestar en rueda de prensa',fx:{money:+4,press:-8,vest:+6,power:-2}},
+   b:{label:'Callar y aceptar la decisión',fx:{money:-6,press:+4,vest:-4,power:+2}}},
+
+  {id:'c104',cat:'directiva',title:'Oferta de Petrodólares',desc:'Un jeque del Golfo Pérsico ofrece 500 millones por el club. "Modernización sin límites", promete.',
+   a:{label:'Vender el club al jeque',fx:{money:-18,press:-4,vest:+2,power:+20}},
+   b:{label:'Rechazar la oferta',fx:{money:+12,press:+8,vest:+4,power:-4}}},
+
+  {id:'c105',cat:'partido',title:'Escándalo de Dopaje',desc:'Tu mejor jugador da positivo en un control antidopaje. El laboratorio ya tiene los resultados.',
+   a:{label:'Encubrirlo y retrasar la noticia',fx:{money:-2,press:-10,vest:+4,power:+2},bomb:true},
+   b:{label:'Transparencia total desde el principio',fx:{money:0,press:+8,vest:-6,power:-4}}},
+
+  {id:'c106',cat:'directiva',title:'El Fichaje Bomba',desc:'El agente del mejor jugador del mundo ofrece a tu club el crack galáctico. La prensa ya lo huele.',
+   a:{label:'Fichar al crack del momento',fx:{money:+14,press:+4,vest:+10,power:-20}},
+   b:{label:'Mantener la austeridad',fx:{money:-8,press:-4,vest:-2,power:+10}}},
+
+  {id:'c107',cat:'directiva',title:'Descenso por Fair Play Financiero',desc:'La UEFA amenaza con descenso administrativo por incumplir el Fair Play Financiero. Hay que recortar.',
+   a:{label:'Recurrir la sanción hasta el final',fx:{money:-6,press:-6,vest:0,power:-10}},
+   b:{label:'Vender jugadores y cumplir el límite',fx:{money:-4,press:+4,vest:-12,power:+10}}},
+
+  {id:'c108',cat:'directiva',title:'Moción de Censura en la Junta',desc:'La mitad de la junta directiva presenta una moción de censura contra ti. La votación es mañana.',
+   a:{label:'Presentar un plan de futuro brillante',fx:{money:+4,press:+10,vest:0,power:-6}},
+   b:{label:'Comprar voluntades con dinero',fx:{money:-2,press:-2,vest:0,power:-12},bomb:true}},
+
+  {id:'c109',cat:'vestuario',title:'Huelga de la Plantilla',desc:'Los jugadores se niegan a entrenar exigiendo mejoras salariales. El vestuario está paralizado.',
+   a:{label:'Ceder a sus demandas económicas',fx:{money:0,press:-4,vest:+12,power:-14}},
+   b:{label:'Romper la huelga con canteranos',fx:{money:-4,press:-2,vest:-14,power:+2}}},
+
+  {id:'c110',cat:'prensa',title:'Invasión de Campo Masiva',desc:'Cientos de aficionados invaden el terreno de juego al final del partido. Las imágenes dan la vuelta al mundo.',
+   a:{label:'Celebrar la pasión de la afición',fx:{money:+8,press:-4,vest:+4,power:-2}},
+   b:{label:'Comunicado de disculpa formal a la UEFA',fx:{money:-2,press:+6,vest:0,power:-2}}},
+
+  {id:'c111',cat:'prensa',title:'Guerra de Precios de los Abonos',desc:'La prensa destaca que los abonos son los más caros de la liga. Los grupos de aficionados amenazan con boicot.',
+   a:{label:'Bajar los precios para los socios',fx:{money:+12,press:+4,vest:+2,power:-8}},
+   b:{label:'Subir precios para financiar el estadio',fx:{money:-10,press:-6,vest:-2,power:+10}}},
+
+  {id:'c112',cat:'directiva',title:'El Canterano Quiere Irse al Rival',desc:'Tu perla de la cantera, formado desde los 8 años, anuncia que quiere fichar por el máximo rival.',
+   a:{label:'Venderle al rival por la cláusula',fx:{money:-12,press:-2,vest:-4,power:+14}},
+   b:{label:'Blindarle con nueva cláusula millonaria',fx:{money:+4,press:+4,vest:+6,power:-6}}}
 ];
 
 /** Shield SVG path designs (viewBox 0 0 100 100) */
@@ -440,10 +490,10 @@ export const SHIELD_COLORS = [
 
 /** Manager/president personality types */
 export const PRES_TYPES = [
-  { name:'Tecnócrata',         desc:'Mejor en finanzas',        bonus:'money' },
-  { name:'Operador oscuro',    desc:'Resiste el riesgo legal',  bonus:'power' },
-  { name:'Estrella mediática', desc:'Arranca con más prensa',   bonus:'press' },
-  { name:'Hombre del vestuario', desc:'Domina los egos',        bonus:'vest'  }
+  { name:'Tecnócrata',         desc:'Arranca con +8 Afición',          bonus:'money' },
+  { name:'Operador oscuro',    desc:'Arranca con +8 Finanzas',          bonus:'power' },
+  { name:'Estrella mediática', desc:'Arranca con +8 Relaciones Públicas', bonus:'press' },
+  { name:'Hombre del vestuario', desc:'Arranca con +8 Poder Deportivo', bonus:'vest'  }
 ];
 
 /** Unlockable achievements */
