@@ -815,6 +815,16 @@ const CARDS=[
    b:{label:'Blindarle con nueva cláusula millonaria',hint:'Quédate con nosotros',fx:{money:+10,press:+10,vest:+15,power:-15}}}
 ];
 
+// ── BLATTER CARD (final boss – GUIA.md cBlatter) ──
+const BLATTER_CARD={
+  id:'cBlatter',isFifaBoss:true,emoji:'👺',cat:'directiva',
+  ctx:'Un helicóptero negro aterriza en el estadio con escoltas armados…',
+  title:'El Día del Juicio: Blatter',
+  desc:'El Gran Jefe de la FIFA en persona se planta ante ti. El mundo entero te observa. Décadas de corrupción llegan a su fin. Ha llegado el momento de la verdad.',
+  a:{label:'Desafiarle públicamente',hint:'¡Por el fútbol limpio!',fx:{power:+15,vest:+15},win:'blatter'},
+  b:{label:'Doblegarte ante él',hint:'No puedo ganarle',fx:{money:-20,press:-15,vest:-15,power:-10}}
+};
+
 // ── FIFA BOSS CARDS ──
 const FIFA_BOSS_CARDS=[
   {id:'fifa1',isFifaBoss:true,emoji:'🤝',cat:'directiva',
@@ -871,9 +881,29 @@ const DEATH_HL={
   power:{paper:'AS de Palo',
     headline:'¡QUIEBRA JUDICIAL! El club entra en administración – los acreedores cercan la ciudad deportiva',
     sub:'El juez ha intervenido las cuentas. El utillero vende camisetas para pagar la luz. Los jugadores exigen nóminas en Bitcoin.'},
+  // Deaths at 100 – Reigns mechanic: reaching 100 also ends the reign
+  money100:{paper:'Diario Marca-A',
+    headline:'¡INVASIÓN DEL ESTADIO! La euforia descontrolada de la afición destruye la gestión del club',
+    sub:'Miles de aficionados llevan tres días en el estadio. La UEFA interviene. El presidente es evacuado por el tejado en helicóptero.'},
+  press100:{paper:'La Gaceta del Palco',
+    headline:'¡SOBREDOSIS DE IMAGEN! El presidente, víctima de su propio éxito mediático',
+    sub:'Lo que empezó como relaciones públicas perfectas acabó en meme global. La directiva exige la dimisión inmediata.'},
+  vest100:{paper:'El Chiringuito News',
+    headline:'¡MOTÍN DEL VESTUARIO! Los jugadores, demasiado poderosos, toman el control del club',
+    sub:'La plantilla votó por unanimidad echar al presidente. El capitán preside la nueva asamblea directiva.'},
+  power100:{paper:'AS de Palo',
+    headline:'¡GLOTONERÍA FINANCIERA! El exceso de dinero lleva al club ante la justicia',
+    sub:'Cuando el dinero supera toda lógica, llega la corrupción absoluta. La Fiscalía interviene. El presidente huye en jet privado.'},
+  // Special finals
+  champions:{paper:'Diario Marca-A',
+    headline:'¡CAMPEONES DE EUROPA! El club conquista la Champions League en una noche histórica',
+    sub:'El presidente llora con la copa en la mano. Miles de aficionados invaden las calles. Será recordado para siempre.'},
   legend:{paper:'Diario Marca-A',
-    headline:'¡LEYENDA DEL CLUB! El presidente ha logrado la cúspide con los cuatro indicadores al máximo durante cinco semanas consecutivas',
+    headline:'¡LEYENDA DEL CLUB! Los cuatro indicadores al máximo durante cinco semanas: un hito irrepetible',
     sub:'Miles de aficionados invaden las calles. El alcalde propone una estatua. El presidente llora con la Copa en la mano.'},
+  blatter:{paper:'El Chiringuito News',
+    headline:'¡CAÍDA DE BLATTER! El presidente desafía al Gran Jefe y salva el fútbol para siempre',
+    sub:'La FIFA se reforma de arriba abajo. La corrupción huye. Millones celebran en todo el mundo. Este presidente pasará a la historia del fútbol.'},
   collapse:{paper:'El Chiringuito News',
     headline:'¡COLAPSO TOTAL! El club desaparece del mapa del fútbol profesional para siempre',
     sub:'La FIFA interviene el club. Tres jugadores ficharon por clubes de tercera. El escudo se subastó en eBay por 12 €.'}
@@ -904,14 +934,17 @@ function makeState(){
     screen:'setup',
     clubName:'',
     weeks:0,
-    stats:{money:55,press:55,vest:55,power:55},
+    totalWeeks:0,          // cumulative weeks across ALL reigns (Reigns: global year counter)
+    stats:{money:40,press:40,vest:40,power:40},  // GUIA.md: stats start at 40
     statsHidden:{money:false,press:false,vest:false,power:false},
     fifaCurses:[],             // [{stat,endsAt}]
     nextFifaBossAt:50,
     fifaBossUsed:new Set(),
+    blatterDone:false,         // whether Blatter card has been shown this reign
     presName:null,
     presBonus:null,
     reign:1,
+    champions:0,               // global champions titles (persists across reigns)
     seen:new Set(),
     currentCard:null,
     pendingNewspaper:null,
@@ -919,6 +952,17 @@ function makeState(){
     timeline:[],               // kept across "Siguiente Sucesor"
     currentPortrait:randPortrait(),
     track:{totalTurns:0,corrupt:0,honest:0},
+    // Per-legacy tracking for the 8 apodos (GUIA.md)
+    legacyCorrupt:0,           // corrupt decisions accepted this legacy
+    legacyHonest:0,            // honest decisions this legacy
+    legacyPopulist:0,          // decisions favorable to press/afición
+    legacyPowerDec:0,          // decisions favorable to power (Finanzas)
+    legacyVestFavor:0,         // decisions favorable to vest
+    legacyVestSanction:0,      // decisions that penalize vest
+    // Global achievement counters (persist across reigns)
+    corruptAll:0,              // total corrupt decisions ever (for Negocios Sucios)
+    honestAll:0,               // total honest decisions ever (for Manos Limpias)
+    achievedAny:{},            // which achievements have been unlocked
     inherited:null,
     deathType:null,
     highStatTurns:0            // consecutive turns with all stats > 80
@@ -938,6 +982,17 @@ function rnd(arr){return arr[Math.floor(Math.random()*arr.length)];}
 function catInfo(id){return CATS.find(c=>c.id===id)||{label:id,emoji:'⚽',color:'#888'};}
 
 function getMote(){
+  const s=G.stats;
+  // 8 specific apodos — GUIA.md
+  if(s.money<20&&s.press<20)return'el Impresentable';
+  if(G.legacyCorrupt>=3&&G.legacyCorrupt>G.legacyHonest)return'el Corrupto';
+  if(G.legacyHonest>=4&&G.legacyCorrupt===0)return'el Honrado';
+  if(G.champions>=1&&G.legacyHonest>=2&&G.legacyCorrupt===0)return'el Galáctico';
+  if(G.legacyPopulist>=6)return'el Populista';
+  if(G.legacyPowerDec>=7&&G.legacyVestSanction>=4)return'el Tirano';
+  if(G.legacyVestFavor>=6&&G.legacyVestSanction<2)return'el Padre del Vestuario';
+  if(s.money>=75&&G.legacyPopulist<3)return'el Tacaño';
+  // Fallback to week/stat-based motes
   for(const m of MOTE_BY_STAT){if(m.c(G))return m.n;}
   let name=MOTE_BY_WEEKS[0].n;
   for(const lvl of MOTE_BY_WEEKS){if(G.weeks>=lvl.t)name=lvl.n;}
@@ -957,7 +1012,12 @@ function statMeta(){
 // CARD PICKING
 // ─────────────────────────────────────────────────────────────────
 function pickCard(){
-  // FIFA Boss check
+  // Blatter check (end-game boss — GUIA.md: 2+ títulos, Finanzas > 55, Afición > 45, legado 3+)
+  if(!G.blatterDone&&G.champions>=2&&G.stats.power>55&&G.stats.money>45&&G.reign>=3){
+    G.blatterDone=true;
+    return BLATTER_CARD;
+  }
+  // FIFA Boss check (minor officials)
   if(G.weeks>=G.nextFifaBossAt){
     const avail=FIFA_BOSS_CARDS.filter(c=>!G.fifaBossUsed.has(c.id));
     if(avail.length>0){
@@ -973,8 +1033,8 @@ function pickCard(){
   }
   let pool=CARDS.filter(c=>!G.seen.has(c.id));
   if(pool.length===0){G.seen.clear();pool=CARDS.filter(c=>c.id!=='c100');}
-  // Champions card when doing well
-  if(G.stats.money>60&&G.stats.press>60&&G.weeks>30){
+  // Champions card — GUIA.md: Afición > 50, RRPP > 50, más de 15 turnos. NOT added to seen so it can reappear.
+  if(G.stats.money>50&&G.stats.press>50&&G.weeks>15){
     const f=CARDS.find(c=>c.id==='c100');
     if(f&&!G.seen.has('c100'))pool.push(f);
   }
@@ -993,16 +1053,27 @@ function choose(idx){
   if(!ch)return;
 
   try{
-    // Track
-    if(ch.bomb){G.track.corrupt++;}
-    else if(other&&other.bomb){G.track.honest++;}
+    // Track corrupt/honest decisions
+    if(ch.bomb){G.track.corrupt++;G.legacyCorrupt++;}
+    else if(other&&other.bomb){G.track.honest++;G.legacyHonest++;}
+
+    // Track decisions for apodo system (GUIA.md)
+    if(ch.fx){
+      if((ch.fx.money>0||ch.fx.press>0)&&!ch.bomb)G.legacyPopulist++;
+      if(ch.fx.power>5)G.legacyPowerDec++;
+      if(ch.fx.vest>5)G.legacyVestFavor++;
+      if(ch.fx.vest<-5)G.legacyVestSanction++;
+    }
 
     // Win
     if(ch.win){
       applyFx(ch.fx);
       G.weeks++;G.track.totalTurns++;
-      G.seen.add(card.id);
-      endRound('legend');
+      // c100 and cBlatter NOT added to seen — GUIA.md: can reappear in future reigns
+      if(card.id!=='c100'&&card.id!=='cBlatter'){G.seen.add(card.id);}
+      // Track champions titles
+      if(card.id==='c100'){G.champions++;}
+      endRound(typeof ch.win==='string'?ch.win:'champions');
       return;
     }
 
@@ -1073,11 +1144,18 @@ function statLabel(k){return({money:'👥 Afición',press:'📰 Relaciones Públ
 
 function checkEnd(){
   const s=G.stats;
+  // Colapso Total — GUIA.md: multiple stats simultaneously at 0 (checked first for flavor)
+  if([s.money,s.press,s.power].filter(v=>v<=5).length>=3)return'collapse';
+  // Death at 0 (stat collapse)
   if(s.press<=0)return'press';
   if(s.money<=0)return'money';
   if(s.vest<=0)return'vest';
   if(s.power<=0)return'power';
-  if(s.press>=100&&s.money<10&&s.vest<10)return'collapse';
+  // Death at 100 — core Reigns mechanic: "Si cualquiera llega a 0 o a 100, tu reinado termina"
+  if(s.money>=100)return'money100';
+  if(s.press>=100)return'press100';
+  if(s.vest>=100)return'vest100';
+  if(s.power>=100)return'power100';
   return null;
 }
 
@@ -1103,17 +1181,32 @@ function endRound(type){
 function nextSuccessor(){
   const tl=G.timeline;
   const clubName=G.clubName;
+  // Preserve global counters across successions
+  const totalWeeks=G.totalWeeks+G.weeks;
+  const champions=G.champions;
+  const achievedAny=G.achievedAny;
+  const corruptAll=G.corruptAll+G.legacyCorrupt;
+  const honestAll=G.honestAll+G.legacyHonest;
+
   const newG=makeState();
   newG.timeline=tl;
   newG.clubName=clubName;
   newG.reign=tl.length+1;
-  // Inherit slightly degraded stats
-  const last=tl[tl.length-1];
-  const penalty=last&&last.cause==='legend'?0:10;
-  newG.stats.money=clamp(55-penalty);
-  newG.stats.press=clamp(55-penalty);
+  newG.totalWeeks=totalWeeks;
+  newG.champions=champions;
+  newG.achievedAny=achievedAny;
+  newG.corruptAll=corruptAll;
+  newG.honestAll=honestAll;
+
+  // GUIA.md inheritance: Afición −4 pts per succession, RRPP −8 pts per succession, vest/power reset 30–50 random
+  const successions=tl.length;
+  newG.stats.money=clamp(40 - successions*4);
+  newG.stats.press=clamp(40 - successions*8);
+  newG.stats.vest=30+Math.floor(Math.random()*21);   // 30–50
+  newG.stats.power=30+Math.floor(Math.random()*21);  // 30–50
+
   newG.screen='presSelect';
-  newG.inherited=last?humanCause(last.cause):null;
+  newG.inherited=tl.length>0?humanCause(tl[tl.length-1].cause):null;
   G=newG;
   render();
 }
@@ -1125,28 +1218,36 @@ function fullRestart(){
 }
 
 function humanCause(c){
-  return{press:'El escándalo mediático destruyó al presidente anterior',
+  return{
+    press:'El escándalo mediático destruyó al presidente anterior',
     money:'La afición abandonó el estadio — queda desolado',
     vest:'El poder deportivo colapsó y el equipo fue desmantelado',
     power:'El club está al borde de la quiebra judicial',
-    legend:'El legado anterior fue glorioso',collapse:'El club casi desapareció'}[c]||'El mandato anterior terminó mal';
+    champions:'El legado anterior fue glorioso — campeones de Europa',
+    legend:'El legado anterior fue glorioso — leyenda del club',
+    collapse:'El club casi desapareció del mapa del fútbol',
+    money100:'La euforia de la afición se desbordó y el caos destruyó la gestión',
+    press100:'El exceso de imagen pública acabó con el mandato anterior',
+    vest100:'El vestuario, demasiado poderoso, expulsó al presidente anterior',
+    power100:'El exceso de dinero atrajo la corrupción más profunda'
+  }[c]||'El mandato anterior terminó mal';
 }
 
 // ─────────────────────────────────────────────────────────────────
 // PRES SELECT
 // ─────────────────────────────────────────────────────────────────
 const PRES_TYPES=[
-  {emoji:'💼',name:'Tecnócrata',     desc:'Arranca con +15 Afición',       bonus:'money'},
-  {emoji:'🕶️',name:'Operador Oscuro',desc:'Arranca con +15 Finanzas',       bonus:'power'},
-  {emoji:'📰',name:'Estrella Mediática',desc:'Arranca con +15 RRPP',       bonus:'press'},
-  {emoji:'⚽',name:'Hombre del Vestuario',desc:'Arranca con +15 Poder Deportivo',bonus:'vest'}
+  {emoji:'💼',name:'Tecnócrata',     desc:'Arranca con +8 Afición',       bonus:'money'},
+  {emoji:'🕶️',name:'Operador Oscuro',desc:'Arranca con +8 Finanzas',       bonus:'power'},
+  {emoji:'📰',name:'Estrella Mediática',desc:'Arranca con +8 RRPP',       bonus:'press'},
+  {emoji:'⚽',name:'Hombre del Vestuario',desc:'Arranca con +8 Poder Deportivo',bonus:'vest'}
 ];
 
 function selectPres(i){
   const p=PRES_TYPES[i];
   G.presName=p.name;
   G.presBonus=p.bonus;
-  G.stats[p.bonus]=clamp(G.stats[p.bonus]+15);
+  G.stats[p.bonus]=clamp(G.stats[p.bonus]+8);  // GUIA.md: +8 bonus
   G.currentPortrait=randPortrait();
   G.currentCard=pickCard();
   G.screen='game';
@@ -1229,7 +1330,7 @@ function renderScoreboard(){
   ];
   return defs.map(d=>{
     const v=G.stats[d.k];
-    const danger=v<15;
+    const danger=v<15||v>85;  // danger at both extremes — Reigns mechanic
     const hidden=G.statsHidden[d.k];
     return`<div class="score-icon${danger?' score-danger':''}${hidden?' score-hidden':''}" title="${d.label}: ${hidden?'???':v}">${d.svg}</div>`;
   }).join('');
@@ -1239,14 +1340,22 @@ function renderGame(){
   const card=G.currentCard;
   const s=G.stats;
   const alerts=[];
+  // Low-stat warnings
   if(s.power<15)alerts.push({cls:'a-danger',msg:'💰 Las finanzas del club están al límite. Quiebra inminente.'});
   if(s.money<15)alerts.push({cls:'a-danger',msg:'👥 La afición te da la espalda. El estadio se vacía.'});
   if(s.vest<15) alerts.push({cls:'a-warn',  msg:'⚽ El poder deportivo está en caída libre.'});
   if(s.press<15)alerts.push({cls:'a-warn',  msg:'📰 Las relaciones públicas están destrozadas.'});
+  // High-stat warnings — Reigns mechanic: reaching 100 also ends the reign
+  if(s.money>=85)alerts.push({cls:'a-warn',msg:'👥 ¡Euforia descontrolada! La afición al límite — puede desbordarse.'});
+  if(s.press>=85)alerts.push({cls:'a-warn',msg:'📰 ¡Sobreexposición mediática! Las RRPP al límite — puede volverse en tu contra.'});
+  if(s.vest>=85) alerts.push({cls:'a-warn',msg:'⚽ ¡El vestuario es demasiado poderoso! Controla la situación.'});
+  if(s.power>=85)alerts.push({cls:'a-warn',msg:'💰 ¡Demasiado dinero! Las finanzas al límite — la corrupción acecha.'});
   if(G.bombs.length>0)alerts.push({cls:'a-info',msg:'⚠️ Alguna decisión pasada puede volver a golpearte…'});
   const highTurns=G.highStatTurns||0;
   if(highTurns>0&&highTurns<5)alerts.push({cls:'a-info',msg:`🏆 ¡Todos los indicadores al máximo! ${highTurns}/5 turnos para la Leyenda del Club.`});
+  if(G.champions>0)alerts.push({cls:'a-info',msg:`🏆 ${G.champions} título${G.champions>1?'s':''} de Champions en tu legado.`});
   const yearsLabel=G.reign===1?'1 mandato':`${G.reign} mandatos`;
+  const totalW=G.totalWeeks+G.weeks;
 
   return`<div class="reigns-screen">
     <svg class="mountains-bg" viewBox="0 0 430 130" preserveAspectRatio="xMidYMax slice" fill="#07080f" aria-hidden="true">
@@ -1257,7 +1366,7 @@ function renderGame(){
       <div class="scoreboard-icons">${renderScoreboard()}</div>
       <div class="pixel-score">${G.weeks}</div>
     </div>
-    <div class="pixel-sub">${esc(G.clubName)} · ${yearsLabel}</div>
+    <div class="pixel-sub">${esc(G.clubName)} · ${yearsLabel} · ${totalW} sem. totales</div>
     <div class="alerts">${alerts.map(a=>`<div class="alert ${a.cls}">${a.msg}</div>`).join('')}</div>
     ${card?renderCard(card):''}
   </div>`;
@@ -1278,7 +1387,7 @@ function renderStats(){
   return`<div class="stats-grid">${statMeta().map(m=>{
     const v=G.stats[m.k];
     const hidden=G.statsHidden[m.k];
-    const danger=v<15;
+    const danger=v<15||v>85;  // danger at both extremes — Reigns mechanic
     return`<div class="stat-item${danger?' danger':''}${hidden?' hidden':''}">
       <div class="stat-hdr">
         <span class="stat-lbl">${m.lbl}</span>
@@ -1368,10 +1477,13 @@ function renderDeath(){
   const type=G.deathType||'power';
   const hl=DEATH_HL[type]||DEATH_HL.power;
   const last=G.timeline[G.timeline.length-1];
+  // Permanent endings: Blatter win and Leyenda del Club — no successor button
+  const isPermanentEnd=type==='blatter'||type==='legend';
+  const totalWeeksAll=G.totalWeeks+G.weeks;
 
   return`<div class="death-screen">
     <div class="death-hdr">
-      <div class="death-hdr-lbl">Crónica Negra · Edición Especial</div>
+      <div class="death-hdr-lbl">${isPermanentEnd?'🏆 Final de Partida':'Crónica Negra · Edición Especial'}</div>
       <div class="death-paper">${esc(hl.paper)}</div>
     </div>
     <div class="death-body">
@@ -1381,6 +1493,8 @@ function renderDeath(){
         <span class="death-badge">⏱ ${last?last.weeks:G.weeks} semanas de mandato</span>
         <span class="death-badge">📋 Mandato ${G.reign}</span>
         <span class="death-badge">🏷 ${getMote()}</span>
+        ${G.champions>0?`<span class="death-badge">🏆 ${G.champions} título${G.champions>1?'s':''}</span>`:''}
+        <span class="death-badge">🌍 ${totalWeeksAll} semanas totales</span>
       </div>
     </div>
     <div class="tl-section">
@@ -1388,17 +1502,22 @@ function renderDeath(){
       ${renderTimeline()}
     </div>
     <div class="death-actions">
-      <button class="btn-successor" onclick="nextSuccessor()">👔 Siguiente Sucesor</button>
-      <button class="btn-restart"   onclick="fullRestart()">↺ Nueva Dinastía (borrar todo)</button>
+      ${!isPermanentEnd?`<button class="btn-successor" onclick="nextSuccessor()">👔 Siguiente Sucesor</button>`:''}
+      <button class="btn-restart" onclick="fullRestart()">↺ Nueva Dinastía (borrar todo)</button>
     </div>
   </div>`;
 }
 
 function renderTimeline(){
   if(G.timeline.length===0)return`<div style="font-size:12px;color:rgba(240,230,208,.3);font-family:system-ui,sans-serif;padding:8px 0;">Aún no hay historia que contar.</div>`;
+  const CAUSE_BADGE={
+    legend:'🏆',champions:'🏆',press:'📰',press100:'📰',
+    money:'💸',money100:'💸',vest:'🍺',vest100:'🍺',
+    power:'👊',power100:'👊',collapse:'💀',blatter:'⭐'
+  };
   const items=G.timeline.map((item,i)=>{
     const isCurrent=i===G.timeline.length-1;
-    const causeBadge={legend:'🏆',press:'📰',money:'💸',vest:'🍺',power:'👊',collapse:'💀'}[item.cause]||'❓';
+    const causeBadge=CAUSE_BADGE[item.cause]||'❓';
     return`<div class="tl-item">
       <div class="tl-portrait${isCurrent?' current':''}">${item.portrait}</div>
       <div class="tl-dot"></div>
