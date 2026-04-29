@@ -261,8 +261,8 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
 
 /* ══════════════════════════════════════════════════════════════
    16:9 FULL HD LAYOUT (>= 1400px)
-   Resolución base: 1920 × 1080 px
-   Columnas: 480 (izq) | 960 (centro) | 480 (der)
+   Base resolution: 1920 × 1080 px
+   Columns: 480 (left) | 960 (center) | 480 (right)
    ══════════════════════════════════════════════════════════════ */
 @media (min-width:1400px){
   body{align-items:stretch;}
@@ -279,7 +279,7 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
     overflow:visible;
   }
 
-  /* ── 4.1 Columna izquierda (480px) ── */
+  /* ── Left column (480px) ── */
   .col-l{
     display:flex;
     width:480px;
@@ -294,7 +294,7 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
     flex-shrink:0;
   }
 
-  /* ── 3. Columna central (960px) ── */
+  /* ── Center column (960px) ── */
   .col-c{
     width:960px;
     min-width:960px;
@@ -306,7 +306,7 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
     flex-direction:column;
   }
 
-  /* ── 4.2 Columna derecha (480px) ── */
+  /* ── Right column (remaining space) ── */
   .col-r{
     display:flex;
     flex:1;
@@ -330,7 +330,7 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
   .side-missions{display:block;width:100%;}
   .side-missions-lbl{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(212,160,23,.7);margin-bottom:10px;font-family:system-ui,sans-serif;}
 
-  /* ── 3.1 Header: 4 indicadores (120px) ── */
+  /* ── 3.1 Header: 4 status indicators (120px) ── */
   .game-hdr{
     height:120px;
     flex-shrink:0;
@@ -355,7 +355,7 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
   }
   .game-hdr .score-icon svg{width:60px!important;height:60px!important;}
 
-  /* ── 3.2 Caja de información / QTE (100px) ── */
+  /* ── 3.2 Information box / QTE context (100px) ── */
   .game-ctx-box{
     height:100px;
     flex-shrink:0;
@@ -377,7 +377,7 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
     line-height:1.6;
   }
 
-  /* ── 3.3 Área principal del evento (450px) ── */
+  /* ── 3.3 Main event area (450px) ── */
   .game-event-area{
     height:450px;
     flex-shrink:0;
@@ -393,7 +393,7 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
   .event-emoji{font-size:160px;opacity:.35;line-height:1;}
   .event-cat-lbl{font-size:11px;opacity:.3;margin-top:10px;}
 
-  /* ── 3.4 Carta de decisión (overlay): 400×500, −10°, derecha, 120px overflow ── */
+  /* ── 3.4 Decision card overlay: 400×500, −10°, right-aligned, 120px overflow ── */
   .card-overlay-wrap{
     position:absolute;
     right:-120px;
@@ -416,7 +416,7 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
   }
   .card-overlay-wrap .ev-card.is-dragging{cursor:grabbing;}
 
-  /* ── 3.5 Nombre del personaje (60px) ── */
+  /* ── 3.5 Character name (60px) ── */
   .game-char-name{
     height:60px;
     flex-shrink:0;
@@ -431,7 +431,7 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
     letter-spacing:.06em;
   }
 
-  /* ── 3.6 Footer: habilidades (120px) ── */
+  /* ── 3.6 Footer: skills (120px) ── */
   .game-skills{
     height:120px;
     flex-shrink:0;
@@ -1640,7 +1640,7 @@ function renderGame(){
 
     <div class="game-1920">
 
-      <!-- ── 4.1 Columna izquierda: info persistente del jugador ── -->
+      <!-- ── Left column: persistent player info ── -->
       <div class="col-l">
         <div class="col-side-inner">
           <div class="side-block">
@@ -1658,20 +1658,20 @@ function renderGame(){
         </div>
       </div>
 
-      <!-- ── 3. Columna central: UI principal ── -->
+      <!-- ── Center column: main UI ── -->
       <div class="col-c">
 
-        <!-- 3.1 Header: 4 indicadores de estado (120 px) -->
+        <!-- 3.1 Header: 4 status indicators (120px) -->
         <div class="game-hdr">
           <div class="scoreboard-icons">${renderScoreboard()}</div>
         </div>
 
-        <!-- 3.2 Caja de información / QTE (100 px) -->
+        <!-- 3.2 Information box / QTE context (100px) -->
         <div class="game-ctx-box">
           <div class="ctx-text">${esc(card?card.ctx:'')}</div>
         </div>
 
-        <!-- 3.3 Área principal del evento + 3.4 Carta overlay (450 px) -->
+        <!-- 3.3 Main event area + 3.4 Card overlay (450px) -->
         <div class="game-event-area">
           <div class="event-bg" style="background:${illusColor}">
             ${card?`<div class="event-emoji">${card.emoji}</div>`:''}
@@ -1703,10 +1703,10 @@ function renderGame(){
           </div>`:''}
         </div>
 
-        <!-- 3.5 Nombre del personaje (60 px) -->
+        <!-- 3.5 Character name (60px) -->
         <div class="game-char-name">${esc(G.presName||G.clubName)}</div>
 
-        <!-- 3.6 Footer: habilidades (120 px) -->
+        <!-- 3.6 Footer: skills (120px) -->
         <div class="game-skills">
           <div class="skill-icons">
             <div class="skill-icon" title="Afición: ${s.money}">${SVG_STADIUM}</div>
@@ -1728,7 +1728,7 @@ function renderGame(){
 
       </div><!-- /col-c -->
 
-      <!-- ── 4.2 Columna derecha: estado del juego ── -->
+      <!-- ── Right column: game status ── -->
       <div class="col-r">
         <div class="col-side-inner">
           <div class="side-block">
