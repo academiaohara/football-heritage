@@ -1,0 +1,410 @@
+
+Missing Content (Roadmap)
+If you know any information regarding the missing information below, you are welcome to contact one of the moderators and we will add the material as soon as possible!
+
+    How to acquire some of the deaths?
+    Do methods exist to more reliably win combat?
+
+The Portraits (Characters)
+Be sure to use CTRL+F to find specific achievements and information quickly. You won't need to check the contents and scroll through all the guide!
+
+    The Priest
+    The Diplomat
+    The Spy
+    The Prince (your son)
+    The Queen
+    The Nobleman
+    The Farmer
+    The Bird
+    The Doctor
+    The Duke
+    The General
+    The Merchant
+    The Soldier
+    The Jester
+    The Monk
+    The Witch
+    The Foreign
+    The Lady
+    The Courtesan
+    The Barbarian - this information was provided by Anders!
+    The Barbarian is the only character which can be hard to meet if you are not actively attempting to find him, thus copy the following steps if you are missing him! Start a fight with the Vikings if possible and exterminate all the warriors after you won the war when provided the option!
+    The Royal Dog (The Devil)
+    The Black Bird
+    The Dragon
+    The Ghost
+    The Dungeon/Pungeon
+    The Nun
+    The Executioner
+    The Explorator
+    The Prophet
+    The Lord
+    The Werewolf
+    The Homunculus
+    The Minstrel
+    The Painter
+    The Rival
+    The Skeleton
+    The Fortune Teller
+
+
+Royal Deeds (Quests)
+
+    The Young
+    Govern for at least 5 years.
+
+    The Duelist
+    Win a duel.
+
+    The Dazed
+    Try the blue one - reffering to the blue mushroom.
+
+    The Wicked
+    Recruit the Spy.
+
+    The Patron
+    Recruit the Minstrel.
+
+    The Blessed
+    Meet the clumsy Prophet.
+
+    The Lover
+    Start a Romance.
+
+    The Target
+    Hear about the conspiracy.
+
+    The Tender
+    Arrange a bestial honeymoon - in depth walkthrough here.[www.appunwrapper.com]
+
+    The Doomed
+    Unmask the Senator - in depth walkthrough here.[www.appunwrapper.com]
+
+    The Pivot
+    Pass the first millennium.
+
+    The Wise
+    Recruit the Doctor.
+
+    The Sorcerer
+    Meet the Witch.
+
+    The Creepy
+    Lose yourself in the dungeon.
+
+    The Trump
+    Govern like a winner - allow the Jester to plan your festive activities.
+
+    The Alchemist
+    Find the Frozen Blood.
+
+    The Settler
+    Discover a new world.
+
+    The Boyfriend
+    Date a pigeon - in depth walkthrough here.[www.appunwrapper.com]
+
+    The Pious
+    Build a cathedral.
+
+    The Greedy
+    Build a personal fortune.
+
+    The Bigot
+    Build 5 churches.
+
+    The Devious
+    Invent modern politics.
+
+    The Devil
+    Meet the Devil.
+
+    The Father
+    Have an heir.
+
+    The Mage
+    Talk to the Vase.
+
+    The Crusader
+    Start a crusade.
+
+    The Peacemaker
+    End a crusade.
+
+    The Seer
+    See the future.
+
+    The Coward
+    Look somewhere else - agree to child labor.
+
+    The One-Handed
+    Lose a limb. - allow the doctor to saw off your arm upon having an accident when hunting. or go hunting and have a care-center built by the witch.
+
+    The Old
+    Govern for at least 20 years.
+
+    The Ancient
+    Govern for at least 40 years.
+
+    The Grizzled
+    Govern for at least 60 years.
+
+    The Target
+    Hear about the conspiracy.
+
+    The Alchemist
+    Find the Frozen Blood.
+
+    The Musician
+    Write a war song.
+
+    The Tender
+    Arrange a bestial honeymoon.
+
+    The Senile
+    Govern for at least 80 years.
+
+    The Fossil
+    Govern for at least 100 years.
+
+    The Eternal
+    Govern for at least 200 years.
+
+    The Survivor
+    Trick the Devil.
+
+    The Hat
+    Identify the terrorist cell - in depth walkthrough here.[www.appunwrapper.com]
+
+    The Writer
+    Discover Printing - triggered by the Doctor.	
+
+
+
+Memento Mori (Deaths)
+Anders contributed a huge amount to this section!
+
+Spheres of Influence
+
+Church = Religion
+Population = People
+Army = Military
+Money = Wealth
+
+    1. Die By Drowning
+    After getting kidnapped, you will be blindfolded. Do not follow the guiding voice and you will proceed to fall into a river and drown.
+    Reach 0 in military and wealthsimultaneously.
+
+    2. Burn On The Cross
+    Reach 0 in church and any other sphere.
+
+    3. Die In The Dungeon
+    Reach 100 in military.
+
+    4. Have A Peaceful Reign
+    Reach 100 in population.
+
+    5. Natural Death
+    Reach 60+ years to trigger this death by chance.
+
+    6. Die By The Plague
+    Let the doctor be the executioner.
+    Go hunting upon being provided the option and suffer a terrible accident by chance.
+    Die with the Black Plague] still in effect.
+
+    7. Have Your Head On A Spike
+    Reach 0 in religion.
+
+    8. Get Your Limbs Torn Off
+    Reach 100 in religion.
+
+    9. Get Poisoned
+    Reach 0 in military when The Rival is in town.
+
+    10. Get Stabbed
+    Reach 0 in military.
+
+    11. Get Hung
+    Reach 100 in military when you have a heir (The Prince aka your son).
+
+    12. Get Beheaded - MISSING INFORMATION
+    Wait till the general says that he found a body without fingers. Say no when he asks you to reinforce the garrison! If you can get your army to 100, you will get the death.
+
+    13. Get Torn Into Two Pieces
+    Reach 0 in people and simultaneously reaching 100 in military while being on a crusade.
+
+    14. Reign Over Pigeons
+    Reach 0 in people.
+
+    15. Jump Out Of The Window
+    Reach 100 in people and army. Please note that this is slightly speculative, thus, please let us know if this is not the case.
+
+    16. Break Your Heart
+    Reach 100 in wealth while being in love with a character.
+
+    17. Die From Eating Too Much
+    Reach 100 in wealth.
+
+    18. Get Eaten By Dogs
+    Reach 0 in wealth.
+
+    19. Get Exiled
+    Reach 0 in wealth.
+
+    20. Die By Karma
+    Kill all the barbarians after winning the war and The Barbarian might duel you after. Lose this duel.
+
+    21. Get Eaten By Rats
+    Die in the dungeon.
+
+    22. Die Through Betrayal
+    Let your son betray and kill you.
+
+    23. Trick The Devil
+    See in depth guide further below.
+
+    24. Get Trapped In The Medieval Ages
+    Reach the year 2000 and reset the game (hold in R to initiate reset).
+
+    25. Rot In Hell For Eternity
+    Say yes to the spirit after acquiring the Devil's curse.
+
+    26. Get Burnt To Death
+    Refuse to leave after saving the damsel in distress from the dragon.
+
+
+If you did not understand some of the instruction or were unable to find what you were looking for, try this guide on deaths too:
+Memento mori / All the deaths 
+Una guía para Reigns
+Por: Miraglyth
+An album of all 29 deaths in the game.
+Dueling (Combat)
+From experience, enemies will mostly attack, then defend, then attack, then defend.
+
+Exceptions
+
+    Praying = If the enemy prays, you will be forced to pray in the following turn!
+    Throwing Daggers = Some skeletons might throw a dagger at you.
+    Deflections = Some enemies can deflect your attacks, especially throwing daggers.
+
+
+Tips
+
+    Defend when the enemy attacks.
+    Attack when the enemy defends.
+    You can preview your movements by hovering over the card option.
+    Try to stay at the center of the board to reduce the chances of getting knocked off.
+
+The Dungeon (Pungeon)
+The Dungeon becomes surprisingly easy after a few playthroughs, do not worry!
+
+Basics
+
+    Golden doors will provide you with a chest which might contain a key.
+    Find the air door after having acquired a key to escape the dungeon.
+    While in the dungeon, you will constantly lose value in all of your spheres.
+    Skeletons might confront you, fighting them and winning will provide a sharp increase in all of your spheres.
+
+
+Tips
+
+    Always fight skeletons unless your stats are extremely high.
+    Act fast; the more time you spend contemplating, the more stats you lose and the more likely you are to encounter another skeleton whereby you would be forced to fight it.
+    Learn the door symbols to make faster decisions; you wouldn't need to read the text anymore.
+    Do not open arsenic doors as they could be trapped.
+    Loss of stats is paused during fights!
+
+
+Key Information
+The doors seem to always be the same. As such, you can figure out the patterns relatively fast. The door to pick next will nearly always be hinted at on the text provided in a room.
+
+Dangers
+
+    Salt + Arsenic
+    Arsenic + Breaking A Wall
+
+
+Spoilers
+
+
+Finding A Lover (Romances)
+
+    The Jester might tell you that the public would love to see you with a lady. Agreeing to this will trigger a lady to ask you to spend time together in public.
+
+    The Queen sometimes invites her sister over for festive activities. The sister will then proceed to ask you why the queen does not like her. Tell her that it might be your fault and tell her that you love her. Fight her but attempt to lose the fight. She will see that you are wondered and takes care of you!
+
+    The Mage might offer to teach you in white magic. Say yes and choose the love option. Choose one of the characters she provides as an option to fall in love with.
+
+Dog(e) Interactions! (Transport)
+The dog provides several different options with the following effects:
+
+    Throne Room = No Effect
+    Dungeon = Enters the dungeon.
+    Play Ball = Play ball with the dog ->
+    Wagon = See the Fortune Teller.
+    Forest = Grants you the ability to see stat changes and current stat values at the expense of being unable to see the magnitude some cards have on certain spheres.
+
+The Bird (Black or White)
+In your first few playthroughs, you will be met with the option to trust a white or a black bird. Whichever one you trust, will stick with you for the rest of the playthrough. The two birds provide different cards and effects on your spheres throughout this playthrough till you reset your game. Be sure to pick the other bird on your next playthrough to see its respective cards and fill up your total cards seen stat if you are looking to complete the game!
+
+The Vase (Important)
+You will meet The Vase inevitably through The Doctor. The Vase will ask for you to fetch it the Frozen Blood.
+
+    Wait for the prompt by The Mage to teach you some white magic.
+    She will ask you to prove yourself worthy through completing her quest (survive 15 years after talking to her).
+    Completion of the quest will provide you an option for a Red Gem or The Crown; select the Red Gem.
+
+
+Perks
+
+    The Vase will provide you with free stats from time to time.
+    The Vase can randomly grant you eternal life, allowing you to reach an infinitely high score if you keep your spheres balanced (you won't die from old age at 60+ years with this king).
+
+
+Spoilers
+
+
+
+Beating The Devil! (Spoilers)
+A tale of crusades, dungeons, and strawberries. Extreme spoilers lie ahead!
+
+This is a solution to one of the biggest riddles in the game.
+
+Prerequisites
+If you would like to attempt to solve this riddle yourself, here are some tips. Note that the optional prerequisites provide a lot of information on how to beat the devil!
+
+    Vase Questline - Aquire The Frozen Blood
+    Basic Knowledge of Dungeon - Defeating Skeletons, Getting There, Door Effects
+    Unmasking The Senate (Optional)
+    Learning How To Trick The Devil Through The Mage (Optional)
+
+
+Beating The Devil
+Hover over the shaded black areas below to reveal all of the spoiler information. Due to steam formatting, this section looks somewhat buggy if not hovered over. There is nothing I can do about this :(
+The Dungeon
+
+    Enter the dungeon
+    Find a torch from a Gold room chest.
+    Enter the Fire door.
+    Enter the Arsenic door.
+    Enter the Acid door.
+    Break the wall.
+    Enter the Salpeter door.
+    Enter the Devil door.
+
+
+The door sequence correlates to the dates the Mage provides you. If you look at the timeline post/pre-game you can see symbols at each one of these dates. These symbols represent the order in which you should open the doors as listed above.
+
+A skeleton will confront you; attack him (do not flee). He will trigger a fetch quest whereby you need to get strawberries for him.
+
+The Strawberries
+
+
+    Start a crusade.
+    Wait for the Vase card.
+    Use it to create strawberries.
+    Enter the dungeon again.
+    Use the same sequence to meet the skeleton.
+
+
+The skeleton will, in turn, help you out when a sphere of influence gets low, providing you with yes/no options on playthroughs. Use the devil's curse that you acquire next to answer yes to him, in turn beating the devil since the skeleton is the devil!
