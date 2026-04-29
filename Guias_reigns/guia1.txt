@@ -1,0 +1,3912 @@
+
+Introduction
+NOTE: This guide is unfinished because I couldn't be bothered to properly cut word/character length to make the tables display everything properly (it gets cut off) and events aren't always properly grouped/sorted correctly.
+
+Note that you can add/remove characters which may affect the events you can see. There are also event flags (like having certain buildings or doing certain actions, etc.) that allow for different options. I don't state it here but events have a weighted chance of appearing and may be repeatable (though may be unavailable for a certain amount of time).
+
+Results are in Religion/Population/Army/Money order. Yes/No is really Left/Right.
+
+Addable characters:
+
+
+Removable characters:
+
+Basic Events (Any Character)
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{A great fire} Destroying castle
+-
+Any
+-10/-10/-30/0
+-10/-10/0/-30
+{A group of} Villagers assaulted by celestial
+Population<50
+Any
+0/15/0/-10
+0/-1/0/0
+{An earthquake destroyed} City Guard orders
+-
+Any
+0/-40/5/10
+!FFortifications, !FHospital, !FSchool
+0/5/0/-40
+!FBarn, !FFortifications, !FSchool
+{I found blue} Brown mushrooms, blue edible
+!FMushroom
+Any
+-
+-
+FMushroom
+{I heard strange} noises last night
+-
+Any
+0/-5/0/0
+0/5/-10/-5
+{I met a} lady versed in plants and dreams
+!HaveWitch
+Any
+15/-5/-5/0
+-5/5/5/0
+AddWitch, FWise
+{My Lord, your} Son is full of promise
+HavePrince
+Any
+-
+-
+Go to 1
+1: {I'm the next} King, kill infidels
+-
+Prince
+-10/10/0/0
+15/-10/5/0
+{The estuary of} river is swamp, sanitize
+-
+Any
+0/-15/0/0
+0/15/0/-10
+{The merchants would} New Guild, representative to court
+!HaveMerchant
+Any
+0/0/0/-15
+-5/-5/-5/15
+AddMerchant
+{The peasants are} Revolting, Army overwhelmed
+Population<50, Army<50
+Any
+-10/30/-10/0
+!FBarn, !FCathedral, !FSchool
+0/-10/30/-20
+!FFortifications, !FHospital, !FSchool
+{You should organize} curfew, not safe
+-
+Any
+0/-5/-5/0
+0/5/10/-15
+{My lord, a} doctor saved nephew, magician
+!HaveDoctor
+Any
+10/0/0/0
+-5/5/0/0
+AddDoctor, Go to 1
+1: {I'm a doctor} alchemist, poisoner
+-
+Doctor
+-5/10/0/0
+-10/0/10/0
+Barbarian Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{Son of a} demon, look
+-
+Barbarian
+-
+RemoveBarbarian, FlagCoward
+-
+Go to 1 (Duel)
+1a: {Before collapsing, you} hear whisper
+DuelLose
+Ending (Duelled)
+-
+-
+1b: {My children... They} dead
+DuelWin
+Barbarian
+0/0/5/0
+RemoveBarbarian, FlagDuelsWon+
+-
+RemoveBarbarian, FlagDuelsWon+
+(DuelSuperMove) {Tonight I will} dine Valhalla
+-
+Barbarian
+-
+-
+Bird Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{Grrrrrr}
+-
+Bird
+-
+-
+{The message says} (EventBird) Don't believe black bird
+-
+Bird
+-
+Go to 1
+-
+Same
+1: {The message says} Bird is puppet
+-
+Black Bird
+-
+Go to 2
+-
+Same
+2: {You little scoundrel} I will pluck you
+-
+Bird
+-
+Go to 3
+-
+Same
+3: {Yeah, try that} White dove
+-
+Black Bird
+-
+Go to 4
+-
+Same
+4: {Ha, well done} Fluttering demon
+-
+Bird
+-
+Go to 5
+-
+Same
+5: {All this time} Writing powerful messages
+-
+Bird
+-
+Go to 6
+-
+Same
+6: {Yes, I am} Real author of messages
+-
+Bird
+-
+Go to 7
+-
+Same
+7: {Don't listen. I} Proof not born in castle's rookery
+-
+Black Bird
+-
+Go to 8
+-
+Same
+8: {All fake and} divisive, which one
+-
+Bird
+-
+RemoveBird, DeedDecisive, Go to EventIslanderInvasion (After5Years)
+-
+RemoveBlackBird, DeedDecisive
+{The message says} Islanders menacing
+!FWarIslander
+Bird
+0/-10/0/-10
+FWarIslander, FWarsOngoing+
+0/0/-15/-5
+FWarIslander, FWarsOngoing+
+{The message says} Offering services of spy
+!HaveSpy
+Bird
+0/0/-15/0
+0/0/20/0
+AddSpy
+{The message says} Village South polygamy
+-
+Bird
+10/0/0/0
+0/0/-10/0
+{Tweeeet!}
+-
+Bird
+-
+-
+{Tweet! It seems} Bird message not there
+-
+Bird
+-
+Go to 1
+-
+Same
+1: {This message must} Send borders
+-
+General
+-10/-10/-70/-10
+0/-5/5/-5
+{Tweet! Tweet!}
+-
+Bird
+-
+-
+Black Bird Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{The message says} Dragon in mountains
+-
+Black Bird
+10/0/0/5
+0/5/-10/-5
+{The message says} Dragon planned invasion of treasury
+-
+Black Bird
+-
+Go to 1
+0/0/0/-10
+1: {No need to} be insulting
+-
+Dragon
+Go to EndingDragon
+0/0/0/-20
+{The message says} Giant shaking ground, send priests
+-
+Black Bird
+0/-5/-10/0
+-5/-30/0/-10
+{The message says} Griffin devastated garrison
+-
+Black Bird
+0/-10/-10/0
+Go to EventBird (After6Years)
+0/0/0/-20
+Go to EventBird (After6Years)
+{The message says} (EventIslanderInvasion) Islanders preparing invasion of Kingdom
+-
+Black Bird
+5/5/10/5
+0/0/-30/0
+{The message says} Kraken on shores
+-
+Black Bird
+15/-10/0/0
+0/5/-10/-5
+{The message says} Village created golem
+-
+Black Bird
+5/0/0/5
+0/5/-10/-5
+Courtesan Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{This is your} 20th birthday
+Age=7
+Courtesan
+-5/-5/-5/0
+5/5/5/-15
+{My Lord... Would} Taste cake
+Age>10
+Courtesan
+0/-5/0/0
+0/5/0/0
+Go to 1 (After4Years)
+1: {Too much sugar} Will kill you
+-
+Doctor
+-
+FOld
+-
+{This cake will} Taste of paradise
+Age>10
+Courtesan
+0/-5/0/0
+0/5/0/0
+Go to 1 (After4Years)
+1: {Too much sugar} Will kill you
+-
+Doctor
+-
+FOld
+-
+Diplomat Basic Events
+Note:
+
+    Event/Ending is shortened to E
+    Flag is shortened to F
+    Have is shortened to H
+
+
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{Hum... (whispering) A} Woman claims son is bastard
+-
+Diplomat
+0/5/0/-10
+AddPrince
+-5/-5/5/0
+{Our flag should} Changed
+HJester
+Diplomat
+-
+-
+Go to 1
+1a: {A brown spade} Sky
+-
+Farmer
+-
+Go to 1
+-5/20/-5/0
+1b: {A red cross} Field
+-
+Priest
+-
+Go to 1
+20/-5/-5/0
+1c: {An orange cannon} Canvas
+-
+General
+-
+Go to 1
+-5/-5/20/0
+1d: {What about a} Blue Pig
+-
+Jester
+-
+-5/-5/-5/0
+{Queen is loved} More power
+HQueen
+Diplomat
+0/-6/-6/5
+0/8/8/0
+{The folks of} village teaching children to spit
+-
+Diplomat
+0/5/0/0
+10/-10/0/0
+{The kingdom of} South betrothed to princess
+!HQueen, Age<18
+Diplomat
+0/-10/0/0
+Go to EAttackSouth (After3Years)
+10/5/5/10
+AddQueen
+{The mountainous region} near border is unlawful
+HNobleman, !FGovern
+Diplomat
+-5/-5/-5/-5
+-
+Go to 1
+1: {We could appoint} Nobleman to govern
+-
+Merchant
+-5/-5/-5/-5
+0/0/0/12
+FGovern, Go to 2
+2: {I accept Sire} Rule savage country
+-
+Nobleman
+0/15/0/5
+Go to 3
+5/0/15/0
+Go to 3
+3: {Thanks to Nobleman's} (ENobleGovern) actions, corrupt
+-
+Diplomat
+-
+Go to 4
+-
+Same
+4: {Nobleman is at} large horde of half-bandits
+-
+General
+0/-5/0/0
+RemoveNobleman, Go to EBarbarianBorder (After2Years)
+0/0/-10/0
+Go to 5
+5: {I surrender! Let} live, treasure
+-
+Nobleman
+-
+RemoveNobleman
+0/0/0/5
+{The Queen of} South forty books
+!FLibrary, !FWarSouth
+Diplomat
+5/-5/-5/0
+-10/20/5/-10
+FLibrary
+{Would you like} Divorce
+HQueen, FHLover
+Diplomat
+5/0/0/0
+-20/5/5/0
+RemoveQueen
+{Would you like} Marry princess
+!HQueen, Age<25
+Diplomat
+-20/0/-10/-10
+10/10/10/10
+AddQueen
+{We heard about} princess in Dark Rock castle
+!HQueen, Age<30
+Diplomat
+0/-5/0/0
+3/3/3/0
+Go to 1
+1: {Breathing fire... Are} Here for damsel
+-
+Dragon
+-
+Go to 2
+-
+Go to 3
+2: {Why not She's} Pretty girl
+-
+Dragon
+-
+Go to 3
+-
+Same
+3: {Oh good... There} Take her
+-
+Dragon
+-
+Go to 4
+-
+Same
+4: {Nobody is killing} Here she is
+-
+Dragon
+-100/-100/-100/-100
+Go to EDragon
+-
+Go to 5
+5: {My hero!}
+-
+Courtesan
+-
+Go to 6
+-
+Same
+6: {Are you back} Dragon not cheap
+-
+Diplomat
+0/0/0/-8
+Same
+Doctor Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{I created a} machine that prints
+Year>1439
+Doctor
+15/0/0/0
+-5/15/5/5
+FPrinter, DeedWriter
+{I discovered a} Connect people in Magic Net
+Year>1980
+Doctor
+0/-5/0/0
+Go to 1
+0/15/0/5
+Go to 1
+1: {Perfect way to} share cats
+-
+Jester
+0/-5/0/0
+0/5/0/0
+{I would like} meet scientist friends from West
+-
+Doctor
+15/-5/0/0
+-5/10/0/-5
+{I would like} Research lead into gold
+!FDocExperiment
+Doctor
+10/0/0/0
+-10/0/0/-15
+FDocExperiment
+{I would like} Research weapons and warfare
+-
+Doctor
+0/5/-15/0
+0/-5/20/-15
+FStrong
+{Look at the} Strange thing created, alchemy and dark arts
+!HaveHomunculus
+Doctor
+-
+AddHomunculus, Go to 1
+-
+Same
+1: {It's a vase}
+-
+Doctor
+-
+Go to 2
+-
+Same
+2: {It doesn't say} anything, vase
+-
+Homunculus
+-
+Go to 3
+-
+Same
+3: {Liar...}
+-
+Homunculus
+-
+Go to 4
+-
+Same
+4: {Not you, the} Doctor, found Lamascus
+-
+Homunculus
+-
+Go to 5
+-
+Same
+5: {A question so} Frozen Blood
+-
+Homunculus
+-
+-
+{My King, it} army poor hygiene
+-
+Doctor
+0/-5/-15/0
+0/5/15/-10
+{My research is} not working
+FDocExperiment
+Doctor
+15/0/0/0
+!FDocExperiment
+0/0/0/-10
+{Sire! Your urine} smells rhododendrons
+-
+Doctor
+0/0/10/0
+0/0/-10/0
+{While doing my} Research, distil alcohol
+FDocExperiment
+Doctor
+10/0/0/0
+-10/-5/-5/30
+{You've got gout} No love stories
+Age>20
+Doctor
+-10/0/-10/0
+Go to 1 (After5Years)
+5/-10/5/0
+Go to 1 (After3Years)
+1: {I'm pretty confident} leeches cure
+-
+Doctor
+15/5/5/5
+-10/-10/-10/-10
+FOld
+Executioner Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{I don't like} Farmer, whimpering lier
+-
+Executioner
+-
+Go to 1 (After6Years)
+0/-5/0/0
+Go to 1 (After6Years)
+1: {The cattle are} dying from epidemic
+-
+Farmer
+0/10/0/5
+Go to 2
+0/5/0/-10
+Go to 2
+2: {Here, that was} lie, well done
+-
+Executioner
+-
+Go to EventFarmerExecutioner (After13Years)
+-
+Go to EventFarmerExecutioner (After16Years)
+{I'm a serial} killer
+HaveDoctor
+Executioner
+-
+Go to 1
+-
+Same
+1: {This job sucks} I could
+-
+Executioner
+-
+Go to 2 (After2Years)
+-
+Same
+2: {I could be} executioner
+-
+Doctor
+-
+Go to 3
+-
+Same
+3: {I'm looking for} test poisons
+-
+Doctor
+-
+0/-100/0/4
+Go to 4
+4: {A terrible plague} followed
+-
+Ending (Disease)
+-
+-
+{There are too} many to execute
+-
+Executioner
+0/-8/0/0
+0/5/-5/0
+{There has been} breakout from prison
+-
+Executioner
+-5/-5/-5/-5
+0/0/-10/0
+{We should create} Museum of Science, collect creatures
+-
+Executioner
+10/0/0/0
+0/10/0/-10
+{Would you like} hug
+Age>5
+Executioner
+0/0/10/0
+-2/10/-2/0
+Explorator Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{During my travels} I found elephant
+Dynasty>8
+Explorator
+-
+Go to 1
+-
+Same
+1: {Shhh... (breathing fire)}
+-
+Dragon
+-
+Go to 2
+-
+Same
+2: {A dragon ha} Dragons don't exist
+-
+Explorator
+0/-5/-15/-10
+0/0/0/15
+Farmer Basic Events
+Note:
+
+    Event/Ending is shortened to E
+    Flag is shortened to F
+    Have is shortened to H
+    Population is shortened to Pop
+
+
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{A new farming} technique improved harvest
+-
+Farmer
+0/0/0/15
+FGreedy
+8/8/8/0
+{An explosion in} mine killed hundred
+-
+Farmer
+0/0/0/-10
+0/-15/0/10
+{Cereals are very} cheap, adjust price
+Wealth<50
+Farmer
+0/-15/0/20
+0/0/0/5
+{I can't believe} did this
+Age>5
+Farmer
+0/5/-5/0
+0/-6/10/0
+{I don't like} (EventFarmerExecutioner) Executioner, lazy fraud
+-
+Farmer
+0/5/5/0
+0/0/-5/0
+{My Lord, the} wolves eating children
+-
+Farmer
+5/-10/10/-5
+-
+Go to 1, FBrave
+1a: {The hunt was} Success
+-
+Nobleman
+-2/15/-2/-2
+5/0/5/5
+1b: {Disappointing this hunt} Mushrooms
+!FMushroom
+Nobleman
+-
+-
+FMushroom
+1c: {You have suffered} Accident
+-
+Any
+-100All
+Go to EBed
+-5/-5/-5/-10
+AddDoctor, Go to 2
+2a: {My Lord, you're} Nothing can do
+-
+Doctor
+-
+Go to EGangrene
+Same
+2b: {My Lord... I} Cut arm
+-
+Doctor
+Go to EGangrene
+5/5/5/-5
+FOneHanded
+2c: {My King I} Decay intervene
+-
+Witch
+10/0/-5/0
+Go to EGangrene
+-10/0/5/-5
+FOneHanded
+{My Lord, you're} mighty leader, I bow
+Pop<40, Army>50
+Farmer
+0/-15/8/0
+0/5/0/0
+{Our cows are} producing blood
+HDoctor, HPrince, HWitch
+Farmer
+10/-5/0/0
+AddPrince, Go to 1
+-10/5/0/0
+AddDoctor, AddPrince, Go to 2
+1: {Satan is among} us, witches burn
+-
+Priest
+-10/0/0/0
+AddDoctor, Go to 2
+-5/0/0/0
+AddWitch, Go to 3 (After3Years)
+2: {How strange! It} Proper blood
+-
+Doctor
+-
+Go to 1
+0/0/0/-5
+Go to 11 (After2Years)
+3: {We found blood} Witch's rooms
+-
+General
+-
+Go to 11 (After2Years)
+-
+Go to 4
+4: {I'm conducting experiments} blood coagulation
+-
+Witch
+-5/5/0/0
+Go to 11 (After2Years)
+5/-5/0/0
+RemoveWitch, Go to 11 (After2Years)
+11: {It seems this} Prank by son
+-
+Doctor
+-
+RemovePrince
+-
+Go to 12
+12: {Guards! Guards! The} Disciple of Satan
+-
+Prince
+-
+Go to 13 (Duel)
+-
+Same
+13a: {I... You... Father...}
+DuelWin
+Prince
+0/0/5/0
+FDuelsWon+
+5/0/0/0
+FDuelsWon+
+13b: {You bleed to} death at son's feet
+DuelLose
+Ending (Duelled)
+-
+-
+{The harvest has} fantastic
+-
+Farmer
+5/5/20/5
+5/20/5/5
+{The harvest is} nightmare, people famished
+Pop<50, !FBarn
+Farmer
+5/-30/5/0
+-5/20/-5/-20
+{The miners are} refusing dig in mine
+-
+Farmer
+0/-10/0/5
+0/10/0/-20
+{The mines are} full of gold
+-
+Farmer
+0/0/0/30
+FGreedy
+5/5/5/5
+{The river Drop} dry, build dam
+-
+Farmer
+0/-15/0/0
+0/10/0/-15
+Go to 1
+1a: {This dam will} limit Viking's access
+!FWarViking
+Diplomat
+0/-30/0/15
+5/0/10/0
+1b: {We found gold} in river bed
+Dynasty>2
+Farmer
+0/0/0/15
+FGreedy
+8/8/8/0
+{The river Drop} flooding country
+-
+Farmer
+0/-30/0/0
+-5/5/-5/-20
+{These wolves are} driving crazy, burn forest
+!FFarmerWolf
+Farmer
+0/0/5/0
+Go to 1
+-5/-5/-5/-5
+Go to 2
+1: {He's escaped!}
+-
+General
+-5/-5/-5/-5
+Go to 2
+0/0/-15/0
+Go to 2
+2: {Late at night...} Terrible happened
+-
+Farmer
+-
+Go to 3
+-
+Same
+3: {I don't feel} bad, strong
+-
+Farmer
+-5/0/-5/0
+AddWerewolf, RemoveFarmer, Go to 4 (After4Years)
+0/-5/0/-5
+AddWerewolf, RemoveFarmer, Go to 4 (After4Years)
+4: {Would you introduce} gentleman of court
+-
+Werewolf
+-
+-
+AddFarmer,
+Go to 5
+5: {M'Lord. It's going} eat me
+-
+Farmer
+-
+Go to 6
+-
+6: {I'm so thrilled} acquaintance, woman of quality
+-
+Werewolf
+-
+Go to 7
+(After2Years)
+-
+Same
+7: {My Lord, we} marry, bless us
+-
+Farmer
+5/0/5/0
+-15/10/-5/0
+FFarmerWolf
+{We found some} gold in mines, dig deeper
+-
+Farmer
+0/5/0/-5
+0/-15/0/15
+{While digging for} gold found crypt
+!FInDungeon
+Farmer
+-
+-
+FInDungeon,
+!FSilkRoad,
+Go to EventDungeonMain
+{Your people are} (EventFarmerBread) starving, price too high
+Pop<30
+Farmer
+0/-10/0/0
+0/5/0/-20
+Foreign Princess Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{I have a} legal issue with merchants about trade
+-
+Foreign Princess
+5/0/0/-15
+0/5/5/10
+{I'm willing to} Stay in court
+!FlagCrusade
+Foreign Princess
+15/0/0/0
+RemoveForeignPrincess
+-10/5/5/10
+{I would like} Astronomical wonders
+!FlagCrusade, HaveDoctor, HavePriest
+Foreign Princess
+5/-5/0/0
+-5/5/5/0
+AddDoctor, Go to 1
+1: {This is very} Discoveries of Argos
+-
+Doctor
+-
+Go to 2
+-5/10/5/0
+Go to 2
+2: {Blasphemy! The only} Sun around us
+-
+Priest
+-25/15/0/5
+25/-10/0/-5
+{Sign a peace} treaty with, guarantee 10 years of prosperity
+Age>5, !FlagCrusade
+Foreign Princess
+0/-10/10/-5
+-
+Go to 1 (After1Year)
+1: {It's like... nothing} is happening
+-
+Monk
+-
+Go to 2 (After1Year)
+-
+Same
+2: {There is only} good news, paradise
+-
+Monk
+-
+Go to 3 (After1Year)
+-
+Same
+3: {So... we almost} went to war but didn't happen
+-
+Monk
+-
+Go to 4 (After1Year)
+-
+Same
+4a: {Nothing, absolutely nothing} is happening
+-
+Any
+-
+Go to 5
+-
+FlagProsperityTreaty+, Go to 4 (After1Year)
+4b: {It was painful} Don't worry, it's over
+FlagProsperityTreaty>6
+Foreign Princess
+-
+-
+5: {You decide to} slip out of castle
+-
+Ending (Adventures)
+-
+-
+{Your army persecutes} my people, condemn them
+-
+Foreign Princess
+0/-10/0/-10
+-5/20/-5/15
+Fortune Teller Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{Don't tell me!} (EventFortuneTeller) I see
+-
+Fortune Teller
+-
+Go to 1
+-
+Go to 2
+1a: {Laying dead on} floor, secrets on forehead
+-
+Fortune Teller
+-
+Go to 10
+-
+Same
+1b: {Rich of money} Poor of taste
+-
+Fortune Teller
+-
+Go to 1b1
+-
+Go to 1b2
+1b1: {Beware the black} bird
+-
+Fortune Teller
+-
+AddBlackBird, Go to 10
+-
+Same
+1b2: {The Senator!}
+-
+Fortune Teller
+-
+Go to 10
+-
+Same
+2a: {Full of glory} In front
+-
+Fortune Teller
+-
+Go to 2a1
+-
+Go to 2a2
+2a1: {At the end} Islander play role
+-
+Fortune Teller
+-
+Go to 10
+-
+Same
+2a2: {With red eyes} The Devil
+-
+Fortune Teller
+-
+Go to 10
+-
+Same
+2b: {Full of glory} In front
+-
+Fortune Teller
+-
+Go to 2b1
+-
+Go to 2b2
+2b1a: {She's quite nude} and holding
+-
+Fortune Teller
+-
+Go to 10
+-
+Same
+2b1b: {She's hurt and} sorrows of blood
+HaveQueen
+Fortune Teller
+-
+Go to 10
+-
+Same
+2b2: {Bright and shiny} Forged from earth
+-
+Fortune Teller
+-
+Go to 10
+-
+Same
+10: {That will be} 600 gold
+-
+Fortune Teller
+5/-5/0/0
+0/0/0/-3
+{Fear the black} bird
+!HaveBlackBird
+Fortune Teller
+5/0/5/0
+AddBlackBird
+-10/0/0/0
+AddBlackBird
+{maybe broken or maybe okay: no battleviking, also used in dam}
+{I see a} boats of tall and burly men
+!FlagWarViking
+Fortune Teller
+-5/5/0/0
+Go to >>>>battleviking
+0/0/-15/-5
+Go to >>>>battleviking_keep
+{I see the} philosopher in crusade
+!FlagHaveStrawberry, !FlagSkeletonSawStrawberry
+Fortune Teller
+-
+-5/0/0/0
+{One of your} decisions kill thousands
+-
+Fortune Teller
+0/5/-5/0
+FlagFortunePlague, Go to EventPlague (After4Years)
+0/-5/5/0
+FlagFortunePlague, Go to EventPlague (After4Years)
+{Your wife is} secretly in love
+HaveQueen
+Fortune Teller
+5/0/0/0
+AddGeneral, Go to EventQueenAffair (After8Years)
+-5/0/0/0
+AddGeneral, Go to EventQueenAffair (After8Years)
+General Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{A group of} people enraged, hunting witches
+HaveDoctor
+General
+0/0/-5/0
+Go to 1
+0/-10/5/0
+Go to 1
+1: {Apparently this derangement} rye grain poisoning
+-
+Doctor
+0/0/-5/0
+RemoveGeneral, RemovePriest, Go to 2
+0/-5/0/0
+Go to EventFarmerBread (After3Years)
+2: {The people are} scapegoat, killed priest and general
+-
+Any
+-5/-10/0/-5
+0/0/-15/0
+{Could we dismember} Jester
+HaveJester
+General
+0/0/-10/0
+Go to 1
+-
+Go to 1
+1: {I was playing} Tennis
+-
+Jester
+0/0/10/-5
+0/-5/0/0
+RemoveJester
+{We can never} Recruit soldiers
+-
+General
+0/0/-20/0
+0/-5/20/-15
+AddSoldier
+{Your army needs} good leader, listen
+FlagGeneralNo>1
+General
+0/0/-15/0
+Go to 1 (After1Year)
+0/0/15/0
+1: {Our engineers have} designed new weapon
+-
+General
+0/0/-15/0
+0/0/100/0
+Go to EndingPrison
+{Your mines are} (EventIronOre) not providing iron ore to make weapons
+-
+General
+0/0/-15/0
+0/0/5/-15
+{Your soldiers' wages} too low
+-
+General
+0/0/-10/0
+0/0/15/-10
+Ghost Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{Are you the} young King
+First card
+Ghost
+-
+Go to 1
+-
+Go to 2
+1: {I only talk} to King
+-
+Ghost
+-
+Go to 2
+-
+2: {So you're the} Usurped throne
+-
+Ghost
+-
+Go to 3
+-
+Same
+3: {Well... you're in} charge
+-
+Ghost
+-
+Go to 4
+-
+Same
+4: {Just try to} keep balance
+-
+Ghost
+-
+-
+{Are you the} young King
+Dynasty=2
+Ghost
+-
+Go to 1
+-
+Same
+1: {Ha ha, just} kidding
+-
+Ghost
+-
+Go to 2
+-
+Same
+2: {We will remember} every King
+-
+Ghost
+-
+Go to 3
+-
+Same
+3: {It is said} only the Devil forget
+-
+Ghost
+-
+Go to 5
+-
+Go to 4
+4: {That's an interesting} Find him
+-
+Ghost
+-
+-
+5: {That's an interesting} faith
+-
+Ghost
+-
+-
+{The last visit} of Devil approaching
+Age=0, Year>1700
+Ghost
+-
+-
+{The Devil is} coming one last time
+Age=0, 1900<Year<1990
+Ghost
+-
+-
+Homunculus Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{If you could} change previous decision
+-
+Homunculus
+-
+-
+{Who gave that} answer, King or man
+Age>5
+Homunculus
+0/10/0/0
+0/0/10/0
+{How would you} Movements of soul
+FlagHaveFrozenBlood
+Homunculus
+0/15/-5/0
+-5/0/15/0
+{What are the} Values of King
+FlagHaveFrozenBlood
+Homunculus
+-5/15/0/0
+0/-5/15/0
+{Is the happiness} of people sensible
+FlagHaveFrozenBlood
+Homunculus
+5/0/5/5
+0/15/0/0
+Jester Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{I have a} Gift in hands
+-
+Jester
+-5/0/0/5
+Go to 1
+0/0/-5/-5
+RemoveBird
+1: {This bloody jester} Stole cross
+-
+Monk
+-15/0/0/0
+10/0/0/-5
+{"I would like} Sing song
+-
+Jester
+5/0/0/0
+-
+Go to 1
+1: {It was a} Sad song
+-
+Jester
+-
+-
+Go to 2
+2: {He had a} Pet
+-
+Jester
+RemoveJester
+-
+Go to 3
+3: {But nice and} Tail
+-
+Jester
+10/0/0/0
+0/10/0/0
+{If you were} Animal, lion
+-
+Jester
+-
+Go to 1
+0/0/6/0
+Go to 10 (After2Years)
+1: {A scorpion}
+-
+Jester
+Go to 2
+6/0/0/0
+Go to 11 (After2Years)
+2: {A gazelle}
+-
+Jester
+-
+0/6/0/0
+Go to 12 (After2Years)
+10: {My Lord, Jester} Lion loose
+HaveJester
+Any
+0/-15/-5/0
+0/0/-15/0
+11: {My Lord, Jjester} Scorpion castle
+HaveJester
+Any
+-10/0/0/0
+-
+RemoveJester
+12: {Jester brought a} Gazelle capital
+HaveJester
+Any
+0/-4/0/0
+0/12/0/0
+{Your fortune is} expanding, new cards
+Dynasty>4
+Jester
+-
+AddWitch, Go to 1
+-
+Same
+1: {Jester is right} Force create futures
+-
+Witch
+-
+Go to 2
+-
+Same
+2: {There are 3} secrets
+-
+Jester
+-
+-
+Go to 3
+3: {The fake luck} Discover ally in dungeon
+-
+Witch
+-
+-
+Go to 4
+4: {The ambitious lizard} Bring peace for generations
+-
+Jester
+-
+-
+Go to 5
+5: {The fatal party} Die creatively
+-
+Witch
+-
+-
+Merchant Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{A foreign merchant} Copy wares
+!HaveForeignPrincess
+Merchant
+0/0/0/10
+AddForeignPrincess, Go to 1
+0/0/0/-10
+1: {You're making a} Mistake, meet you
+-
+Merchant
+-
+-
+FlagMerchantNo++, Go to 2
+2: {Surprised to meet} Business woman
+-
+Foreign Princess
+5/0/0/-10
+RemoveForeignPrincess
+-5/0/0/15
+{A group of} noblemen raising price of iron ore
+Wealth>60
+Merchant
+0/-5/0/15
+0/10/0/-6
+Go to EventIronOre (After3Years)
+{My Lord, I'm} Merchant
+-
+Merchant
+5/5/0/0
+0/0/0/10
+{Our country is} at peace, business good
+!FlagCrusade, !FlagWarsOngoing
+Merchant
+5/5/5/0
+-5/-5/-5/20
+{The black market} thriving, send army
+Wealth<50
+Merchant
+0/10/0/-3
+0/-20/-5/8
+{The goldsmiths of} created cartel
+-
+Merchant
+0/5/0/-5
+-5/-5/0/15
+{The price of} chicken soaring
+-
+Merchant
+0/-15/0/0
+0/0/0/15
+{What side of} Road carriages
+Year>700
+Merchant
+0/5/0/-3
+0/-3/0/5
+{You keep ignoring} Advice, trust me
+FlagMerchantNo>1
+Merchant
+0/0/0/-25
+-5/-5/-5/15
+Minstrel Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{Greetings, Your Majesty} Write song
+-
+Minstrel
+-2/-2/-2/0
+-
+Go to 1
+1a: {A hymn, to} Honor heavens
+-
+Minstrel
+-
+Go to 1
+0/0/0/-10
+Go to 2 (After5Years)
+1b: {A battle anthem} Warriors
+-
+Minstrel
+-
+Go to 1
+0/0/0/-10
+Go to 3 (After5Years)
+1c: {A folk song} Inspire
+-
+Minstrel
+-
+Go to 1
+0/0/0/-10
+Go to 4 (After5Years)
+1d: {My inner muse} Write freely
+-
+Minstrel
+-
+Go to 1
+0/0/0/-10
+Go to 5 (After5Years)
+1e: {I... (sweating) No} Ran away
+-
+Minstrel
+0/-7/0/-1
+0/2/0/-5
+2: {Sire, I present} Pious
+-
+Minstrel
+-10/5/5/0
+Go to 6
+15/0/-5/0
+3: {Sire, by your} Battle anthem
+-
+Minstrel
+5/5/-10/0
+Go to 6
+-5/-5/15/0
+4: {A story in} For folks
+-
+Minstrel
+5/-10/5/0
+Go to 6
+-5/15/-5/0
+5: {My Lord! It} Magnum Opus
+-
+Minstrel
+-5/-5/-5/0
+RemoveMinstrel
+10/10/10/-15
+6: {I am deeply} Won't bother you
+-
+Minstrel
+0/0/0/-6
+RemoveMinstrel
+-5/-5/10/0
+RemoveMinstrel
+{My art is} Not liking, leaving
+FlagMinstrelNo>1
+Minstrel
+0/0/0/-6
+-5/-5/-5/20
+RemoveMinstrel
+{We need money} organize Spring festival
+-
+Minstrel
+0/-5/0/0
+0/15/0/-10
+Monk Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{A company of} micro-breweries
+Year>1980
+Monk
+-15/0/0/10
+10/0/0/-5
+{A fine company} soldiers ransacked abbey
+-
+Monk
+-20/0/5/0
+FlagPriestNo+++
+5/0/-10/0
+{My Lord, you} Pope establish estates
+Religion>70
+Monk
+-15/0/0/0, Go to EventPriestNo (After2Years)
+10/-5/-15/15
+{The Merchants' Guild} Selling goods by Abbey
+HaveMerchant
+Monk
+-5/0/0/5
+15/0/0/-30
+Go to 1
+1: {My Lord, you} Can't stop trade
+-
+Merchant
+0/0/0/-15
+-5/0/0/10
+{The Doctor is} Conducting experiments in hidden room
+HaveDoctor, !FlagDocExperiment
+Monk
+-25/0/0/0
+15/-5/0/0
+Go to 1
+1: {There's nothing wrong} with room, conduct experiments
+-
+Doctor
+10/-10/-5/0
+!FlagDocExperiment
+0/10/5/0
+{This is outrageous!!} (EventQueenAffair) General in Queen's bed
+HaveQueen, HaveGeneral
+Monk
+5/0/-30/0
+RemoveGeneral
+-30/0/5/0
+RemoveQueen, FlagQueenAffairKilled
+{We... may have} Monk bite
+-
+Monk
+-10/0/0/0
+AddWerewolf, Go to 2
+10/0/0/0
+Go to 1
+1: {This is probably} Lycanthropy
+-
+General
+0/0/-10/0
+AddWerewolf, Go to 2
+-10/0/0/0
+AddWerewolf, Go to 2
+2: {"Werewolves... I don't} Lack of physical activity
+-
+Werewolf
+-
+-
+Nobleman Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{A fat guy} giving gifts to children
+HaveExecutioner, Year>800
+Nobleman
+-5/-10/0/0
+5/5/0/0
+Go to 1
+1: {How did you} know, spread hugs
+-
+Executioner
+0/0/0/5
+Go to 2
+-
+2: {I can't execute} myself
+-
+Executioner
+-
+-
+{Do you need} Credit, 2000 gold 5%
+45<Wealth<60
+Nobleman
+-
+0/0/0/10
+Go to 1 (After3Years)
+1: {My Lord, it's} Pay debt
+-
+Nobleman
+-15/-15/-15/0
+RemoveNobleman
+0/0/0/-12
+{Do you need} Credit, 8000 gold 5%
+Wealth<45
+Nobleman
+-
+0/0/0/40
+Go to 1 (After3Years)
+{My Lord, it's} Pay debt
+-
+Nobleman
+-15/-15/-15/0
+RemoveNobleman
+0/0/0/-48
+{I'm acquainted with} Minstrel of renown
+!HaveMinstrel
+Nobleman
+-5/-5/-5/0
+5/5/5/-10
+AddMinstrel
+{My Liege, we} under attack, Beggars
+-
+Nobleman
+-5/5/-5/0
+10/-5/5/0
+FlagStrong
+{My Lord... (whispering)} Bold enterprise
+HaveMerchant, !FlagSilkRoad
+Nobleman
+-
+-
+Go to 1
+1: {We could invest} slave trade
+-
+Nobleman
+5/5/0/0
+-5/-20/0/-5
+FlagSlaver, Go to 2 (After3Years)
+2: {I visited one} slave ships
+FlagSlaver
+Merchant
+0/-10/0/5
+RemoveMerchant
+0/10/0/-40
+!FlagSlaver
+{My Lord, would} Hunt pigs
+-
+Nobleman
+-
+-
+Go to 1
+1a: {The hunt was} Success
+-
+Nobleman
+-2/15/-2/-2
+5/0/5/5
+1b: {Disappointing this hunt} Mushrooms
+!FlagMushroom
+Nobleman
+-
+-
+FlagMushroom
+1c: {You have suffered} Accident
+-
+Any
+-100/-100/-100/-100
+Go to EndingBed
+-5/-5/-5/-10
+AddDoctor, Go to 2
+2a: {My Lord, you're} Nothing can do
+-
+Doctor
+-
+Go to EndingGangrene
+-
+Same
+2b: {My Lord... I} Cut arm
+-
+Doctor
+-
+Go to EndingGangrene
+5/5/5/-5
+FlagOneHanded
+2c: {My King I} Decay intervene
+-
+Witch
+10/0/-5/0
+Go to EndingGangrene
+-10/0/5/-5
+FlagOneHanded
+{Our beautiful capital} smells, build sewer
+-
+Nobleman
+0/-10/0/0
+0/15/0/-15
+{Our good people} gathering Friday to sing
+Population<38, Army>50
+Nobleman
+0/4/0/0
+Go to 1
+0/-5/0/0
+Go to 1
+1: {They're afraid of} you and army
+-
+Witch
+0/3/-10/0
+0/-10/3/0
+{People think you're} good King, tax
+Population>60, Wealth<40
+Nobleman
+0/5/0/0
+0/-15/0/15
+{There's been a} robbery, treasure attacked
+-
+Nobleman
+0/0/0/-10
+0/0/0/-30
+{This printing machine} amazing, memoirs
+FlagPrinter, HaveExecutioner
+Nobleman
+-
+Go to 1
+-
+Same
+1: {We can hire} Students writing
+-
+Nobleman
+0/0/0/-5
+Go to 2 (After3Years)
+0/0/0/-10
+Go to 2 (After3Years)
+2: {My Lord! Here} Royalties, 5%
+-
+Nobleman
+0/0/0/10
+RemoveNobleman
+0/0/0/5
+{You are so} clever, example to all
+Year>800, !FlagGovern
+Nobleman
+0/0/5/5
+Go to 1
+-5/-5/0/0
+Go to 1
+{I have a} request, land on border, give it
+-
+Nobleman
+0/5/5/-6
+0/-10/-5/5
+FlagGovern, Go to EventNobleGovern
+{You killed our} Queen!
+FlagQueenAffairKilled
+Nobleman
+-
+Go to 1 (Duel)
+-
+Same
+1a: {Nobleman is falling} Crying
+DuelWin
+Nobleman
+0/0/5/0
+RemoveNobleman, FlagDuelsWon+
+0/5/-10/0
+FlagDuelsWon+
+1b: {You feel your} Cruel wound
+DuelLose
+Ending (Duelled)
+-
+-
+{You should be} charitable, build some
+Wealth>60
+Nobleman
+0/-10/0/0
+0/15/0/-25
+Go to 1 (After3Years)
+1: {We could earn} money by increasing rent
+-
+Nobleman
+0/5/0/-5
+0/-20/0/10
+{Your people are} eating, raise price of bread
+Population>70
+Nobleman
+0/5/0/0
+0/-20/0/15
+Nun Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{I'm Nun, the} headmistress of school
+-
+Nun
+-5/-10/0/0
+10/5/0/-15
+Painter Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{I would like} Paint portrait
+-
+Painter
+0/-5/0/0
+0/5/0/-5
+{I want to} Moving painting
+-
+Painter
+-
+0/5/0/0
+Go to 1
+1: {I will paint} Modern art
+-
+Painter
+-
+-10/10/0/-10
+{I would like} Basilica fresco
+-
+Painter
+-5/0/-5/0
+5/5/10/-20
+{I've had enough} Bit of sport
+!FlagHaveLover
+Painter
+-
+0/0/5/0
+Go to 1 (Duel)
+1a: {You're good at} Another round
+DuelWin
+Painter
+-
+-
+1b: {Oh, My Lord} Touched heart
+DuelLose
+Painter
+-
+-
+FlagHaveLover
+{My name is} (EventPainterIntro) Painter
+-
+Painter
+-10/0/0/0
+5/5/5/-15
+Priest Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{A miracle happened} in South, statue weeping blood
+-
+Priest
+-10/10/0/0
+15/-5/0/-5
+{Doctor is conducting} experiments, blasphemy
+HaveDoctor, FlagDocExperiment
+Priest
+-10/0/0/0
+FlagPriestNo++
+15/-5/0/0
+FlagDoctorNo++
+{I discovered a} Painter
+Year>900
+Priest
+-5/-5/0/0
+10/0/0/-5
+AddPainter, Go to EventPainterIntro
+{I would like} Conduct mass memory father
+-
+Priest
+-10/0/-10/0
+5/0/0/-10
+{It seems my} (EventPriestNo) Advice not liking
+FlagPriestNo>1
+Priest
+-10/0/0/0
+Go to 1 (After3Years)
+15/0/0/0
+1: {Whether you want} Crypt of Saint Armand
+-
+Priest
+-15/0/0/0
+Go to 2
+5/-5/0/0
+Go to 2
+2: {May the Saints} forgive sins
+-
+Priest
+-20/0/0/0
+RemovePriest
+100/0/0/0
+Go to EndingBurn
+{Long live the} King, pray for prosperity
+Age<5
+Priest
+-20/0/0/5
+20/0/0/-10
+{The apocalypse is} coming, fear God
+Year>990
+Priest
+-10/0/0/0
+15/0/0/0
+{The new millenium} is coming! Selling souls
+Year>1960
+Priest
+-10/0/0/0
+5/-5/0/0
+{The pilgrimage of} (EventPilgrimage) Saint Armand, monetize
+-
+Priest
+-5/0/0/0
+10/0/0/10
+{The tower of} basilica falling apart
+-
+Priest
+-20/0/0/0
+15/0/0/-15
+{We should create} Pilgrimage of Saint Armand
+-
+Priest
+-10/-5/0/0
+20/5/0/-10
+Go to EventPilgrimage (After10Years)
+{We would like} Raise new tax
+Wealth<40
+Priest
+-10/0/0/0
+15/-15/0/15
+{Your soldiers are} bullying priests and congregation
+-
+Priest
+-20/-20/0/0
+10/10/-10/-5
+Go to 1
+1:{It's a lie} We're asking for money to pay crown
+-
+General
+5/5/5/0
+-30/-30/5/-5
+Prince Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{Father, the general's} son doesn't want me to be the next King.
+-
+Prince
+5/5/10/0
+0/0/-10/0
+Queen Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{I invited my} brother to Spring festival
+Year>850, !HaveRival
+Queen
+FlagQueenNo++
+AddRival, Go to EventRival
+{Let's organize a} Dinner cousin
+!HaveLady, !FlagHaveLover
+Queen
+0/-5/0/0
+0/5/0/-10
+AddLady, Go to EventLadyIntro
+{My dear, I'm} Dying, rest in parent's tomb
+-
+Queen
+-10/-10/-10/0
+RemoveQueen
+-5/-5/-5/-5
+RemoveQueen
+{My family laughs} size of castle
+-
+Queen
+0/-5/-5/0
+0/10/10/-25
+{My King! I} With child
+!FlagPregnant, !HavePrince, HaveDoctor
+Queen
+-5/0/-5/0
+Go to 1
+5/5/5/0
+Go to 1
+1a: {I'm happy to} Daughter
+-
+Doctor
+0/0/5/0
+0/0/-5/0
+1b: {Queen has given} Son
+-
+Any
+0/5/20/0
+AddPrince
+20/5/0/0
+AddPrince
+1c: {Your Queen is} Can't save both
+-
+Doctor
+0/5/5/0
+!FlagPregnant
+10/-5/-5/0
+RemoveQueen, AddPrince
+{My Lord, we} Appear at castle's window
+Age=25
+Queen
+0/-5/-5/0
+0/10/5/0
+{My love, I} Organize tournoi
+-
+Queen
+0/-5/-5/0
+0/5/10/-20
+{You don't even} care about people
+FlagQueenNo>1
+Queen
+0/-10/0/0
+Go to 1
+0/10/0/0
+Go to 1
+1: {And that's it} Say on subject
+-
+Queen
+-
+-
+Maybe Broken Event (_queen_quit vs queen_quit)
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{Our son has} been kidnapped
+HavePrince
+Queen
+-5/-5/-10/0
+RemovePrince, Go to _queen_quit
+5/5/10/-15
+{You've made a} mistake, blind or stupid
+FlagHaveLover
+Queen
+-
+Go to 1
+-
+Go to queen_quit
+1: {I don't even} care about Lover
+-
+Queen
+-
+Go to queen_quit
+-10/0/-15/0
+{queen_quit} {You're a worthless} husband, king, lover
+FlagQueenNo>2
+Queen
+0/0/-20/0
+RemoveQueen
+0/0/-20/0
+RemoveQueen
+Rival Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{Brother, you have} Lovely castle smallish
+-
+Rival
+0/0/5/0
+0/5/-10/-20
+{My dear brother-in-law!} Wedding between son and daughter
+HavePrince
+Rival
+-5/5/0/0
+Go to 1
+10/0/5/10
+1: {I don't see} Add dowry
+-
+Rival
+-
+5/0/5/20
+FlagGreedy
+Spy Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{I'm not there} Shadow
+-
+Spy
+-
+-
+{General is a} Salmon
+HaveGeneral
+Spy
+0/0/10/0
+0/0/-5/0
+Werewolf Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{I opened a} trendy tavern near harbour
+-
+Werewolf
+10/0/0/0
+-5/5/0/-10
+Go to 1 (After9Years)
+1: {I heard about} new place of bestial perdition
+HaveLord, HaveWerewolf
+Priest
+-
+Go to 2
+0/-10/0/-10
+Go to 2
+2a: {What are you} doing here
+-
+Werewolf
+-
+Go to 2
+-
+Same
+2b: {You like this} place, I invested
+-
+Lord
+-
+Go to 2
+-
+Same
+2c: {La vita è} roôoosa
+-
+General
+-
+Go to 2
+-
+Same
+2d: {Hu... This is} not me
+-
+Nun
+-
+Go to 2
+-
+Same
+2e: {Enough your majesty} Need to close
+-
+Priest
+-20/5/8/8
+0/-10/0/-10
+Witch Basic Events
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{A duke decided} to reestablish feudal right to bed woman
+-
+Witch
+0/10/-4/0
+-5/-20/5/0
+{I would like} open shops for wares
+-
+Witch
+5/-10/0/0
+-15/5/0/0
+{I'm Witch. I} Limits of humankind
+-
+Witch
+10/0/0/0
+-15/5/5/0
+{The people of} village afraid of goblins
+-
+Witch
+15/-5/0/0
+-5/15/0/0
+Special Events: Prophet
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{A man claims} God's plan Love
+!HaveProphet
+Monk
+-5/0/0/0
+AddProphet, Go to 1
+-5/0/0/0
+AddProphet, Go to 1
+1: {Brother! Pray with} Angels sent me
+-
+Prophet
+-5/0/0/0
+Go to 2b
+-5/0/0/0
+Go to 2a
+2a: {Wherever I go} Bring Devil
+-
+Prophet
+0/0/-5/0
+Go to 3
+0/-5/0/0
+Go to 3
+2b: {No it isn't} God's land
+-
+Prophet
+0/0/-5/0
+Go to 3
+0/-5/0/0
+Go to 3
+3: {This is outrageous} Contagious
+-
+Priest
+-5/0/0/0
+Go to 4
+5/0/0/0
+Go to 5
+4: {My Lord, the} Judged heretic
+-
+Nobleman
+0/0/-5/0
+Go to 5
+10/0/0/0
+Go to 5
+5: {I was resurrected} Words of Joy and Love
+-
+Prophet
+0/5/0/0
+Go to 6
+-
+Same
+6: {Not my fault} Tripped
+-
+Executioner
+0/0/-5/0
+Same
+{I want to} Visit neighbours
+-
+Prophet
+0/-5/10/20
+-5/0/-5/-5
+{I will show} Righteousness merchants
+-
+Prophet
+0/0/0/-10
+-5/5/-5/0
+Go to 1
+1: {Sire... There's been} Problem
+-
+Merchant
+-5/-10/-5/0
+0/0/0/-20
+{"Prophet is crazy} Clumsy Prophet
+HaveProphet
+Diplomat
+5/-5/0/0
+-15/10/-5/-5
+{Prophet was trying} Burn envoys
+HaveProphet, Year>1000
+Any
+5/-10/0/0
+RemoveProphet
+-5/15/0/-5
+RemoveProphet
+{The rumor is} New prophet
+!HaveProphet, Year>1100
+Any
+-
+AddProphet, Go to 1
+-
+Same
+1: {Remember me I'm} Resurrected
+-
+Prophet
+5/-10/0/0
+-5/10/0/0
+{Your priests and} Not envoys
+Year>1100
+Prophet
+-15/0/0/0
+5/0/0/0
+Special Events: FlagHaveLover (Lady)
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{You've got the} chaude-pisse, stop visiting Lover
+FlagHaveLover
+Doctor
+-10/0/0/0
+5/-5/5/0
+!FlagHaveLover
+{Thank you for} (EventLadyIntro) hospitality, don't mind me staying
+!FlagHaveLover, HaveQueen
+Lady
+-
+-2/5/0/0
+Go to EventLadyGarden (After3Years)
+{I'm going for} (EventLadyGarden) walk in garden
+!FlagHaveLover, HaveQueen
+Lady
+-
+-2/5/0/0
+Go to 1
+1: {The Queen despises} Looks strangely
+-
+Lady
+-
+-2/5/0/0
+Go to 2
+2: {Oh my Lord} What say
+-
+Lady
+-
+-2/5/0/0
+Go to 3
+3: {No, I don't} Fight for me
+-
+Lady
+-
+Go to 4 (Duel)
+-
+Same
+4a: {Are you all} right
+DuelLose
+Lady
+-
+FlagHaveLover
+-
+Same
+4b: {You are a} oaf
+DuelWin
+Lady
+0/5/-5/0
+FlagDuelsWon+
+0/-5/5/0
+FlagDuelsWon+
+{Did you consider} running away with me
+FlagHaveLover
+Lady
+-
+-10/0/-5/0
+{My Lord, the} people treated inhuman
+FlagHaveLover
+Lady
+-
+0/20/0/-15
+Special Events: FlagBarn
+FlagBarn: Prevents one negative event & Population=0 Ending
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{Sire, we should} Build barn
+!FlagBarn, Dynasty>3
+Farmer
+0/-15/0/0
+0/5/0/-20
+FlagBarn
+{Help! Help! The} Barn fire
+FlagBarn
+Farmer
+0/-10/0/-10
+!FlagBarn
+0/0/-15/0
+{This is the} Coldest winter, harvest
+!FlagBarn
+Any
+0/-40/0/0
+0/10/0/-30
+Special Events: FlagChurch
+Church Events: Generally +Religion-Wealth or -Religion
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{We need to} (EventBuildChurch) Build new church
+FlagChurches<8
+Priest
+-10/0/0/0
+15/0/0/-10
+FlagChurches+1
+{Your people in} Build church
+Dynasty>1
+Priest
+-10/0/0/0
+15/5/0/-10
+FlagChurches+1
+{We would like} Bless churches
+FlagChurches>3
+Monk
+-10/0/0/0
+15/0/0/-5
+{I request your} Maintain Church estates
+FlagChurches>3
+Priest
+-5/-5/0/0
+10/0/0/-15
+Special Events: FlagCathedral
+FlagCathedral (Gracias Deo): Stops Paganism Ending (Religion=0)
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{We need to} Build Cathedral
+!FlagCathedral
+Priest
+-10/-5/0/0
+1030/0/0/-30
+Go to 1 (After18Years)
+1: {The Cathedral is} Cathedral built
+-
+Priest
+-10/0/0/0
+FlagCathedral
+15/5/5/-15
+FlagCathedral
+{Sire, would you} Inhumation of Saint Romuald
+FlagCathedral
+Priest
+-10/0/0/0
+10/0/0/-10
+Special Events: FlagColonies (Explorator)
+FlagColonies: Extra Army & Wealth
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{I'm Explorator and} Commercial route to Orient
+!FlagColonies, !FlagSilkRoad
+Explorator
+0/-5/-5/0
+-5/10/5/-15
+Go to 1 (After4Years)
+1a: {I haven't found} Orient, won't give up
+-
+Explorator
+-
+0/0/0/-5
+Go to 1 (After6Years)
+1b: {I found a} New world
+-
+Explorator
+-5/-5/20/30
+10/20/-5/10
+FlagColonies
+{Our colonies will} Excellent troops
+FlagColonies
+General
+0/0/-10/0
+0/-5/20/0
+{These savages are} Educate them
+FlagColonies
+Priest
+-5/5/0/10
+15/0/0/-5
+{The colonies have} Uprise
+FlagColonies
+Priest
+-5/-20/0/5
+!FlagColonies
+5/5/0/-20
+!FlagColonies
+Special Events: FlagMarketplace, FlagCentralBank
+FlagMarketplace: Needed to build FlagCentralBank
+FlagCentralBank: Prevents Wealth=0 Ending
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{We want to} Build marketplace
+!FlagMarketplace
+Merchant
+0/-5/0/-15
+-5/10/0/10, FlagMarketplace
+{The Merchant's Guild} Marketplace statue
+FlagMarketplace, Wealth>60
+Merchant
+10/0/0/0
+-5/5/0/-5
+{Our economy is} Create bank
+Wealth>60, FlagMarketplace, !FlagCentralBank
+Merchant
+0/0/0/-5
+-20/0/0/5
+FlagCentralBank
+Special Events: FlagSchool (Nun)
+FlagSchool: Prevents Population=100 Endings
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{We would like} Build school
+!FlagSchool
+Monk
+-10/-5/0/0
+10/10/0/-15
+AddNun, FlagSchool
+{The school is} Scheme to brain-wash
+FlagSchool
+Doctor
+5/-10/0/0
+-15/15/0/0
+!FlagSchool
+{I would like} studying horticulture
+FlagSchool
+Executioner
+0/0/5/0
+0/10/-5/0
+{The school is} Rats rumors
+HaveNun, FlagSchool
+Spy
+0/0/-10/0
+-5/0/5/-8
+Go to 1
+1: {Oh... this is} Headmistress
+-
+Spy
+10/0/0/0
+-10/0/0/0
+Go to 2
+2: {And Executioner, the} Executioner
+-
+Spy
+15/0/0/0
+-10/0/0/0
+{We seem to} Forgotten strawberries
+Year>900, FlagSchool
+Executioner
+0/-5/10/0
+-5/5/0/-10
+Special Events: FlagTower, FlagFortifications
+FlagTower: Required to get FlagFortifications
+FlagFortifications: Prevents Army=0 Endings
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{Your fortress is} Build tower
+-
+General
+0/-5/-5/0
+0/0/10/-10
+FlagTower
+{Let me build} Fortifications
+Army<40, FlagTower, !FlagFortifications
+General
+0/0/-5/0
+0/0/20/-30
+FlagFortifications
+Special Events: FlagLoadedDice (Red Dwarf)
+FlagLoadedDice: Can't lose at Red Dwarf, Prevents Dungeon Trap Ending
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{Would you like} Play Red Dwarf
+-
+Jester
+-
+0/0/0/-5
+FlagRedDwarf, Go to 1
+1a: {You're trying to} Trick me
+Wealth=0
+Jester
+-
+Go to 11
+-
+Same
+1b: {Dice are rolling!} Raise stakes
+-
+Jester
+0/0/0/-10
+Go to 2
+-
+Go to 11
+2a: {You're trying to} Trick me
+Wealth=0
+Jester
+-
+Go to 12
+-
+Same
+2b: {C'mon. I know} Do better
+-
+Jester
+0/0/0/-20
+Go to 3
+-
+Go to 12
+3a: {You're trying to} Trick me
+Wealth=0
+Jester
+-
+-
+Go to 13
+3b: {You have to} Bet treasure
+-
+Jester
+0/0/0/-40
+Go to 14
+-
+Go to 13
+11a: {Even! You won} Beginner's luck
+-
+Jester
+0/0/0/10
+0/0/0/5
+Go to 1
+11b: {Odd! I won} Play again
+!FlagLoadedDice
+Jester
+-
+0/0/0/-5
+Go to 1
+12a: {Even! It's not} You won
+-
+Jester
+0/0/0/30
+0/0/0/15
+Go to 2
+12b: {Odd! I won} Play again
+!FlagLoadedDice
+Jester
+-
+0/0/0/-5
+Go to 1
+13a: {Even! You won} Try again
+-
+Jester
+0/0/0/70
+0/0/0/35
+Go to 3
+13b: {Odd! I won} Another game
+!FlagLoadedDice
+Jester
+-
+0/0/0/-5
+Go to 1
+14a: {Even! You won} Luck kill
+-
+Jester
+0/0/0/100
+Same
+14b: {Odd! You're now} Working for me
+!FlagLoadedDice
+Jester
+-
+-
+Special Events: DeedTrump
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{You're governing like} Loser
+!DeedTrump
+Jester
+10/0/5/0
+Go to 1
+-
+Go to 2
+1: {No wait, just} Hear me
+-
+Jester
+-
+RemoveJester
+-
+Go to 2
+2: {The best show} Spring festival
+-
+Jester
+-
+Go to 3
+5/5/5/0
+Go to 3
+3: {Yeah, let's just} SOOO Dark Ages
+-
+Jester
+-
+Go to 4
+-
+Same
+4: {People want drama} En-ter-tain
+-
+Jester
+-
+Go to 5
+-
+Same
+5: {So, I have} Chief Entertainment Officer
+-
+Jester
+-
+Go to 6
+-10/5/0/5
+DeedTrump
+6: {I'm leaving and} Spring festival
+-
+Jester
+-
+RemoveJester
+-10/5/0/5
+DeedTrump
+{I know you're} Inspired talk
+DeedTrump
+Jester
+-
+5/5/5/-5
+{I think we} Attack West, fashionable war
+DeedTrump, !FlagWarWest
+Jester
+0/5/0/0
+0/0/-15/-10
+FlagWarsOngoing+, FlagWarWest
+{I saw strange} lights in sky
+DeedTrump
+Jester
+-
+Go to 1
+-
+Same
+1: {The scholars are} convinced, miracle
+-
+Monk
+-
+-30/-10/-10/0
+{People want to} Watch waking up
+DeedTrump
+Jester
+0/-5/0/-5
+-5/15/-5/10
+{We should reach} Add fireworks
+DeedTrump
+Jester
+0/-5/5/0
+0/5/-5/0
+Go to 1
+1: {Let's pretend I} Didn't hear
+-
+Executioner
+-
+-
+{We should systematically} Blame Islander migrants
+DeedTrump
+Jester
+0/0/0/5
+5/5/5/-15
+{You should have} Affair with Courtesan
+DeedTrump, !FlagHaveLover
+Jester
+0/-5/0/0
+0/10/0/0
+Go to 1
+1: {My Lord As} Don't kiss
+-
+Courtesan
+-
+0/10/0/-5
+FlagHaveLover
+Special Events: FlagInquisition/FlagTheocracy
+FlagInquisition: Leads to event that gives FlagTheocracy
+FlagTheocracy: Can't say No to church, Money locked, Duration 30 years
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{There's a crisis} Reform religion
+Religion>60
+Priest
+-10/0/0/0
+20/-10/-10/0
+Go to EventInquisition
+{Your Church is} weak, people blasphemous
+Religion<40
+Priest
+-5/0/0/0
+10/0/0/0
+Go to EventInquisition
+{Give us enough} (EventInquisition) Enforce divine justice
+!FlagInquisition
+Priest
+-20/10/5/-5
+40/-10/-10/20
+FlagInquisition
+{You are under} Broken commandments
+FlagInquisition
+Priest
+-100/0/0/0
+Go to EndingBurn
+5/0/-20/-5
+FlagTheocracy
+{The divine tribunal} arrested Doctor
+FlagInquisition, HaveDoctor
+Priest
+-40/5/0/0
+15/-5/0/0
+RemoveDoctor, FlagIsPure (Does nothing)
+{You're a miscreant} spitting in face of God
+-
+Prophet
+5/0/0/0
+10/0/0/0
+Go to 1 (Duel)
+1a: {How did you} manage to lose
+DuelLose
+Prophet
+-
+-
+Duel again
+1b: {I'm dying... (faking} agony, I'm martyr
+DuelWin
+Prophet
+-
+Go to 2 (After1Year)
+-
+Same
+2: {Thanks to you} I'm now saint
+-
+Prophet
+-15/0/0/0
+Go to 3b
+15/0/0/0
+Go to 3a
+3a: {Good answer! See} I have large following
+-
+Prophet
+-5/0/0/0
+Go to 4
+5/0/0/0
+Go to 4
+3b: {Bad answer! See} I have large following
+-
+Prophet
+-5/0/0/0
+Go to 4
+5/0/0/0
+Go to 4
+4: {This is obviously} not end well
+-
+Priest
+-5/0/0/0
+Go to 5
+-10/0/0/0
+Go to 5
+5: {The Church is} going through schizm
+-
+Nobleman
+5/10/0/0
+20/0/0/0
+FlagInquisition, FlagTheocracy
+Special Events: FlagMurderer
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{We discovered an} Unknown body dungeon
+!FlagMurderer, Army>60
+General
+0/0/-5/0
+FlagMurderer+, Go to EventMurdererDungeon (After1Year)
+0/0/10/0
+FlagMurderer+
+{We discovered another} (EventMurdererDungeon) Body dungeon
+FlagMurderer>0
+General
+0/-10/0/0
+FlagMurderer+
+0/0/15/-5
+FlagMurderer+
+{The cat is} Hunt
+FlagMurderer>0, HaveQueen
+Spy
+-10/-5/0/0
+0/5/5/0
+Go to 1
+1: {The cat's meow} Cheap
+-
+Spy
+0/0/-10/0
+0/0/0/-20
+Go to 2
+2: {The cat is} Bed
+-
+Spy
+0/5/-5/0
+!FlagMurderer
+0/0/5/0
+!FlagMurderer
+{The Queen is} Dead dungeon
+FlagMurderer>1, HaveQueen
+Monk
+0/5/-10/0
+RemoveQueen
+0/0/20/-10
+RemoveQueen
+{I know the} Killer executioner
+FlagMurderer>0, HaveGeneral
+Monk
+-10/0/5/0
+Go to 1
+10/0/-5/0
+Go to 1
+1: {Me Violence is} Job
+-
+Executioner
+10/-5/0/0
+Go to EventMurdererDungeon (After3Years)
+-5/10/0/0
+Go to 2
+2: {Who is the} Murderer
+-
+Diplomat
+-
+-
+Go to 3
+3a: The priest
+HavePriest
+Jester
+-
+Go to 3
+-20/2/2/2
+RemovePriest, Go to EventMurdererDungeon (After2Years)
+3b: The doctor
+HaveDoctor
+Diplomat
+-
+Go to 3
+2/-20/2/2
+RemoveDoctor, Go to EventMurdererDungeon (After3Years)
+3c: The general
+HaveGeneral
+Priest
+-
+Go to 3
+8/8/-20/8
+RemoveGeneral, !FlagMurderer
+3d: The merchant
+HaveMerchant
+Farmer
+-
+Go to 3
+2/2/2/-20
+3e: {You don't really} know
+-
+Diplomat
+-5/-5/5/-5
+Same
+Special Events: FlagPlague
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{A ship has} (EventPlague) Quarantined plague
+!FlagPlague
+Any
+0/-5/0/5
+Go to 1
+0/5/-10/-20
+1a: {No other ship} Safe
+!FlagFortunePlague
+Any
+0/5/0/-5
+0/0/0/10
+1b: {It's the Black} Death
+-
+Any
+-10/-20/-10/0
+FlagPlague
+-10/-5/-10/-20
+FlagPlague
+{The hospital will} Limit plague
+FlagPlague, FlagHospital, Population<40
+Witch
+0/10/0/0
+0/25/5/-10
+{The plague outbreak} End
+FlagPlague, Population>50
+Any
+5/15/0/0
+0/5/0/-5
+Special Events: FlagHospital
+FlagHospital: Disables a negative event, Enables a positive event with FlagPlague
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{There's a cholera} Blue Death
+!FlagHospital
+Any
+-5/-40/-10/0
+-5/-5/-5/-20
+{I could build} hospital to prevent epidemics
+!FlagHospital
+Witch
+Go to 1
+-10/0/0/-20
+FlagHospital
+1: {Sire! Your urine} smells rhododendrons
+-
+Doctor
+0/0/10/0
+Go to 2
+0/0/-10/0
+Go to 2
+2: {Do I really} doctor can't run hospital
+-
+Witch
+-
+Go to 3
+-
+Go to 3
+3: {I didn't intend} Hospital
+-
+Witch
+5/-10/0/0
+-10/0/0/-20
+FlagHospital
+{One of my} Needs blood
+FlagHospital
+Lord
+5/0/0/0
+-15/0/0/10
+{A group of} Fanatics ransacked hospital
+FlagHospital
+Any
+-5/-10/5/0
+!FlagHospital
+10/5/-10/0
+!FlagHospital
+Special Event: FlagSilkRoad
+FlagSilkRoad: Extra Wealth, more events available (some negative)
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{We should trade} With Orient, 10%
+!FlagSilkRoad, !FlagCrusade, Dynasty>2, !FlagSlaver
+Merchant
+10/0/0/0
+Go to 1
+-10/5/0/15
+FlagSilkRoad
+1: {Your Highness is} 20%
+-
+Merchant
+5/0/0/-10
+-20/0/0/30
+FlagSilkRoad
+{A diplomatic incident} Suspended silk road
+FlagSilkRoad
+Merchant
+5/0/0/-15
+!FlagSilkRoad
+0/0/-10/0
+{Bandits are terrorizing} Silk road
+FlagSilkRoad
+Merchant
+0/0/0/-25
+!FlagSilkRoad
+0/0/-15/0
+{The Guild would} 50% opium profit
+FlagSilkRoad
+Merchant
+5/5/5/-10
+-10/-5/-30/40
+{Your merchants are} Spice trade, open up
+FlagSilkRoad
+Foreign Princess
+5/0/0/-10
+-5/5/0/15
+Maybe Broken Event spicetrade_keep (wrong spice_trade_keep flag)
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{We have to} pay bribes caravans on Silk Road
+spicetrade_keep
+Merchant
+0/0/0/-5 !spicetrade_keep
+0/0/0/-25
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+Special Event: FlagTerrorism
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{A slithering snake} Sneaks
+!FlagTerrorism
+Spy
+-
+Go to EventTerrorism (After3Years)
+-
+Same
+{There's been an} (EventTerrorism) Explosion close gates
+Age>10, !FlagTerrorism
+Any
+-5/-5/-5/0
+FlagTerrorism
+0/0/0/-15
+FlagTerrorism
+{People are scared} You responsible
+FlagTerrorism
+Any
+0/100/-20/0
+0/-10/-10/0
+{The population is} Scared suspend taxes
+terrorism
+Farmer
+0/-15/0/0
+-5/5/-5/-10
+{Enforce the state} of emergency
+FlagTerrorism
+General
+0/0/-20/0
+5/-10/40/-5
+{There's been another} Explosion, use churches
+FlagTerrorism
+General
+0/-15/-10/0
+-15/0/5/0
+{There's been another} Explosion, merchants' district
+FlagTerrorism
+Merchant
+0/0/-15/0
+0/0/15/-10
+{I know who} Scorpions biting
+FlagTerrorism
+Spy
+-
+0/0/0/-5
+Go to 1
+1: {"They're called the} Pure Brethren
+-
+Spy
+-
+Go to 2
+-
+Same
+2: {It sort of} Escalated
+-
+Spy
+-
+AddPriest, AddMerchant, Go to 3
+-
+Same
+3: {I'm not giving} mitre
+-
+Priest
+5/0/0/0
+Go to 4
+-10/0/0/0
+Go to 4
+4: {We will fight} for headgear
+-
+Merchant
+0/0/0/-5
+Go to 5
+0/0/0/5
+Go to 5
+5: {I won't. Never.} Scared
+-
+Farmer
+0/-5/0/0
+Go to 6 (After2Years)
+0/5/0/0
+Go to 6 (After2Years)
+6: {It seems the} Pure Brethren evolved
+-
+Spy
+10/10/10/-5
+!FlagTerrorism
+5/5/5/10
+!FlagTerrorism
+Special Event: FlagWitchhunt
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{A large part} Worshipping false gods
+Religion<40, Year>720
+Priest
+-5/10/0/0
+20/-5/0/0
+FlagWitchhunt, FlagCoward
+{A convent of} Nuns like cats
+-
+Any
+-15/0/0/0
+5/0/-15/0
+FlagWitchhunt
+{Please stop the} Massacre of women
+FlagWitchhunt
+Witch
+10/-20/0/0
+FlagCoward
+-10/10/0/0
+!FlagWitchhunt, FlagWitchYes++
+{A large mob} Attacking cathouse
+Religion>60, Population<40, Year>620
+Any
+10/0/0/0
+FlagWitchhunt, FlagCoward
+-5/-10/0/0
+{Please stop the} Massacre of women
+FlagWitchhunt
+Witch
+10/-20/0/0
+FlagCoward
+-10/10/0/0
+!FlagWitchhunt, FlagWitchYes++
+Special Event: FlagConspiracy
+FlagConspiracy: Hear about the conspiracy
+FlagRunProgress: Lower to 0 for Ending (Drown), raise to 5 to progress
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{My Lord, could} Priest will wait
+HaveNobleman, !FlagConspiracy
+Doctor
+10/-5/-5/-5
+Go to EventBuildChurch
+-5/5/5/0
+Go to 1
+1: {During his fitful} Conspiracy
+-
+Doctor
+0/-5/-5/-5
+-
+Go to 2
+2: {This is not} Doctor wicked soul
+-
+Nobleman
+5/-5/0/0
+Go to 4
+-5/0/0/0
+RemoveNobleman, FlagConspiracy, Go to 3
+3: {No pulse! This} Poison
+-
+Doctor
+10/0/0/0
+Go to 4
+-
+4: {There's nothing wrong} with room, conduct experiments
+-
+Doctor
+10/-10/-5/0
+!FlagDocExperiment
+0/10/5/0
+{Someone murdered a} Merchant
+FlagConspiracy
+Merchant
+0/0/-5/-15
+0/0/0/5
+{The toads in} Whispering Senator
+FlagConspiracy
+Spy
+-
+0/0/0/-10
+Go to 1
+1: {The Senator is} Hiding in sight
+-
+Spy
+-
+-
+{Please follow me} Terrible
+FlagConspiracy
+Diplomat
+-
+-100/-100/-100/-100
+AddLady, Go to 1
+1: {Are you awake} Blindfold
+-
+Diplomat
+-
+Go to 2
+-
+Same
+2: {Good, now listen} Senator
+-
+Diplomat
+-
+FlagRunProgress=2, Go to 3
+-
+Same
+3a: {You run madly} Dark
+-
+Diplomat
+-
+Go to 3
+-
+Same
+3b: {This way! This} Way
+-
+Lady
+-
+FlagRunProgress-, Go to 3
+-
+FlagRunProgress+, Go to 3
+3c: {You're running over} Grass
+-
+Diplomat
+-
+Go to 3
+-
+Same
+3d: {Not that way!} Right
+-
+Lady
+-
+FlagRunProgress+, Go to 3
+-
+Go to 3
+3e: {You hear water} Flowing
+-
+Diplomat
+-
+Go to 3
+-
+FlagRunProgress-, Go to 3
+3f: {It seems there's} River
+-
+Diplomat
+-
+FlagRunProgress-, Go to 3
+-
+FlagRunProgress+, Go to 3
+3g: {You hear people} Shouting
+-
+Diplomat
+-
+Go to 3
+-
+FlagRunProgress-, Go to 3
+3h: {You fall into} Water
+!FlagRunProgress
+Ending (Drown)
+-
+-
+3i: {Here! You can} Stop
+FlagRunProgress>4
+Lady
+FlagRunProgress-4, Go to 3
+-
+Go to 4
+4: {It is me} Shussh
+-
+Lady
+-
+Go to 5
+-
+Same
+5: {We're safe my} Go back
+-
+Lady
+-
+Go to 6
+-
+Same
+6: {I followed you} Saw Diplomat
+-
+Lady
+50/50/50/50
+RemoveDiplomat, Go to 7
+50/50/50/50
+RemoveDiplomat, FlagHaveLover, Go to 8 (After3Years)
+7: {Don't thank me} Done anything
+-
+Lady
+-
+FlagHaveLover, Go to 8 (After3Years)
+-
+Same
+8: {My Lord, three} Years passed
+-
+Lady
+-
+-
+Go to 9
+9: {You can't say} Love curse
+-
+Lady
+-
+-
+Go to 10
+10: {You know it} Listen and understand
+-
+Lady
+-
+-
+Go to 11
+11: {This curse, and} Masquerade
+-
+Lady
+-
+-
+Go to 12
+12: {I am the} Senator
+-
+Lady
+-
+-
+Go to 13
+13: {I spent years} Scheming
+-
+Lady
+-
+-
+Go to 14
+14: {Listen carefully. There} Trick
+-
+Lady
+-
+-
+Go to 15
+15: {Make him fulfil} Task
+-
+Lady
+-
+-
+Go to 16
+16: {I have to} Go
+-
+Lady
+-
+!FlagHaveLover, !FlagConspiracy, FlagSenator
+-
+Same
+Special Event: FlagCrusade, FlagHaveFrozenBlood, FlagHaveStrawberry
+FlagCrusade: Extra Wealth, Less Population
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{Your peasants are} Rabbits
+Population>50, !FlagCrusade
+Priest
+0/5/0/0
+15/0/0/0
+AddMonk, Go to 1
+1: {We should send} Males on crusade
+-
+Monk
+-20/5/0/0
+10/-30/20/-15
+FlagCrusade, !FlagSilkRoad
+{My Lord, our} Commercial relations
+Wealth<50, !FlagCrusade
+Merchant
+0/0/0/-15
+-
+Go to 1
+1: {What about a} Crusade
+-
+Merchant
+-20/5/0/0
+10/-30/20/-15
+FlagCrusade, !FlagSilkRoad
+{All the impious} Continue crusade
+FlagCrusade
+General
+-30/25/-10/0
+!FlagCrusade, FlagPeaceful
+15/-10/5/-10
+AddForeignPrincess
+{An envoy of} Sultan meet
+FlagCrusade
+Diplomat
+10/0/5/0
+-10/5/-5/0
+AddForeignPrincess, Go to EventFPrincessCrusade
+{Do you give} Basilica in Lamascus
+FlagCrusade
+Monk
+-10/0/0/0
+25/5/0/-25
+{God told me} Find Holy Grail
+FlagCrusade
+Priest
+-10/10/0/0
+20/-5/0/-20
+{We are going} Gold to destroy
+FlagCrusade
+General
+-15/0/-20/0
+5/0/10/-20
+{Should we burn} Lamascus
+FlagCrusade
+General
+-5/0/-10/0
+10/-10/5/-5
+{This crusade has} (EventFPrincessCrusade) Stop. Take treasure
+FlagCrusade
+Foreign Princess
+20/-5/0/-10
+-5/15/-5/40
+!FlagCrusade, FlagPeaceful
+{This crusade lasted} Long. Retreat
+FlagCrusade
+Diplomat
+5/-30/5/-15
+-15/5/-5/0
+!FlagCrusade, FlagPeaceful
+{Here in Lamascus} Kept secret
+FlagHaveFrozenBlood, FlagCrusade, !FlagHaveStrawberry
+Homunculus
+-
+-
+Go to 1
+1: {I must say} Over-kill
+-
+Homunculus
+-
+Go to 2
+-
+Same
+2: {Because you gave} (EventHomunculusReward) Frozen Blood
+-
+Homunculus
+-
+Go to 3
+-
+Same
+3: {No, not exactly}
+-
+Homunculus
+-
+Go to 4
+-
+Same
+4: {I give you} Life
+-
+Homunculus
+-
+Go to 5
+-
+Same
+5: {This apparatus created} Me
+-
+Homunculus
+-
+-
+Go to 6
+6a: {I'm listening}
+FlagMetSkeleton
+Homunculus
+-
+-
+FlagHaveStrawberry
+6b: {No you don't} Look hard
+-
+Homunculus
+-
+-
+{We're in Lamascus} people suffering, cancel party
+FlagCrusade
+Diplomat
+-
+Go to EndingMoney100
+-6/10/-6/-30
+Special Event: Royal Dog, FlagClarity
+FlagClarity: See choice results
+BUG: (The dog->homunculus event doesn't give FlagHaveFrozenBlood flag like witch->homunculus event (so can't get FlagHaveStrawberry because can't get to EventHomunculusReward.))
+{First 3 words} (EventName) Description
+Requirement
+Character
+Left/No R/P/A/M
+L/N Other
+Right/Yes R/P/A/M
+R/Y Other
+{The dog looks} intently, something red
+Year>900, !FlagHaveFrozenBlood, HaveHomunculus
+Royal Dog
+0/5/-5/0
+-
+Go to EventHomunculusFrozenB
+{Waouf! waouf! (Dog} Follow
+Dynasty>1
+Royal Dog
+-
+-
+Go to 1
+1a: {Braof! Grrrrrrrrrr (Dog} Dungeon
+!FlagInsideDungeon
+Royal Dog
+-
+Go to 1
+-
+Go to EventDungeonMain, FlagInsideDungeon, !FlagSilkRoad
+1b: {Grrrr.. Waouf! (Dog} Forest
+-
+Royal Dog
+-
+Go to 1
+-
+Go to 1bx
+1bx: {Waf... Gnn... Waf} Dog mushroom
+!FlagClarity
+Royal Dog
+-
+-
+FlagClarity
+1c: {Rwaouuw Grouf! (Dog} Play
+-
+Royal Dog
+-
+Go to 1
+-
+!FlagDogBalls, Go to 1cx
+1cx1: {Wawaufff! Waf! (Dog} Ball
+-
+Royal Dog
+-
+Go to 1
+-
+FlagDogBalls+, Go to 1c
+1cx2: {Waufff! (Dog brings} Letter
+FlagDogBalls>30
+Royal Dog
+-
+-
+1d: {Warf! Warf! (Dog} Throne room
+-
+Royal Dog
+-
+Go to 1
+-
+1e: {Wof! Grrrr... (Dog} Caravan marketplace
+-
+Royal Dog
+-
+Go to 1
+-
+AddFortuneTeller, Go to EventFortuneTeller
+{Wouf! Wifwifwif! Wouf!}
+-
+Royal Dog
+-
+-5/0/-5/0
