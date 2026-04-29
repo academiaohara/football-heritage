@@ -39,31 +39,147 @@
   .stat  { padding: 10px 8px; }
 }
 
-/* ── Desktop (768px+): centre the app with a shadow ── */
+/* ── Desktop (768px+): horizontal layout with dark minimalist theme ── */
 @media (min-width: 768px) {
+  /* Dark background and theme variables */
   body {
     min-height: 100vh;
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    background: #f5f5f5;
+    background: #0d0d0d;
     padding: 2rem 1rem;
+
+    --color-text-primary:         #f0f0f0;
+    --color-text-secondary:       rgba(255,255,255,0.55);
+    --color-text-tertiary:        rgba(255,255,255,0.35);
+    --color-background-primary:   #1c1c1c;
+    --color-background-secondary: #252525;
+    --color-border-secondary:     rgba(255,255,255,0.12);
+    --color-border-tertiary:      rgba(255,255,255,0.07);
   }
 
   #app {
     width: 100%;
-    max-width: 640px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    max-width: 960px;
+    padding: 2rem 2.5rem;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
   }
 
-  /* Larger touch targets not needed on desktop – restore comfortable sizing */
+  /* ── Stats: horizontal bar layout ── */
+  .stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    text-align: left;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+  }
+
+  .stat-lbl {
+    width: 90px;
+    font-size: 11px;
+    margin-bottom: 0;
+    white-space: nowrap;
+  }
+
+  .stat-track {
+    flex: 1;
+    height: 4px;
+    margin: 0;
+    background: rgba(255,255,255,0.1);
+  }
+
+  .stat-n {
+    width: 28px;
+    text-align: right;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* Brighter stat colors on dark background */
+  .n-money { color: #2ee8a0; }
+  .n-press { color: #5ab0ff; }
+  .n-vest  { color: #a090ff; }
+  .n-power { color: #ffa040; }
+
+  .f-money { background: #2ee8a0; }
+  .f-press { background: #5ab0ff; }
+  .f-vest  { background: #a090ff; }
+  .f-power { background: #ffa040; }
+
+  /* ── Alert styles for dark theme ── */
+  .alert-warn   { background: rgba(239,159,39,0.1);  border-color: rgba(239,159,39,0.3); color: #f0c060; }
+  .alert-danger { background: rgba(226,75,74,0.1);   border-color: rgba(226,75,74,0.3);  color: #f07070; }
+  .alert-info   { background: rgba(56,138,221,0.1);  border-color: rgba(56,138,221,0.3); color: #70b0f0; }
+
+  /* ── Card styling on dark background ── */
+  .ev-card {
+    background: #1c1c1c;
+    border-color: rgba(255,255,255,0.1);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    padding: 1.75rem 1.75rem 1.25rem;
+  }
+
+  .card-title { font-size: 20px; }
+  .card-desc  { font-size: 15px; line-height: 1.7; }
+  .card-meta  { border-top-color: rgba(255,255,255,0.08); }
+
+  .swipe-hint-right { color: #2ee8a0; border-color: #2ee8a0; background: rgba(46,232,160,0.08); }
+  .swipe-hint-left  { color: #f07070; border-color: #f07070; background: rgba(240,112,112,0.08); }
+
+  /* ── Swipe action buttons ── */
   .sw-hint { padding: 12px 11px; }
-  .rst-btn { padding: 10px 28px; font-size: 14px; }
+  .sw-btn  { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); }
+  .sw-btn:hover { background: rgba(255,255,255,0.1); }
+
+  /* ── Top bar ── */
+  .club-name  { font-size: 18px; }
+  .reign-info { font-size: 13px; letter-spacing: 0.02em; }
+
+  /* ── Badges on dark background ── */
+  .t-badge    { background: rgba(63,52,137,0.4);  border-color: rgba(175,169,236,0.3); color: #b0aaff; }
+  .ach-badge  { background: rgba(122,80,0,0.3);   border-color: rgba(239,185,74,0.3);  color: #f0c060; }
+  .mote-badge { background: rgba(8,48,107,0.3);   border-color: rgba(107,174,214,0.3); color: #70b0f0; }
+
+  /* ── Counter ── */
+  .counter { font-size: 11px; }
+
+  /* ── Two-column horizontal game layout ── */
+  .game-layout {
+    flex-direction: row;
+    gap: 2.5rem;
+    align-items: flex-start;
+  }
+
+  .game-left {
+    order: 1;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .game-right {
+    order: 2;
+    width: 340px;
+    flex-shrink: 0;
+  }
+
+  /* ── Button sizing ── */
+  .rst-btn   { padding: 10px 28px; font-size: 14px; }
   .start-btn { font-size: 16px; padding: 15px; }
 
-  /* Hover effects only on non-touch devices */
-  /* Note: .sw-hint elements are non-interactive (pointer-events:none), so no hover state needed */
+  /* ── Hover effects only on non-touch devices ── */
   @media (hover: hover) {
     .design-item:hover { border-color: #9DBBDF; }
   }

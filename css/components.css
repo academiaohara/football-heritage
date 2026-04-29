@@ -94,6 +94,11 @@
 .start-btn { width: 100%; background: #185FA5; color: #fff; border: none; border-radius: var(--border-radius-md); padding: 13px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; }
 .start-btn:hover { background: #1470C0; }
 
+/* ─────────────── Game layout (mobile-first: single column) ─────────────── */
+.game-layout { display: flex; flex-direction: column; }
+.game-left  { order: 2; }  /* card below stats on mobile */
+.game-right { order: 1; }  /* stats above card on mobile */
+
 /* ─────────────── Achievement toast ─────────────── */
 .ach-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #fff; border-radius: 24px; padding: 8px 18px; font-size: 13px; font-weight: 500; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
 .ach-toast.show { opacity: 1; }
