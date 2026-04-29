@@ -12,44 +12,16 @@
 body{background:#030610;min-height:100vh;display:flex;justify-content:center;font-family:'Georgia',serif;color:#f0e6d0;overscroll-behavior:none;}
 
 /* === APP CONTAINER – dark atmospheric sky === */
-#app{width:100%;max-width:430px;min-height:100vh;background:linear-gradient(180deg,#050b1e 0%,#080d20 25%,#0a1028 50%,#0d0f18 75%,#080808 100%);position:relative;}
+#app{width:100%;min-height:100vh;background:#050b1e;position:relative;}
 
 /* === STARRY SKY + MOON overlay (fixed, centered over the 430 px container) === */
-#app::before{
-  content:'';position:fixed;top:0;left:50%;transform:translateX(-50%);
-  width:430px;height:100%;
-  background-image:
-    /* Moon glow */
-    radial-gradient(circle 24px at 87% 6%,#f8f0c8 0%,rgba(248,240,200,.55) 45%,transparent 72%),
-    /* Stars */
-    radial-gradient(2px 2px at 8% 5%,#fff 0%,transparent 100%),
-    radial-gradient(1px 1px at 16% 12%,rgba(255,255,255,.8) 0%,transparent 100%),
-    radial-gradient(2px 2px at 27% 3%,#fff 0%,transparent 100%),
-    radial-gradient(1px 1px at 38% 8%,rgba(255,255,255,.7) 0%,transparent 100%),
-    radial-gradient(1px 1px at 50% 15%,rgba(255,255,255,.9) 0%,transparent 100%),
-    radial-gradient(2px 2px at 61% 4%,#fff 0%,transparent 100%),
-    radial-gradient(1px 1px at 72% 10%,rgba(255,255,255,.75) 0%,transparent 100%),
-    radial-gradient(1px 1px at 83% 7%,rgba(255,255,255,.85) 0%,transparent 100%),
-    radial-gradient(2px 2px at 91% 18%,#fff 0%,transparent 100%),
-    radial-gradient(1px 1px at 5% 22%,rgba(255,255,255,.6) 0%,transparent 100%),
-    radial-gradient(1px 1px at 21% 28%,rgba(255,255,255,.5) 0%,transparent 100%),
-    radial-gradient(1px 1px at 44% 25%,rgba(255,255,255,.7) 0%,transparent 100%),
-    radial-gradient(1px 1px at 58% 20%,rgba(255,255,255,.65) 0%,transparent 100%),
-    radial-gradient(1px 1px at 77% 30%,rgba(255,255,255,.55) 0%,transparent 100%),
-    radial-gradient(2px 2px at 95% 14%,rgba(255,255,255,.9) 0%,transparent 100%),
-    radial-gradient(1px 1px at 33% 35%,rgba(255,255,255,.45) 0%,transparent 100%),
-    radial-gradient(1px 1px at 67% 32%,rgba(255,255,255,.5) 0%,transparent 100%),
-    radial-gradient(1px 1px at 12% 40%,rgba(255,255,255,.4) 0%,transparent 100%),
-    radial-gradient(2px 2px at 88% 38%,rgba(255,255,255,.7) 0%,transparent 100%),
-    radial-gradient(1px 1px at 55% 42%,rgba(255,255,255,.35) 0%,transparent 100%);
-  pointer-events:none;z-index:0;
-}
+#app::before{display:none;}
 
 /* UI content layer */
 #ui{position:relative;z-index:1;padding-bottom:60px;}
 
 /* === MOUNTAIN SVG at bottom of game screen === */
-.mountains-bg{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:430px;pointer-events:none;z-index:0;display:block;}
+.mountains-bg{position:fixed;bottom:0;left:0;width:100%;pointer-events:none;z-index:0;display:block;}
 
 /* === REIGNS GAME LAYOUT === */
 .reigns-screen{position:relative;}
@@ -75,7 +47,7 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
 .a-info{background:rgba(30,80,180,.15);border-color:#378add;color:#88bbf0;}
 
 /* === CARD AREA === */
-.card-area{padding:6px 16px;}
+.card-area{padding:6px 8px;display:flex;flex-direction:column;align-items:center;}
 .ctx-text{font-size:12px;color:rgba(240,230,208,.5);font-style:italic;text-align:center;margin-bottom:8px;font-family:system-ui,sans-serif;min-height:18px;}
 .card-outer{position:relative;touch-action:none;user-select:none;}
 .swipe-hint{position:absolute;top:22px;font-size:12px;font-weight:700;padding:5px 11px;border-radius:6px;opacity:0;pointer-events:none;z-index:20;font-family:system-ui,sans-serif;max-width:44%;text-align:center;line-height:1.2;}
@@ -83,13 +55,13 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
 .hint-r{right:10px;color:#80ff80;background:rgba(20,120,60,.15);border:1.5px solid rgba(81,207,102,.45);}
 
 /* === REIGNS-STYLE CARD (cream paper) === */
-.ev-card{background:#f5e6c8;border:none;border-radius:20px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.65),0 2px 8px rgba(0,0,0,.35);min-height:320px;display:flex;flex-direction:column;transform-origin:center bottom;will-change:transform;cursor:grab;}
+.ev-card{background:#f5e6c8;border:2px solid rgba(90,58,16,.3);border-radius:12px;overflow:hidden;min-height:unset;width:240px;height:calc(240px * 14/9);max-height:calc(100vh - 120px);display:flex;flex-direction:column;transform-origin:center bottom;will-change:transform;cursor:grab;}
 .ev-card.is-dragging{cursor:grabbing;}
 .ev-card.fifa-boss .card-illus{background:linear-gradient(160deg,#7a0000 0%,#4a0000 100%) !important;}
 
 /* Card illustration area (top coloured block) */
-.card-illus{height:170px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.card-illus::after{content:'';position:absolute;bottom:0;left:0;right:0;height:24px;background:linear-gradient(transparent,rgba(0,0,0,.22));pointer-events:none;}
+.card-illus{height:40%;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.card-illus::after{display:none;}
 .card-emoji{font-size:62px;line-height:1;margin-bottom:6px;text-align:center;filter:drop-shadow(0 2px 8px rgba(0,0,0,.35));position:relative;z-index:1;}
 .card-cat{font-size:7px;letter-spacing:.12em;text-transform:uppercase;font-family:'Press Start 2P',monospace;color:rgba(255,255,255,.88);text-shadow:1px 1px 0 rgba(0,0,0,.5);position:relative;z-index:1;}
 .fifa-boss .card-cat{color:#ffe080;}
@@ -111,7 +83,7 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
 .card-week{font-size:9px;color:rgba(90,58,16,.42);font-family:system-ui,sans-serif;}
 
 /* Swipe buttons */
-.swipe-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.swipe-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;width:240px;}
 .sw-btn{background:rgba(255,255,255,.04);border:1px solid rgba(212,160,23,.22);border-radius:10px;padding:10px 8px;cursor:pointer;font-family:'Georgia',serif;color:#f0e6d0;transition:all .15s;text-align:left;}
 .sw-btn:hover{background:rgba(212,160,23,.1);border-color:rgba(212,160,23,.45);}
 .sw-btn:active{transform:scale(.97);}
@@ -132,14 +104,14 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
 .stat-val{font-size:11px;font-weight:bold;font-family:system-ui,sans-serif;}
 .stat-bar{height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;}
 .stat-fill{height:100%;border-radius:2px;transition:width .4s ease;}
-.fill-money{background:linear-gradient(90deg,#1d9e75,#4ecdc4);}
-.fill-press{background:linear-gradient(90deg,#378add,#6fb0f5);}
-.fill-vest{background:linear-gradient(90deg,#c44fa8,#e879c0);}
-.fill-power{background:linear-gradient(90deg,#e5a117,#f7c948);}
+.fill-money{background:#1d9e75;}
+.fill-press{background:#378add;}
+.fill-vest{background:#c44fa8;}
+.fill-power{background:#e5a117;}
 .val-money{color:#4ecdc4;} .val-press{color:#6fb0f5;} .val-vest{color:#e879c0;} .val-power{color:#f7c948;}
 
 /* === HEADER (kept for presSelect/setup screens) === */
-.hdr{background:linear-gradient(180deg,rgba(18,12,4,.97) 0%,rgba(12,8,2,.93) 100%);border-bottom:1px solid rgba(212,160,23,.28);padding:10px 16px 8px;}
+.hdr{background:rgba(18,12,4,.97);border-bottom:1px solid rgba(212,160,23,.28);padding:10px 16px 8px;}
 .hdr-row{display:flex;justify-content:space-between;align-items:center;}
 .hdr-title{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#d4a017;font-family:system-ui,sans-serif;}
 .hdr-weeks{font-size:11px;color:rgba(240,230,208,.55);font-family:system-ui,sans-serif;}
@@ -160,7 +132,7 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
 .np-close:hover{background:#333;}
 
 /* === DEATH SCREEN === */
-.death-screen{min-height:100vh;background:linear-gradient(160deg,#0f0000 0%,#080808 100%);}
+.death-screen{min-height:100vh;background:#080808;}
 .death-hdr{background:#c8102e;padding:16px;text-align:center;border-bottom:4px solid #8b0000;}
 .death-hdr-lbl{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:3px;font-family:system-ui,sans-serif;}
 .death-paper{font-size:24px;font-weight:bold;color:#fff;font-family:'Georgia',serif;}
@@ -175,7 +147,7 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
 .tl-title{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#d4a017;margin:14px 0 12px;font-family:system-ui,sans-serif;}
 .tl-scroll{overflow-x:auto;padding-bottom:8px;}
 .tl-track{display:flex;align-items:flex-start;min-width:max-content;padding:16px 0 6px;position:relative;}
-.tl-track::before{content:'';position:absolute;top:37px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(212,160,23,.45),transparent);}
+.tl-track::before{content:'';position:absolute;top:37px;left:0;right:0;height:2px;background:rgba(212,160,23,.45);}
 .tl-item{display:flex;flex-direction:column;align-items:center;min-width:80px;position:relative;z-index:1;}
 .tl-portrait{width:46px;height:46px;border-radius:50%;background:rgba(212,160,23,.1);border:2px solid rgba(212,160,23,.28);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:7px;position:relative;z-index:2;}
 .tl-portrait.current{border-color:#d4a017;background:rgba(212,160,23,.22);box-shadow:0 0 12px rgba(212,160,23,.4);}
@@ -186,8 +158,8 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
 
 /* === DEATH ACTIONS === */
 .death-actions{padding:16px;display:flex;flex-direction:column;gap:10px;}
-.btn-successor{background:linear-gradient(135deg,#d4a017,#a87c0c);color:#1a1100;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:bold;cursor:pointer;font-family:'Georgia',serif;letter-spacing:.02em;box-shadow:0 4px 16px rgba(212,160,23,.3);}
-.btn-successor:hover{background:linear-gradient(135deg,#e5b420,#c09010);}
+.btn-successor{background:#d4a017;color:#1a1100;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:bold;cursor:pointer;font-family:'Georgia',serif;letter-spacing:.02em;}
+.btn-successor:hover{background:#e5b420;}
 .btn-restart{background:rgba(255,255,255,.05);color:rgba(240,230,208,.55);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px;font-size:13px;cursor:pointer;font-family:system-ui,sans-serif;}
 .btn-restart:hover{background:rgba(255,255,255,.08);}
 
@@ -200,8 +172,8 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
 .setup-input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(212,160,23,.3);border-radius:8px;padding:12px 14px;font-size:16px;color:#f0e6d0;font-family:'Georgia',serif;outline:none;margin-bottom:24px;}
 .setup-input:focus{border-color:#d4a017;}
 .setup-input::placeholder{color:rgba(240,230,208,.28);}
-.setup-btn{width:100%;background:linear-gradient(135deg,#d4a017,#a87c0c);color:#1a1100;border:none;border-radius:10px;padding:15px;font-size:16px;font-weight:bold;cursor:pointer;font-family:'Georgia',serif;margin-top:auto;box-shadow:0 4px 20px rgba(212,160,23,.28);}
-.setup-btn:hover{background:linear-gradient(135deg,#e5b420,#c09010);}
+.setup-btn{width:100%;background:#d4a017;color:#1a1100;border:none;border-radius:10px;padding:15px;font-size:16px;font-weight:bold;cursor:pointer;font-family:'Georgia',serif;margin-top:auto;}
+.setup-btn:hover{background:#e5b420;}
 .setup-note{font-size:11px;color:rgba(240,230,208,.3);text-align:center;margin-top:14px;font-family:system-ui,sans-serif;line-height:1.5;}
 
 /* === PRES SELECT === */
@@ -224,9 +196,43 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:rgba(212,160,23,.28);border-radius:2px;}
 
+/* === ROTATE PROMPT (portrait mobile) === */
+#rotate-prompt{display:none;font-family:system-ui,sans-serif;color:#f0e6d0;}
+@media (max-width:767px) and (orientation:portrait){
+  #rotate-prompt{display:flex;position:fixed;inset:0;z-index:9999;background:#050b1e;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:32px;}
+  body>#app{display:none;}
+}
+
+/* === LANDSCAPE MOBILE + DESKTOP: horizontal two-column layout === */
+@media (orientation:landscape),(min-width:768px){
+  body{display:flex;justify-content:center;align-items:flex-start;}
+  #app{min-height:100vh;display:flex;flex-direction:column;}
+  .reigns-screen{flex:1;display:flex;flex-direction:column;}
+  .game-wrap{display:flex;flex-direction:row;gap:16px;flex:1;padding:0 16px 16px;}
+  .game-col-a{width:240px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;}
+  .game-col-b{flex:1;display:flex;align-items:flex-start;justify-content:center;}
+  .ev-card{height:min(calc(100vh - 120px),420px);width:calc(min(calc(100vh - 120px),420px) * 9/14);}
+  .swipe-actions{width:calc(min(calc(100vh - 120px),420px) * 9/14);}
+  .card-area{padding:0;}
+  .mountains-bg{width:100%;}
+}
+
+/* === DESKTOP FULL SCREEN (wider than 768px) === */
+@media (min-width:768px){
+  #app{width:100%;max-width:100%;}
+  .game-col-a{width:300px;}
+  .ev-card{height:min(calc(100vh - 120px),560px);width:calc(min(calc(100vh - 120px),560px) * 9/14);}
+  .swipe-actions{width:calc(min(calc(100vh - 120px),560px) * 9/14);}
+}
+
 </style>
 </head>
 <body>
+<div id="rotate-prompt">
+  <div style="font-size:56px">📱</div>
+  <div style="font-size:16px;font-weight:bold">Gira el móvil</div>
+  <div style="font-size:12px;opacity:0.55;text-align:center;max-width:200px;line-height:1.5">Este juego se juega en horizontal</div>
+</div>
 <div id="app"><div id="ui"></div></div>
 <div class="toast" id="toast"></div>
 <script>
@@ -918,6 +924,7 @@ const RANDOM_SUBS=[
   'La Federación ha abierto expediente. Los papeles llegaron en sobre manila sin remitente.'
 ];
 const PORTRAITS=['👔','🎩','😤','🤵','😎','🧐','🥸','🤨','😏','🫅','👑','🤴'];
+const DIVISIONS=['Primera División','Segunda División','Segunda B','Tercera División','Regional Preferente'];
 
 // ── SVG Scoreboard Icons (flat white, Reigns-style) ──
 const SVG_STADIUM=`<svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 18 Q1 7 10 6 Q19 7 19 18"/><path d="M4 18 Q4 12 10 11 Q16 12 16 18"/><line x1="1" y1="18" x2="19" y2="18"/><line x1="7" y1="18" x2="7" y2="15"/><line x1="13" y1="18" x2="13" y2="15"/><line x1="7" y1="15" x2="13" y2="15"/></svg>`;
@@ -935,7 +942,7 @@ function makeState(){
     clubName:'',
     weeks:0,
     totalWeeks:0,          // cumulative weeks across ALL reigns (Reigns: global year counter)
-    stats:{money:40,press:40,vest:40,power:40},  // GUIA.md: stats start at 40
+    stats:{money:25,press:25,vest:30,power:25},
     statsHidden:{money:false,press:false,vest:false,power:false},
     fifaCurses:[],             // [{stat,endsAt}]
     nextFifaBossAt:50,
@@ -965,7 +972,8 @@ function makeState(){
     achievedAny:{},            // which achievements have been unlocked
     inherited:null,
     deathType:null,
-    highStatTurns:0            // consecutive turns with all stats > 80
+    highStatTurns:0,           // consecutive turns with all stats > 80
+    division:4,             // 4=Regional Preferente (lowest), 0=Primera División
   };
 }
 let G=makeState();
@@ -1013,7 +1021,7 @@ function statMeta(){
 // ─────────────────────────────────────────────────────────────────
 function pickCard(){
   // Blatter check (end-game boss — GUIA.md: 2+ títulos, Finanzas > 55, Afición > 45, legado 3+)
-  if(!G.blatterDone&&G.champions>=2&&G.stats.power>55&&G.stats.money>45&&G.reign>=3){
+  if(!G.blatterDone&&G.champions>=2&&G.stats.power>55&&G.stats.money>45&&G.reign>=3&&G.division===0){
     G.blatterDone=true;
     return BLATTER_CARD;
   }
@@ -1034,7 +1042,7 @@ function pickCard(){
   let pool=CARDS.filter(c=>!G.seen.has(c.id));
   if(pool.length===0){G.seen.clear();pool=CARDS.filter(c=>c.id!=='c100');}
   // Champions card — GUIA.md: Afición > 50, RRPP > 50, más de 15 turnos. NOT added to seen so it can reappear.
-  if(G.stats.money>50&&G.stats.press>50&&G.weeks>15){
+  if(G.stats.money>50&&G.stats.press>50&&G.weeks>15&&G.division===0){
     const f=CARDS.find(c=>c.id==='c100');
     if(f&&!G.seen.has('c100'))pool.push(f);
   }
@@ -1105,6 +1113,7 @@ function choose(idx){
 
     G.seen.add(card.id);
     G.weeks++;G.track.totalTurns++;
+    if(G.weeks>0&&G.weeks%12===0)checkSeasonEnd();
     tickFifaCurses();
 
     // Leyenda del Club: all 4 stats > 80 for 5 consecutive turns
@@ -1127,6 +1136,22 @@ function applyFx(fx){
   Object.keys(fx).forEach(k=>{
     if(G.stats[k]!==undefined)G.stats[k]=clamp(G.stats[k]+fx[k]);
   });
+}
+
+function checkSeasonEnd(){
+  if(G.division===undefined)G.division=4;
+  const s=G.stats;
+  if(G.division>0&&s.vest>=65){
+    G.division--;
+    showToast('🆙 ¡Ascenso a '+DIVISIONS[G.division]+'!');
+    G.stats.money=clamp(G.stats.money+8);
+    G.stats.press=clamp(G.stats.press+5);
+  }else if(G.division<4&&s.vest<=25){
+    G.division++;
+    showToast('⬇️ Descenso. Ahora en '+DIVISIONS[G.division]);
+    G.stats.money=clamp(G.stats.money-8);
+    G.stats.press=clamp(G.stats.press-10);
+  }
 }
 
 function tickFifaCurses(){
@@ -1206,6 +1231,11 @@ function nextSuccessor(){
   newG.stats.power=30+Math.floor(Math.random()*21);  // 30–50
 
   newG.screen='presSelect';
+  newG.division=G.division!==undefined?G.division:4;
+  // Sporting collapse → relegated one division
+  if(tl.length>0&&['vest','vest100'].includes(tl[tl.length-1].cause)){
+    newG.division=Math.min(4,newG.division+1);
+  }
   newG.inherited=tl.length>0?humanCause(tl[tl.length-1].cause):null;
   G=newG;
   render();
@@ -1356,7 +1386,7 @@ function renderGame(){
   if(G.champions>0)alerts.push({cls:'a-info',msg:`🏆 ${G.champions} título${G.champions>1?'s':''} de Champions en tu legado.`});
   const yearsLabel=G.reign===1?'1 mandato':`${G.reign} mandatos`;
   const totalW=G.totalWeeks+G.weeks;
-
+  const div=DIVISIONS[G.division!==undefined?G.division:4];
   return`<div class="reigns-screen">
     <svg class="mountains-bg" viewBox="0 0 430 130" preserveAspectRatio="xMidYMax slice" fill="#07080f" aria-hidden="true">
       <path d="M0 130 L0 88 L28 55 L55 82 L80 38 L108 70 L132 22 L160 58 L185 30 L210 62 L238 18 L265 52 L288 34 L312 60 L338 40 L362 66 L390 45 L430 68 L430 130 Z"/>
@@ -1366,9 +1396,15 @@ function renderGame(){
       <div class="scoreboard-icons">${renderScoreboard()}</div>
       <div class="pixel-score">${G.weeks}</div>
     </div>
-    <div class="pixel-sub">${esc(G.clubName)} · ${yearsLabel} · ${totalW} sem. totales</div>
-    <div class="alerts">${alerts.map(a=>`<div class="alert ${a.cls}">${a.msg}</div>`).join('')}</div>
-    ${card?renderCard(card):''}
+    <div class="pixel-sub">${esc(div)} · ${yearsLabel} · ${totalW} sem.</div>
+    <div class="game-wrap">
+      <div class="game-col-a">
+        <div class="alerts">${alerts.map(a=>`<div class="alert ${a.cls}">${a.msg}</div>`).join('')}</div>
+      </div>
+      <div class="game-col-b">
+        ${card?renderCard(card):''}
+      </div>
+    </div>
   </div>`;
 }
 
@@ -1415,10 +1451,6 @@ function renderCard(card){
         <div class="card-paper">
           <div class="card-title">${esc(card.title)}</div>
           <div class="card-desc">${esc(card.desc)}</div>
-          <div class="card-fx-preview">
-            <div class="card-fx-col">${renderFxPreview(card.b.fx,'←')}</div>
-            <div class="card-fx-col card-fx-right">${renderFxPreview(card.a.fx,'→')}</div>
-          </div>
           <div class="card-foot">
             <span class="card-week">Sem. ${G.weeks+1}</span>
             <span class="card-week">Mandato ${G.reign}</span>
