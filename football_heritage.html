@@ -196,6 +196,41 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:rgba(212,160,23,.28);border-radius:2px;}
 
+/* === CORNER INFO BOXES (fixed overlay, shown at ≥1400px) === */
+.corner-info{display:none;position:fixed;z-index:100;pointer-events:none;}
+.corner-tl{top:28px;left:28px;text-align:left;}
+.corner-tr{top:28px;right:28px;text-align:right;}
+.corner-bl{bottom:28px;left:28px;text-align:left;}
+.corner-br{bottom:28px;right:28px;text-align:right;max-width:260px;}
+.corner-val{display:block;font-family:'Press Start 2P',monospace;font-size:13px;color:#f0e6d0;text-shadow:1px 1px 0 rgba(0,0,0,.85);line-height:1.4;margin-bottom:4px;}
+.corner-lbl{display:block;font-size:9px;font-family:system-ui,sans-serif;color:rgba(212,160,23,.65);letter-spacing:.1em;text-transform:uppercase;}
+.corner-br .alert{font-size:10px;padding:3px 7px;margin-bottom:3px;line-height:1.3;}
+
+/* === DECK BACKGROUND CARDS (behind active card) === */
+.deck-back{display:none;position:absolute;inset:0;background:#f5e6c8;border:2px solid rgba(90,58,16,.25);border-radius:12px;pointer-events:none;}
+.deck-back-1{transform:rotate(-4deg) translateY(5px);}
+.deck-back-2{transform:rotate(4deg) translateY(9px);}
+
+/* === CENTERED PLAY COLUMN + CORNER INFO (≥1400px overrides) === */
+@media(min-width:1400px){
+  /* Hide side columns, center the game column */
+  .col-l,.col-r{display:none!important;}
+  .game-1920{justify-content:center!important;}
+  /* Narrow center column: ~28vw */
+  .col-c{width:min(28vw,450px)!important;min-width:280px!important;max-width:450px!important;flex:0 0 auto!important;}
+  /* Show corner info and deck cards */
+  .corner-info{display:block!important;}
+  .deck-back{display:block!important;}
+  /* Card: centered, no tilt */
+  .game-event-area{display:flex!important;align-items:center!important;justify-content:center!important;}
+  .card-overlay-wrap{position:static!important;right:unset!important;bottom:unset!important;transform:none!important;transform-origin:center bottom!important;display:flex!important;justify-content:center!important;align-items:center!important;width:100%!important;padding:0!important;}
+  .card-overlay-wrap .card-outer{width:200px!important;position:relative!important;}
+  .card-overlay-wrap .ev-card{width:200px!important;height:calc(200px * 14/9)!important;max-height:unset!important;cursor:pointer!important;position:relative!important;z-index:1!important;transform-origin:center bottom!important;}
+  .game-skills .swipe-actions{width:200px!important;}
+  /* President name is in corner box; hide the center footer label */
+  .game-char-name{display:none!important;}
+}
+
 /* === ROTATE PROMPT (portrait mobile) === */
 #rotate-prompt{display:none;font-family:system-ui,sans-serif;color:#f0e6d0;}
 @media (max-width:767px) and (orientation:portrait){
@@ -1218,7 +1253,7 @@ function makeState(){
   };
 }
 let G=makeState();
-let DRAG={active:false,startX:0,currentX:0,threshold:72,locked:false};
+let DRAG={active:false,startX:0,currentX:0,threshold:72,locked:false,moved:false};
 let toastTimer=null;
 
 function randPortrait(){return PORTRAITS[Math.floor(Math.random()*PORTRAITS.length)];}
@@ -1634,6 +1669,23 @@ function renderGame(){
   const gameYear=2024+Math.floor((G.totalWeeks+G.weeks)/52);
 
   return`<div class="reigns-screen">
+    <!-- Corner info boxes (position:fixed, only visible at ≥1400px via CSS) -->
+    <div class="corner-info corner-tl">
+      <span class="corner-val">${G.weeks}</span>
+      <span class="corner-lbl">Semanas en el cargo</span>
+    </div>
+    <div class="corner-info corner-tr">
+      <span class="corner-val">${gameYear}</span>
+      <span class="corner-lbl">Año</span>
+    </div>
+    <div class="corner-info corner-bl">
+      <span class="corner-val">${esc(G.presName||'—')}</span>
+      <span class="corner-lbl">Presidente</span>
+    </div>
+    <div class="corner-info corner-br">
+      ${alerts.length?`<div class="corner-lbl" style="margin-bottom:6px">Misiones</div>${alerts.slice(0,4).map(a=>`<div class="alert ${a.cls}">${a.msg}</div>`).join('')}`:''}
+    </div>
+
     <svg class="mountains-bg" viewBox="0 0 430 130" preserveAspectRatio="xMidYMax slice" fill="#07080f" aria-hidden="true">
       <path d="M0 130 L0 88 L28 55 L55 82 L80 38 L108 70 L132 22 L160 58 L185 30 L210 62 L238 18 L265 52 L288 34 L312 60 L338 40 L362 66 L390 45 L430 68 L430 130 Z"/>
     </svg>
@@ -1679,6 +1731,8 @@ function renderGame(){
           </div>
           ${card?`<div class="card-overlay-wrap">
             <div class="card-outer" id="card-outer">
+              <div class="deck-back deck-back-2"></div>
+              <div class="deck-back deck-back-1"></div>
               <div class="swipe-hint hint-l" id="hint-l">← ${esc(card.b.label)}</div>
               <div class="swipe-hint hint-r" id="hint-r">${esc(card.a.label)} →</div>
               <div class="ev-card${isBoss?' fifa-boss':''}" id="ev-card">
@@ -1918,12 +1972,48 @@ function attachSwipe(){
   outer.addEventListener('pointermove',onMove,{passive:false});
   outer.addEventListener('pointerup',onUp,{passive:false});
   outer.addEventListener('pointercancel',onCancel);
+  attachHoverTilt();
+}
+
+function attachHoverTilt(){
+  const outer=document.getElementById('card-outer');
+  if(!outer)return;
+  outer.addEventListener('mousemove',function(e){
+    if(DRAG.active||DRAG.locked)return;
+    const rect=outer.getBoundingClientRect();
+    const cx=rect.left+rect.width/2;
+    const card=document.getElementById('ev-card');
+    const hl=document.getElementById('hint-l');
+    const hr=document.getElementById('hint-r');
+    if(!card)return;
+    const dx=e.clientX-cx;
+    const pct=Math.min(Math.abs(dx)/(rect.width/2),1);
+    const rot=dx>0?8*pct:-8*pct;
+    card.style.transition='transform .1s ease';
+    card.style.transform=`rotate(${rot}deg)`;
+    if(hl)hl.style.opacity=dx<0?pct:0;
+    if(hr)hr.style.opacity=dx>0?pct:0;
+  });
+  outer.addEventListener('mouseleave',function(){
+    if(DRAG.active||DRAG.locked)return;
+    snapBack();
+  });
+  outer.addEventListener('click',function(e){
+    if(DRAG.locked)return;
+    if(DRAG.moved){DRAG.moved=false;return;}
+    const rect=outer.getBoundingClientRect();
+    const cx=rect.left+rect.width/2;
+    DRAG.locked=true;
+    if(e.clientX>=cx)animateOut('right',0);
+    else animateOut('left',1);
+  });
 }
 
 function onDown(e){
   if(DRAG.locked)return;
   e.preventDefault();
   DRAG.active=true;
+  DRAG.moved=false;
   DRAG.startX=e.clientX;
   DRAG.currentX=e.clientX;
   try{document.getElementById('card-outer').setPointerCapture(e.pointerId);}catch(_){DRAG.active=false;return;}
@@ -1935,6 +2025,7 @@ function onMove(e){
   if(!DRAG.active)return;
   e.preventDefault();
   DRAG.currentX=e.clientX;
+  if(Math.abs(DRAG.currentX-DRAG.startX)>6)DRAG.moved=true;
   updateDrag();
 }
 
