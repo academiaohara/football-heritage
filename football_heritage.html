@@ -217,12 +217,253 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
   .mountains-bg{width:100%;}
 }
 
-/* === DESKTOP FULL SCREEN (wider than 768px) === */
-@media (min-width:768px){
+/* === DESKTOP FULL SCREEN (wider than 768px, up to 1399px) === */
+@media (min-width:768px) and (max-width:1399px){
   #app{width:100%;max-width:100%;}
   .game-col-a{width:300px;}
   .ev-card{height:min(calc(100vh - 120px),560px);width:calc(min(calc(100vh - 120px),560px) * 9/14);}
   .swipe-actions{width:calc(min(calc(100vh - 120px),560px) * 9/14);}
+}
+
+/* ══════════════════════════════════════════════════════════════
+   NEW 3-COLUMN LAYOUT CLASSES
+   Base (mobile): single column, left/right cols hidden.
+   At 1400px+: 16:9 three-column layout (480 | 960 | 480).
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Mobile default ── */
+.game-1920{display:flex;flex-direction:column;position:relative;}
+.col-l,.col-r{display:none;}
+.col-c{flex:1;display:flex;flex-direction:column;}
+.game-hdr{display:flex;align-items:center;justify-content:center;padding:10px 14px 4px;}
+.game-ctx-box{padding:2px 16px 4px;}
+.game-event-area{position:relative;overflow:visible;min-height:200px;}
+.event-bg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;z-index:0;border-radius:8px;overflow:hidden;}
+.event-emoji{font-size:80px;line-height:1;opacity:.18;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4));}
+.event-cat-lbl{font-size:8px;letter-spacing:.12em;text-transform:uppercase;font-family:'Press Start 2P',monospace;color:rgba(255,255,255,.4);margin-top:4px;opacity:.15;}
+.card-overlay-wrap{position:relative;z-index:1;display:flex;justify-content:center;padding:4px 8px;}
+.game-char-name{text-align:center;font-family:'Press Start 2P',monospace;font-size:6px;color:rgba(240,230,208,.4);padding:3px 14px;line-height:1.6;}
+.game-skills{padding:4px 8px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.skill-icons{display:none;}
+.skill-icon{display:flex;align-items:center;justify-content:center;opacity:.6;flex-shrink:0;}
+/* Side column content hidden on mobile */
+.col-side-inner{display:none;}
+.side-block,.side-pres,.side-missions{display:none;}
+
+/* ── Landscape / 768px–1399px adjustments ── */
+@media (orientation:landscape) and (max-width:1399px),(min-width:768px) and (max-width:1399px){
+  .game-1920{min-height:100vh;}
+  .game-event-area{min-height:280px;}
+  .ev-card{height:min(calc(100vh - 160px),420px);width:calc(min(calc(100vh - 160px),420px) * 9/14);}
+  .swipe-actions{width:calc(min(calc(100vh - 160px),420px) * 9/14);}
+  .mountains-bg{width:100%;}
+}
+
+/* ══════════════════════════════════════════════════════════════
+   16:9 FULL HD LAYOUT (>= 1400px)
+   Base resolution: 1920 × 1080 px
+   Columns: 480 (left) | 960 (center) | 480 (right)
+   ══════════════════════════════════════════════════════════════ */
+@media (min-width:1400px){
+  body{align-items:stretch;}
+  #app{width:100vw;max-width:100%;padding:0;}
+  #ui{padding-bottom:0;}
+  .reigns-screen{width:100vw;height:100vh;overflow:hidden;}
+  .mountains-bg{display:none;}
+
+  /* ── 3-column wrapper ── */
+  .game-1920{
+    width:100%;
+    height:100vh;
+    flex-direction:row;
+    overflow:visible;
+  }
+
+  /* ── Left column (480px) ── */
+  .col-l{
+    display:flex;
+    width:480px;
+    min-width:480px;
+    flex-direction:column;
+    justify-content:flex-start;
+    padding:56px 48px;
+    gap:40px;
+    background:rgba(3,6,16,.55);
+    border-right:1px solid rgba(212,160,23,.12);
+    z-index:1;
+    flex-shrink:0;
+  }
+
+  /* ── Center column (960px) ── */
+  .col-c{
+    width:960px;
+    min-width:960px;
+    max-width:960px;
+    height:100vh;
+    flex-shrink:0;
+    overflow:visible;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ── Right column (remaining space) ── */
+  .col-r{
+    display:flex;
+    flex:1;
+    flex-direction:column;
+    justify-content:flex-start;
+    padding:56px 48px;
+    gap:40px;
+    background:rgba(3,6,16,.55);
+    border-left:1px solid rgba(212,160,23,.12);
+    z-index:1;
+  }
+
+  /* ── Side column content ── */
+  .col-side-inner{display:flex;flex-direction:column;gap:32px;width:100%;}
+  .side-block{display:block;}
+  .side-val{display:block;font-family:'Press Start 2P',monospace;font-size:22px;color:#f0e6d0;line-height:1.2;margin-bottom:8px;}
+  .side-div-val{font-size:12px!important;}
+  .side-lbl{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(212,160,23,.55);font-family:system-ui,sans-serif;}
+  .side-pres{display:block;}
+  .side-pres-name{display:block;font-size:15px;color:#d4a017;font-family:'Georgia',serif;font-style:italic;margin-bottom:6px;line-height:1.4;}
+  .side-missions{display:block;width:100%;}
+  .side-missions-lbl{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(212,160,23,.7);margin-bottom:10px;font-family:system-ui,sans-serif;}
+
+  /* ── 3.1 Header: 4 status indicators (120px) ── */
+  .game-hdr{
+    height:120px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    border-bottom:1px solid rgba(212,160,23,.1);
+  }
+  .game-hdr .scoreboard-icons{
+    display:flex;
+    gap:20px;
+    align-items:center;
+    justify-content:center;
+  }
+  .game-hdr .score-icon{
+    width:60px;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .game-hdr .score-icon svg{width:60px!important;height:60px!important;}
+
+  /* ── 3.2 Information box / QTE context (100px) ── */
+  .game-ctx-box{
+    height:100px;
+    flex-shrink:0;
+    margin:0 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    overflow:hidden;
+    border-bottom:1px solid rgba(212,160,23,.08);
+  }
+  .ctx-text{
+    font-size:15px;
+    color:rgba(240,230,208,.72);
+    font-style:italic;
+    text-align:center;
+    font-family:'Georgia',serif;
+    min-height:unset;
+    line-height:1.6;
+  }
+
+  /* ── 3.3 Main event area (450px) ── */
+  .game-event-area{
+    height:450px;
+    flex-shrink:0;
+    position:relative;
+    overflow:visible;
+    min-height:unset;
+    flex:unset;
+  }
+  .event-bg{
+    border-radius:0;
+    opacity:1;
+  }
+  .event-emoji{font-size:160px;opacity:.35;line-height:1;}
+  .event-cat-lbl{font-size:11px;opacity:.3;margin-top:10px;}
+
+  /* ── 3.4 Decision card overlay: 400×500, −10°, right-aligned, 120px overflow ── */
+  .card-overlay-wrap{
+    position:absolute;
+    right:-120px;
+    bottom:0;
+    z-index:10;
+    padding:0;
+    display:block;
+    transform:rotate(-10deg);
+    transform-origin:right bottom;
+  }
+  .card-overlay-wrap .card-outer{
+    width:400px;
+    display:block;
+  }
+  .card-overlay-wrap .ev-card{
+    width:400px!important;
+    height:500px!important;
+    max-height:unset;
+    cursor:grab;
+  }
+  .card-overlay-wrap .ev-card.is-dragging{cursor:grabbing;}
+
+  /* ── 3.5 Character name (60px) ── */
+  .game-char-name{
+    height:60px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Press Start 2P',monospace;
+    font-size:9px;
+    color:rgba(240,230,208,.65);
+    padding:0 20px;
+    border-top:1px solid rgba(212,160,23,.1);
+    letter-spacing:.06em;
+  }
+
+  /* ── 3.6 Footer: skills (120px) ── */
+  .game-skills{
+    height:120px;
+    flex-shrink:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:0 20px;
+    border-top:1px solid rgba(212,160,23,.1);
+  }
+  .skill-icons{
+    display:flex;
+    gap:24px;
+    align-items:center;
+    justify-content:center;
+  }
+  .skill-icon{
+    width:50px;
+    height:50px;
+    opacity:.5;
+    transition:opacity .2s;
+  }
+  .skill-icon:hover{opacity:.8;}
+  .skill-icon svg{width:50px!important;height:50px!important;}
+  .game-skills .swipe-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    width:400px;
+    margin-top:0;
+  }
 }
 
 </style>
@@ -1371,40 +1612,141 @@ function renderGame(){
   const s=G.stats;
   const alerts=[];
   // Low-stat warnings
-  if(s.power<15)alerts.push({cls:'a-danger',msg:'💰 Las finanzas del club están al límite. Quiebra inminente.'});
+  if(s.power<15)alerts.push({cls:'a-danger',msg:'💰 Las finanzas al límite. Quiebra inminente.'});
   if(s.money<15)alerts.push({cls:'a-danger',msg:'👥 La afición te da la espalda. El estadio se vacía.'});
-  if(s.vest<15) alerts.push({cls:'a-warn',  msg:'⚽ El poder deportivo está en caída libre.'});
-  if(s.press<15)alerts.push({cls:'a-warn',  msg:'📰 Las relaciones públicas están destrozadas.'});
+  if(s.vest<15) alerts.push({cls:'a-warn',  msg:'⚽ El poder deportivo en caída libre.'});
+  if(s.press<15)alerts.push({cls:'a-warn',  msg:'📰 Las relaciones públicas destrozadas.'});
   // High-stat warnings — Reigns mechanic: reaching 100 also ends the reign
-  if(s.money>=85)alerts.push({cls:'a-warn',msg:'👥 ¡Euforia descontrolada! La afición al límite — puede desbordarse.'});
-  if(s.press>=85)alerts.push({cls:'a-warn',msg:'📰 ¡Sobreexposición mediática! Las RRPP al límite — puede volverse en tu contra.'});
-  if(s.vest>=85) alerts.push({cls:'a-warn',msg:'⚽ ¡El vestuario es demasiado poderoso! Controla la situación.'});
-  if(s.power>=85)alerts.push({cls:'a-warn',msg:'💰 ¡Demasiado dinero! Las finanzas al límite — la corrupción acecha.'});
-  if(G.bombs.length>0)alerts.push({cls:'a-info',msg:'⚠️ Alguna decisión pasada puede volver a golpearte…'});
+  if(s.money>=85)alerts.push({cls:'a-warn',msg:'👥 ¡Euforia descontrolada! La afición al límite.'});
+  if(s.press>=85)alerts.push({cls:'a-warn',msg:'📰 ¡Sobreexposición mediática! Las RRPP al límite.'});
+  if(s.vest>=85) alerts.push({cls:'a-warn',msg:'⚽ ¡El vestuario es demasiado poderoso!'});
+  if(s.power>=85)alerts.push({cls:'a-warn',msg:'💰 ¡Demasiado dinero! La corrupción acecha.'});
+  if(G.bombs.length>0)alerts.push({cls:'a-info',msg:'⚠️ Una decisión pasada puede volver a golpearte…'});
   const highTurns=G.highStatTurns||0;
-  if(highTurns>0&&highTurns<5)alerts.push({cls:'a-info',msg:`🏆 ¡Todos los indicadores al máximo! ${highTurns}/5 turnos para la Leyenda del Club.`});
-  if(G.champions>0)alerts.push({cls:'a-info',msg:`🏆 ${G.champions} título${G.champions>1?'s':''} de Champions en tu legado.`});
-  const yearsLabel=G.reign===1?'1 mandato':`${G.reign} mandatos`;
-  const totalW=G.totalWeeks+G.weeks;
+  if(highTurns>0&&highTurns<5)alerts.push({cls:'a-info',msg:`🏆 ¡Todos al máximo! ${highTurns}/5 turnos para la Leyenda.`});
+  if(G.champions>0)alerts.push({cls:'a-info',msg:`🏆 ${G.champions} título${G.champions>1?'s':''} de Champions.`});
+
   const div=DIVISIONS[G.division!==undefined?G.division:4];
+  const isBoss=card&&!!card.isFifaBoss;
+  const cat=card?catInfo(card.cat):null;
+  const illusColor=isBoss?BOSS_ILLUS_COLOR:(cat?cat.color:'#1a1208');
+  // Approximate calendar year (52 weeks per year, starting 2024)
+  const gameYear=2024+Math.floor((G.totalWeeks+G.weeks)/52);
+
   return`<div class="reigns-screen">
     <svg class="mountains-bg" viewBox="0 0 430 130" preserveAspectRatio="xMidYMax slice" fill="#07080f" aria-hidden="true">
       <path d="M0 130 L0 88 L28 55 L55 82 L80 38 L108 70 L132 22 L160 58 L185 30 L210 62 L238 18 L265 52 L288 34 L312 60 L338 40 L362 66 L390 45 L430 68 L430 130 Z"/>
     </svg>
-    <div class="reigns-top-bar">
-      <div class="pixel-name">${esc(G.presName||G.clubName)}</div>
-      <div class="scoreboard-icons">${renderScoreboard()}</div>
-      <div class="pixel-score">${G.weeks}</div>
-    </div>
-    <div class="pixel-sub">${esc(div)} · ${yearsLabel} · ${totalW} sem.</div>
-    <div class="game-wrap">
-      <div class="game-col-a">
-        <div class="alerts">${alerts.map(a=>`<div class="alert ${a.cls}">${a.msg}</div>`).join('')}</div>
+
+    <div class="game-1920">
+
+      <!-- ── Left column: persistent player info ── -->
+      <div class="col-l">
+        <div class="col-side-inner">
+          <div class="side-block">
+            <div class="side-val">${G.weeks}</div>
+            <div class="side-lbl">Semanas en el cargo</div>
+          </div>
+          <div class="side-block">
+            <div class="side-val">${G.reign}</div>
+            <div class="side-lbl">Mandato</div>
+          </div>
+          <div class="side-block side-pres">
+            <div class="side-pres-name">${esc(G.presName||'—')}</div>
+            <div class="side-lbl">Nombre del presidente</div>
+          </div>
+        </div>
       </div>
-      <div class="game-col-b">
-        ${card?renderCard(card):''}
+
+      <!-- ── Center column: main UI ── -->
+      <div class="col-c">
+
+        <!-- 3.1 Header: 4 status indicators (120px) -->
+        <div class="game-hdr">
+          <div class="scoreboard-icons">${renderScoreboard()}</div>
+        </div>
+
+        <!-- 3.2 Information box / QTE context (100px) -->
+        <div class="game-ctx-box">
+          <div class="ctx-text">${esc(card?card.ctx:'')}</div>
+        </div>
+
+        <!-- 3.3 Main event area + 3.4 Card overlay (450px) -->
+        <div class="game-event-area">
+          <div class="event-bg" style="background:${illusColor}">
+            ${card?`<div class="event-emoji">${card.emoji}</div>`:''}
+            ${cat?`<div class="event-cat-lbl">${cat.label.toUpperCase()}</div>`:''}
+          </div>
+          ${card?`<div class="card-overlay-wrap">
+            <div class="card-outer" id="card-outer">
+              <div class="swipe-hint hint-l" id="hint-l">← ${esc(card.b.label)}</div>
+              <div class="swipe-hint hint-r" id="hint-r">${esc(card.a.label)} →</div>
+              <div class="ev-card${isBoss?' fifa-boss':''}" id="ev-card">
+                <div class="card-illus" style="background:${illusColor}">
+                  <div class="card-emoji">${card.emoji}</div>
+                  <div class="card-cat">${isBoss?'⭐ EL GRAN JEFE DE LA FIFA':cat.label.toUpperCase()}</div>
+                </div>
+                <div class="card-paper">
+                  <div class="card-title">${esc(card.title)}</div>
+                  <div class="card-desc">${esc(card.desc)}</div>
+                  <div class="card-fx-preview">
+                    <div class="card-fx-col">${renderFxPreview(card.b.fx,'←')}</div>
+                    <div class="card-fx-col card-fx-right">${renderFxPreview(card.a.fx,'→')}</div>
+                  </div>
+                  <div class="card-foot">
+                    <span class="card-week">Sem. ${G.weeks+1}</span>
+                    <span class="card-week">Mandato ${G.reign}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`:''}
+        </div>
+
+        <!-- 3.5 Character name (60px) -->
+        <div class="game-char-name">${esc(G.presName||G.clubName)}</div>
+
+        <!-- 3.6 Footer: skills (120px) -->
+        <div class="game-skills">
+          <div class="skill-icons">
+            <div class="skill-icon" title="Afición: ${s.money}">${SVG_STADIUM}</div>
+            <div class="skill-icon" title="RRPP: ${s.press}">${SVG_MEGAPHONE}</div>
+            <div class="skill-icon" title="Deportivo: ${s.vest}">${SVG_FOOTBALL}</div>
+            <div class="skill-icon" title="Finanzas: ${s.power}">${SVG_CROWN}</div>
+          </div>
+          ${card?`<div class="swipe-actions">
+            <button class="sw-btn" onclick="choose(1)">
+              <div class="sw-dir">← Rechazar</div>
+              <div class="sw-lbl">${esc(card.b.label)}</div>
+            </button>
+            <button class="sw-btn right" onclick="choose(0)">
+              <div class="sw-dir">Aceptar →</div>
+              <div class="sw-lbl">${esc(card.a.label)}</div>
+            </button>
+          </div>`:''}
+        </div>
+
+      </div><!-- /col-c -->
+
+      <!-- ── Right column: game status ── -->
+      <div class="col-r">
+        <div class="col-side-inner">
+          <div class="side-block">
+            <div class="side-val">${gameYear}</div>
+            <div class="side-lbl">Año actual</div>
+          </div>
+          <div class="side-block">
+            <div class="side-val side-div-val">${div}</div>
+            <div class="side-lbl">División</div>
+          </div>
+          ${alerts.length?`<div class="side-missions">
+            <div class="side-missions-lbl">Misiones</div>
+            ${alerts.map(a=>`<div class="alert ${a.cls}">${a.msg}</div>`).join('')}
+          </div>`:''}
+        </div>
       </div>
-    </div>
+
+    </div><!-- /game-1920 -->
   </div>`;
 }
 
