@@ -1144,7 +1144,7 @@ function statLabel(k){return({money:'👥 Afición',press:'📰 Relaciones Públ
 
 function checkEnd(){
   const s=G.stats;
-  // Colapso Total — GUIA.md: multiple stats simultaneously at 0 (checked first for flavor)
+  // Colapso Total — GUIA.md: Afición, RRPP y Finanzas simultáneamente en 0 (vest/deportivo excluded per spec)
   if([s.money,s.press,s.power].filter(v=>v<=5).length>=3)return'collapse';
   // Death at 0 (stat collapse)
   if(s.press<=0)return'press';
