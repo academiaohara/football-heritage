@@ -1,0 +1,180 @@
+
+1. All the cards
+№
+Image
+Achievement
+Description
+1
+All the cards
+Read all the cards
+
+    Try going for the other achievements first, this one will likely unlock by going for the other achievements.
+    Contrary to what the achievement actually says, you don't actually need to see every card to unlock this.
+    You don't have to survive for 100 or 200 years in order to get this. For me this unlocked around 845 cards. 
+
+2. All the characters
+№
+Image
+Achievement
+Description
+2
+All the characters
+Meet all the characters
+
+    Very easy achievement, you should get this just by playing the game.
+    Getting the Tinder love event from the Witch can speed this up.
+
+3. All the deaths
+№
+Image
+Achievement
+Description
+3
+All the deaths
+Suffer all the deaths
+
+    This achievement will probably take you the longest to get, getting certain cards at the right moment can take a while.
+    I recommend checking out this overview of every death in the game:
+    Memento mori / All the deaths 
+    Una guía para Reigns
+    Por: Miraglyth
+    An album of all 29 deaths in the game.
+
+    Some tips on specific deaths:
+    Death 12. Beheading: this death is most easily gained at the start of your run, between year 600-900.
+    Try to deny any new characters from being introduced, new characters add new cards which makes the event less likely to happen.
+    Keep your army stat high in preparation for the body found in the dungeon card.
+    Death 15. Gravity: Let the people stat reach 100 while the average of every combined stat including the people stat is below 40.
+
+4. Shooting star
+№
+Image
+Achievement
+Description
+4
+Shooting star
+Govern less than 3 years
+
+    You'll get this eventually by just playing the game.
+    If for whatever reason you specifically want this achievement, there are some cards like the Doctor's card where he asks if he can be the executioner. These cards will instantly kill you regardless of how high that certain stat is. These cards are perfect for this achievement.
+
+5. Millenium
+№
+Image
+Achievement
+Description
+5
+Millenium
+Reach year 2000
+
+    Pretty straightforward, just reach year 2000.
+
+6. Duelist
+№
+Image
+Achievement
+Description
+6
+Duelist
+Beat the skeleton more than 5 times in a row
+
+    The duel system is often misunderstood, there isn't a hidden health system. The dots represent something similar to an arena or sumo ring. If you get hit on the outer parts of the ring, you get knocked out of the ring and lose.
+    Getting the Excalibur from the Pungeon makes winning duels easier, this is not required however. It's pretty easy even without it.
+    If you have one of the stat locking status effects(Theocracy, Lover) you can stay in the Pungeon indefinitely, which also means you can fight the skeleton forever.
+    I believe the kills don't have to be in the same life, not 100% sure though.
+
+7. Elder
+№
+Image
+Achievement
+Description
+7
+Elder
+Govern more than 50 years
+
+    See achievement explanation 8. Mummy.
+
+8. Mummy
+№
+Image
+Achievement
+Description
+8
+Mummy
+Govern more than 100 years
+
+    I advise you to watch this video. This covers some of the do's and don'ts in this game, some basic explanation of how certain mechanics work and strategy on how to get long runs.
+    Even when you do everything perfectly, luck can easily turn everything around so don't get frustrated.
+    Stay away from the cake!
+
+9. Hecatomb
+№
+Image
+Achievement
+Description
+9
+Hecatomb
+Suffer more than a 100 deaths
+
+    The 100 deaths need to be in one run.
+    Just keep pressing/swiping left if you want to die quickly.
+
+10. True pacifist
+№
+Image
+Achievement
+Description
+10
+True pacifist
+Do not fulfill the Death wish
+
+    Requires you to not say yes to anyone for 100 years.
+    Dying doesn't matter.
+
+11. The End n°1
+№
+Image
+Achievement
+Description
+11
+True pacifist
+Trapped in an endless middle-age
+
+    1. Go to the year 1998 to meet the devil and gain the curse.
+    2. Kill someone with the curse by saying yes to anyone(except the skeleton and Spirit of the Fallen)
+    3. Next time you meet the Spirit of the Fallen and it asks "Are you not tired of this?" answer with yes. This will unlock the achievement.
+
+12. The End n°2
+№
+Image
+Achievement
+Description
+12
+The End n°2
+Rot in hell for eternity
+
+    1. Go to the year 1998 to meet the devil and gain the curse.
+    2. Keep the curse until the Spirit of the Fallen shows up.
+    3. When the Spirit eventually shows up say yes and you'll unlock the achievement.
+
+13. The End n°3
+№
+Image
+Achievement
+Description
+13
+The End n°3
+Trick the Devil
+
+    1. Enter the pungeon.
+    2. Find a torch in a golden door. Entering neutral doors has a high chance of leading you to a gold door.
+    3. Now we have to enter a specific order of doors. Fire > Arsenic > Acid > Break the wall > Saltpeter > Pentagram. Talk to the Skeleton and it will ask for strawberries.
+    4. Meet the Vase from the Doctor and obtain frozen blood. (there's multiple ways to obtain frozen blood, one of which is getting the witch to put a 15 year long old age status on you and surviving it).
+    5. Start a crusade
+    6. During the crusade there's an event where the vase will talk to you and take you to a machine that can give you strawberries.(Dialogue options don't matter during this event except for maybe the first and last)
+    Side note: There's another event that can take you to the machine. In this event the Foreign Princess will talk to you and bring you there.
+    7. Now go back to the pungeon, find the torch and enter repeat the sequence of doors again(Fire > Arsenic > Acid > Break the wall > Saltpeter > Pentagram).
+    8. Talk to Kloc the skeleton and give it the strawberries. It'll promise to help you with the devil.
+    9. Wait for the year 1998 to come and obtain the Devil's curse.
+    10. Don't say yes to anyone until Kloc the skeleton shows up. Say yes to Kloc.
+    11. This will trick the devil into killing something that is already dead. You'll now have the achievement unlocked!
