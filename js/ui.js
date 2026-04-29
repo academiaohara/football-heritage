@@ -133,15 +133,63 @@ export function pickColor(i) {
 /* ─────────────── Stats bar ─────────────── */
 
 /**
+ * SVG silhouette shapes (40×40 viewBox) for each stat icon.
+ * The shapes are used as clipPath contents so that two stacked rectangles
+ * (dark grey background + coloured fill from the bottom up) create the
+ * Reigns-style "vertical meter" effect.
+ */
+const STAT_ICON_SHAPES = {
+  // Crowd silhouette: three person shapes of varying height
+  money: `
+    <circle cx="10" cy="12" r="3.5"/>
+    <rect x="6.5" y="15.5" width="7" height="20" rx="1"/>
+    <circle cx="20" cy="9" r="4.5"/>
+    <rect x="15.5" y="13.5" width="9" height="22" rx="1"/>
+    <circle cx="30" cy="12" r="3.5"/>
+    <rect x="26.5" y="15.5" width="7" height="20" rx="1"/>`,
+  // Megaphone/bullhorn: tapered polygon, narrow left (mouthpiece) to wide right (bell)
+  press: `<polygon points="4,17 4,23 36,34 36,6"/>`,
+  // Football: filled circle with a central pentagon cut out (even-odd fill rule)
+  vest: `<path fill-rule="evenodd" clip-rule="evenodd" d="M20,4 C29.4,4 36,10.6 36,20 C36,29.4 29.4,36 20,36 C10.6,36 4,29.4 4,20 C4,10.6 10.6,4 20,4 Z M20,13 L26.7,17.8 L24.1,25.7 L15.9,25.7 L13.3,17.8 Z"/>`,
+  // Crown: three-point crown with band base
+  power: `<path d="M4,36 L4,28 L10,14 L15,22 L20,8 L25,22 L30,14 L36,28 L36,36 Z"/>`
+};
+
+/** Counter to generate unique clipPath IDs across successive renders. */
+let _siRenderCount = 0;
+
+/**
+ * Render a Reigns-style stat icon SVG.
+ * The icon silhouette is filled from the bottom up with `fillColor` based on
+ * the stat value (0–100). The remaining top portion stays dark grey.
+ * @param {string} key       Stat key: money | press | vest | power
+ * @param {number} v         Stat value 0–100
+ * @param {string} fillColor Hex colour for the filled (non-empty) portion
+ * @returns {string}
+ */
+function statIconSVG(key, v, fillColor) {
+  const id    = `si-${key}-${++_siRenderCount}`;
+  const fillY = (40 * (1 - v / 100)).toFixed(2);
+  const fillH = (40 * v / 100).toFixed(2);
+  return `<svg class="stat-icon" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <clipPath id="${id}">${STAT_ICON_SHAPES[key]}</clipPath>
+    </defs>
+    <rect x="0" y="0" width="40" height="40" fill="#3D3D3D" clip-path="url(#${id})"/>
+    <rect x="0" y="${fillY}" width="40" height="${fillH}" fill="${fillColor}" clip-path="url(#${id})"/>
+  </svg>`;
+}
+
+/**
  * Render the four-stat bar HTML string.
  * @returns {string}
  */
 function renderStats() {
   const meta = [
-    { k:'money', lbl:'👥 Afición',            fc:'f-money', nc:'n-money', tip:'Apoyo de socios y aficionados. Baja si pierdes derbis o subes precios.' },
-    { k:'press', lbl:'📰 Relaciones Públicas', fc:'f-press', nc:'n-press', tip:'Imagen ante la prensa y la junta directiva.' },
-    { k:'vest',  lbl:'⚽ Poder Deportivo',     fc:'f-vest',  nc:'n-vest',  tip:'Estado de la plantilla y resultados del equipo.' },
-    { k:'power', lbl:'💰 Finanzas',            fc:'f-power', nc:'n-power', tip:'Dinero en caja del club.' }
+    { k:'money', lbl:'Afición',            fc:'#1D9E75', nc:'n-money', tip:'Apoyo de socios y aficionados. Baja si pierdes derbis o subes precios.' },
+    { k:'press', lbl:'Relaciones Públicas', fc:'#378ADD', nc:'n-press', tip:'Imagen ante la prensa y la junta directiva.' },
+    { k:'vest',  lbl:'Poder Deportivo',     fc:'#7F77DD', nc:'n-vest',  tip:'Estado de la plantilla y resultados del equipo.' },
+    { k:'power', lbl:'Finanzas',            fc:'#BA7517', nc:'n-power', tip:'Dinero en caja del club.' }
   ];
   return `<div class="stats">${meta.map(m => {
     const v = G.stats[m.k];
@@ -149,7 +197,7 @@ function renderStats() {
     const warn   = v < 40 && !danger;
     return `<div class="stat${danger ? ' stat-danger' : warn ? ' stat-warn' : ''}" title="${m.tip}">
       <div class="stat-lbl">${m.lbl}</div>
-      <div class="stat-track"><div class="stat-fill ${m.fc}" style="width:${v}%"></div></div>
+      ${statIconSVG(m.k, v, m.fc)}
       <div class="stat-n ${m.nc}">${v}</div>
     </div>`;
   }).join('')}</div>`;
