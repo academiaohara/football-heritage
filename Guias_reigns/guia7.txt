@@ -1,0 +1,294 @@
+
+Introduction
+A fully illustrated and quoted album of the game's Memento mori section.
+
+Features detail about how to get each of these deaths, divided into five types:
+
+    Standard death: Regular stat-related deaths.
+    Non-standard death: Stat-related deaths with additional conditions.
+    Event death: Deaths caused by cards directly.
+    Combat death: Being killed in a duel.
+    Ending: One of the game's endings.
+
+Complete up to version the March 2017 update.
+(This is the latest update as of January 2018).
+1. Drown
+
+    You fall into cold water violently. Panicked, you try to escape the tide, in vain.
+
+Event death:
+Run towards the sound of water during the kidnap escape sequence.
+
+    The new oligarchy forces you to exile. On the boat, a disgruntled soldier pushes you overboard. You drown quickly.
+
+Non-standard death:
+Let Treasury reach 0 while Army is very low.
+2. Burn at the stake
+
+    You're sentenced to be burnt alive. Your name is erased from books and buildings.
+
+Event death:
+Anger the church. Two methods to accomplish this:
+
+Method 1:
+
+    If the Achbishop says "You are under arrest. You have broken the commandments of the blessed Church.", reply "Go to hell!".
+
+Method 2:
+
+    If The Priest says "You know Who rules above men and Kings!" reply "It's certainly not you."
+    A few years later he will invite you to a crypt. Either answer here works.
+    The next card, reply "Explain yourself!"
+
+    The new oligarchy wanted to keep you as their straw man. But the Church condemned you to be burnt alive.
+
+Non-standard death:
+Let Treasury reach 0 while Church is very low.
+3. Imprisonment
+
+    The army locks you up in the tallest tower of the castle where you will decay to rags and bones.
+
+Standard death:
+Let Army reach 100.
+
+    Did you find your way out of the dungeon? Maybe, but your power is no more and a new King is on the rise.
+
+Event death:
+Survive and remain in The Dungeon until all stats reach 0.
+
+    You will languish in prison until people forget you ever existed.
+
+Event death:
+When The General says "Our engineers have designed a new weapon, would you like to see what it does?", reply "Yes". (This may follow a decision of lacking faith in The General).
+4. Safety
+
+    Your reign ends there but no one harms you. You die many years later praised and well remembered.
+
+Standard death:
+Let People reach 100.
+
+    You die in your bed a couple of days later. Some people mourn you.
+
+Event death:
+Suffer an accident while hunting and reply "Let me rest."
+
+    No one saw you again after that day. Only your crown remained.
+
+Event death:
+When The Witch offers white magic, choose Happiness and then to remove the crown.
+5. Reverence
+
+    In the end, you die, mourned by all your subjects. Your name is praised, your tomb becomes a shrine.
+
+Event death:
+Survive for too long! Eventually you succumb to a natural death of old age.
+
+Will likely be encountered multiple times while trying to survive 100 years, but can be assisted by the following decisions to detriment your lifespan:
+
+    Refusing The Homonculus' potion of youth.
+    Playing in earlier years with (allegedly) reduced natural lifespan.
+    Refusing The doctor's hygienic advice (allegedly).
+    Refusing the blue mushroom (allegedly).
+    Accepting cake (allegedly).
+
+
+    You manage to kill the dragon with excalibur but are badly wounded in the process. You're given the funeral of a true hero.
+
+Event death:
+Insist on fighting The Dragon while in possession of Excalibur.
+6. Disease
+
+    You die alone, rotting away in your bed.
+
+Event death:
+Suffer gangrene from a hunting accident.
+
+    A terrible plague followed the doctor's experiments on convicts. You're among the first to rot.
+
+Event death:
+Let The Doctor test exotic new poisons.
+
+    The plague has finally entered the castle where it is quite effective at wiping out a large part of the court, you included.
+
+Non-standard death:
+Let People reach 0 during the Black Death.
+7. Paganism
+
+    A pagan mob murdered you during your escape attempt.
+
+Standard death:
+Let Church reach 0.
+8. Sacrifice
+
+    The Church decided you would make a great martyr. They tore you limb from limb.
+
+Standard death:
+Let Church reach 100.
+9. Espionage
+
+    You're poisoned by [name], your treacherous brother-in-law, who was working for the invaders all this time.
+
+Non-standard death:
+Let Army reach 0 while The Rival is visiting.
+10. Invasion
+
+    You lead the last remnants of your army and die on the steps of the throne.
+
+Standard death:
+Let Army reach 0.
+11. Patricide
+
+    General [name] is quickly overthrown by Prince [name] who, even more quickly, hangs you. Your own son.
+
+Non-standard death:
+Let Army reach 100 after The Prince has been introduced in that life.
+12. Beheading
+
+    You're the final victim of the mysterious murderer of the dungeon.
+
+Non-standard death:
+Let Army reach 100 while the serial killer is at large.
+13. Communism
+
+    You're horribly tortured by the mob to reveal where you hide the treasure.
+
+Non-standard death:
+Let People reach 0 while Treasury is high but not 100.
+14. Abandonment
+
+    The castle is ransacked, your court disperses and you're left with pigeons to rule over.
+
+Standard death:
+Let People reach 0.
+15. Gravity
+
+    The mob is increasingly violent and has set fire to your apartments. You die jumping from the window.
+
+Non-standard death:
+Let People reach 100 while... owning apartments...?
+
+(I'm still trying to sleuth out the other requirements for this one. Thusfar I've only seen it once, while my items were Silk Road and Colonies, and with no card decision I can recall that would have caused it. Maybe the in-progress construction of a cathedral...?)
+16. Heartbreak
+
+    You die in your bed from an embarrassing heart attack.
+
+Non-standard death:
+Let Treasury reach 100 with a Lover.
+17. Gluttony
+
+    You eat so much that you end up choking. Everyone is drunk so your death is only noticed the following morning.
+
+Standard death:
+Let Treasury reach 100.
+(This may cause deaths 17, 27 or 28; it appears to be random which occurs.)
+18. Disgrace
+
+    You're tortured and your body is thrown to the dogs. Your name becomes an insult.
+
+Standard death:
+Let Treasury reach 0 while the average of other stats is low.
+19. Exile
+
+    The new oligarchy forces you to exile.
+
+Standard death:
+Let Treasury reach 0 while the average of other stats is not low.
+
+    While you were busy preparing his arrival, the King of the West invaded your country then sent you into exile.
+
+Event death:
+While the King of the West is preparing to visit, say "Good idea" to The Priest and The General to cause an infinite loop; saying "Let's do both" to either causes this death.
+20. Duelled
+
+    You bleed to death on the filthy dungeon floor.
+
+Combat death:
+Lose a duel to The Skeleton.
+
+This becomes impossible if the skeleton has been befriended.
+
+    You bleed to death at your son's feet, that traitor!
+
+Combat death:
+Lose a duel to The Prince.
+
+To access this duel: When The Farmer wails that cows are producing blood, choose The Doctor (instead of The Priest) to investigate. 2 years later he will accuse The Prince; select "Prince [name]!" and then either answer.
+
+    Before collapsing, you hear [name] whisper They are all dead... My children.
+
+Combat death:
+Lose a duel to The Barbarian.
+
+This duel is exceptionally rare; after vikings attack, select either "Attack" or "Defend". An indeterminate number of years later the war will be won; opt to kill them. Another indeterminate number of years later The Barbarian will curse you, and an indeterminate number of years after that he will challenge you; do not flee, and purposefully try to lose the duel.
+21. Traps
+
+    Your agony is long and painful. And the rats...
+
+Event death:
+Find a trap in The Dungeon.
+
+Arsenic doors that do not follow Fire doors reliably contain traps.
+22. Adventures
+
+    You decide to slip out of the castle in the dead of night. What happened to you? A lot of mysterious adventures.
+
+Event death:
+During a ten-year peace period, select "Escape".
+23. Trick the devil
+
+    You broke the curse. Well done!
+
+Ending:
+One of the three endings of the game.
+Unlocks an achievement: The End n°3.
+
+Spoiler: This is accomplished by .
+24. Perpetual curse
+
+    You didn't break the curse. Try again!
+
+Ending:
+One of the three endings of the game.
+Unlocks an achievement: The End n°1.
+
+Waste the 1998 Death Wish, then when the Spirit of the Fallen that appears at the start of the next life asks "The Devil is gone. We're stuck here for ever. Are you not tired of this?" reply "Yes".
+25. Endless suicide
+
+    It never ended.
+
+Ending:
+One of the three endings of the game.
+Unlocks an achievement: The End n°2.
+
+Use the 1998 Death Wish on the Spirit of the Fallen that appears at the start of the next life.
+26. Dragon fire
+
+    The dragon is really dangerous after all.
+
+Event death:
+Insist on fighting The Dragon.
+
+    The dragon is really dangerous after all.
+
+Event death:
+When The Black Bird brings the message "A dragon is said to have planned the invasion of your treasury." answer "Must be a lizard." followed by "En garde!"
+27. Archery
+
+    During the party, someone started an archery game. It didn't end well for you.
+
+Standard death:
+Let Treasury reach 100.
+(This may cause deaths 17, 27 or 28; it appears to be random which occurs.)
+28. Alcoholism
+
+    A huge cask of strong ale was brought into the castle. Too drunk, you fell in during the party.
+
+Standard death:
+Let Treasury reach 100.
+(This may cause deaths 17, 27 or 28; it appears to be random which occurs.)
+29. Punishment
+
+    You're waking up a few days later under a burning sun, paralyzed, slowly eaten by giant red ants.
+
+Event death:
+After The Homonculus has been given the Frozen Blood, during a crusade The Foreign Princess may say "I know you're looking for something in Lamascus. I can help you find it, but you have to make a promise to me." Answer "Yes" three times. The next time you start a crusade (even in a future life), this death will be given 5 years later. 
