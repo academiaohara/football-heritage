@@ -165,25 +165,27 @@ body{background:#030610;min-height:100vh;display:flex;justify-content:center;fon
 
 /* === SETUP SCREEN === */
 .setup-scr{position:fixed;top:0;left:0;width:100%;height:100%;background:#3a0008;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;z-index:10;}
-.contract-wrap{background:#e8dfc0;border-radius:12px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.85);width:min(400px,92vw);}
-.contract-header{background:#d4a017;padding:16px 20px 14px;text-align:center;}
-.contract-hdr-icons{font-family:'Press Start 2P',monospace;font-size:18px;color:#1a0800;margin-bottom:10px;display:flex;justify-content:center;gap:20px;}
-.contract-hdr-title{font-family:'Press Start 2P',monospace;font-size:9px;color:#1a0800;letter-spacing:2px;}
-.contract-body{padding:20px 20px 0;}
-.contract-field{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px;}
-.contract-field-icon{font-size:26px;flex-shrink:0;line-height:1;}
+.contract-outer{background:#d4a017;padding:14px;}
+.contract-mid{background:#000;padding:10px;}
+.contract-wrap{background:#e8dfc0;border-radius:0;box-shadow:0 8px 40px rgba(0,0,0,.85);width:min(480px,95vw);}
+.contract-header{background:#d4a017;padding:18px 24px 16px;text-align:center;}
+.contract-hdr-icons{font-family:'Press Start 2P',monospace;font-size:22px;color:#1a0800;margin-bottom:12px;display:flex;justify-content:center;gap:20px;}
+.contract-hdr-title{font-family:'Press Start 2P',monospace;font-size:10px;color:#1a0800;letter-spacing:2px;}
+.contract-body{padding:22px 22px 0;}
+.contract-field{display:flex;align-items:flex-start;gap:12px;margin-bottom:20px;}
+.contract-field-icon{font-size:28px;flex-shrink:0;line-height:1;}
 .contract-field-inner{flex:1;}
-.contract-field-label{font-family:'Press Start 2P',monospace;font-size:8px;color:#1a0800;margin-bottom:8px;display:block;}
-.contract-input{width:100%;background:transparent;border:none;border-bottom:2px solid #1a0800;outline:none;font-family:'Press Start 2P',monospace;font-size:9px;color:#1a0800;padding:4px 2px;}
+.contract-field-label{font-family:'Press Start 2P',monospace;font-size:9px;color:#1a0800;margin-bottom:8px;display:block;}
+.contract-input{width:100%;background:transparent;border:none;border-bottom:2px solid #1a0800;outline:none;font-family:'Press Start 2P',monospace;font-size:10px;color:#1a0800;padding:4px 2px;}
 .contract-input::placeholder{color:rgba(26,8,0,.3);}
 .contract-divider{text-align:center;color:#1a0800;margin:4px 0 12px;padding-top:14px;border-top:1px solid rgba(26,8,0,.2);font-size:14px;}
-.contract-quote{font-family:'Press Start 2P',monospace;font-size:7px;color:#1a0800;text-align:center;line-height:2;padding-bottom:16px;}
+.contract-quote{font-family:'Press Start 2P',monospace;font-size:8px;color:#1a0800;text-align:center;line-height:2;padding-bottom:18px;}
 .contract-actions{display:flex;border-top:2px solid #1a0800;}
-.contract-btn{flex:1;background:#1a0800;border:none;padding:16px 8px;font-family:'Press Start 2P',monospace;font-size:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;line-height:1.5;}
-.contract-btn-accept{color:#d4a017;border-right:1px solid rgba(212,160,23,.3);}
+.contract-btn{flex:1;background:#1a0800;border:none;padding:18px 14px;font-family:'Press Start 2P',monospace;font-size:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;line-height:1.5;}
+.contract-btn-accept{color:#d4a017;outline:3px solid #d4a017;outline-offset:-8px;}
 .contract-btn-accept:hover{background:#241200;}
-.contract-btn-reject{color:#cc2222;border:2px solid #cc2222;}
-.contract-btn-icon{font-size:14px;}
+.contract-btn-reject{color:#cc2222;outline:3px solid #cc2222;outline-offset:-8px;}
+.contract-btn-icon{font-size:18px;}
 .contract-input-readonly{opacity:.55;cursor:default;}
 
 /* === PRES SELECT === */
@@ -1229,7 +1231,7 @@ function makeState(){
     ownerName:'',
     weeks:0,
     totalWeeks:0,          // cumulative weeks across ALL reigns (Reigns: global year counter)
-    stats:{money:25,press:25,vest:30,power:25},
+    stats:{money:50,press:50,vest:50,power:50},
     statsHidden:{money:false,press:false,vest:false,power:false},
     fifaCurses:[],             // [{stat,endsAt}]
     nextFifaBossAt:50,
@@ -1493,6 +1495,7 @@ function endRound(type){
 function nextSuccessor(){
   const tl=G.timeline;
   const clubName=G.clubName;
+  const ownerName=G.ownerName;
   // Preserve global counters across successions
   const totalWeeks=G.totalWeeks+G.weeks;
   const champions=G.champions;
@@ -1503,6 +1506,8 @@ function nextSuccessor(){
   const newG=makeState();
   newG.timeline=tl;
   newG.clubName=clubName;
+  newG.ownerName=ownerName;
+  newG.presName=ownerName||'El Presidente';
   newG.reign=tl.length+1;
   newG.totalWeeks=totalWeeks;
   newG.champions=champions;
@@ -1510,14 +1515,14 @@ function nextSuccessor(){
   newG.corruptAll=corruptAll;
   newG.honestAll=honestAll;
 
-  // GUIA.md inheritance: Afición −4 pts per succession, RRPP −8 pts per succession, vest/power reset 30–50 random
-  const successions=tl.length;
-  newG.stats.money=clamp(40 - successions*4);
-  newG.stats.press=clamp(40 - successions*8);
-  newG.stats.vest=30+Math.floor(Math.random()*21);   // 30–50
-  newG.stats.power=30+Math.floor(Math.random()*21);  // 30–50
+  // All stats reset to 50 for new president
+  newG.stats.money=50;
+  newG.stats.press=50;
+  newG.stats.vest=50;
+  newG.stats.power=50;
 
-  newG.screen='presSelect';
+  newG.screen='game';
+  newG.currentPortrait=randPortrait();
   newG.division=G.division!==undefined?G.division:4;
   // Sporting collapse → relegated one division
   if(tl.length>0&&['vest','vest100'].includes(tl[tl.length-1].cause)){
@@ -1525,6 +1530,7 @@ function nextSuccessor(){
   }
   newG.inherited=tl.length>0?humanCause(tl[tl.length-1].cause):null;
   G=newG;
+  G.currentCard=pickCard();
   render();
 }
 
@@ -1578,7 +1584,10 @@ function startGame(){
   G.clubName=name;
   const inp2=document.getElementById('owner-name-input');
   G.ownerName=(inp2?inp2.value.trim():'')||'';
-  G.screen='presSelect';
+  G.presName=G.ownerName||'El Presidente';
+  G.currentPortrait=randPortrait();
+  G.currentCard=pickCard();
+  G.screen='game';
   render();
 }
 
@@ -1606,9 +1615,8 @@ function render(){
 
 // ── Setup ──
 function renderSetup(){
-  const dateStr=new Date().toLocaleDateString('es-ES');
   return`<div class="setup-scr">
-    <div class="contract-wrap">
+    <div class="contract-outer"><div class="contract-mid"><div class="contract-wrap">
       <div class="contract-header">
         <div class="contract-hdr-icons">
           <span>†</span><span>⚔</span><span>✦</span><span>$</span>
@@ -1636,11 +1644,11 @@ function renderSetup(){
           <div class="contract-field-icon">📅</div>
           <div class="contract-field-inner">
             <span class="contract-field-label">INICIO DE MANDATO:</span>
-            <input class="contract-input contract-input-readonly" type="text" value="${dateStr}" readonly>
+            <input class="contract-input contract-input-readonly" type="text" value="01/07/2024" readonly>
           </div>
         </div>
         <div class="contract-divider">◆</div>
-        <div class="contract-quote">"EL DESTINO DEL CLUB<br>ESTÁ EN TUS DECISIONES.<br>CADA ELECCIÓN CUENTA."</div>
+        <div class="contract-quote">"EL DESTINO DEL CLUB ESTÁ EN TUS DECISIONES. CADA ELECCIÓN CUENTA."</div>
       </div>
       <div class="contract-actions">
         <button class="contract-btn contract-btn-accept" onclick="startGame()">
@@ -1650,7 +1658,7 @@ function renderSetup(){
           <span class="contract-btn-icon">✕</span> RECHAZAR CARGO
         </button>
       </div>
-    </div>
+    </div></div></div>
   </div>`;
 }
 function attachSetup(){
